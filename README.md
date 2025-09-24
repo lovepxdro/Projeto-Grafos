@@ -29,3 +29,30 @@ Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, 
 
 ---
 
+# MEMBROS
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/BrunoBMayer">
+        <img src="https://avatars.githubusercontent.com/BrunoBMayer" width="100px;" alt="foto de Bruno Mayer"/>
+        <br>
+        <sub><b>Bruno Mayer</b></sub>
+      </a>
+      <br>
+      <sub><b>✉️ bbm@cesar.school</b></sub>
+    </td>
+    <td align="center">
+      <a href="https://github.com/lovepxdro">
+        <img src="https://avatars.githubusercontent.com/lovepxdro" width="100px;" alt="foto de Pedro Antônio"/>
+        <br>
+        <sub><b>Pedro Antônio</b></sub>
+      </a>
+      <br>
+      <sub><b>✉️ pafm@cesar.school</b></sub>
+    </td>
+
+---
+
+ᓚᘏᗢ
+
