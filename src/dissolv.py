@@ -1,6 +1,16 @@
+from pathlib import Path
 
+# Resolve paths relative to this script so the script works no matter the CWD
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR.parent / "data"
+OUT_DIR = BASE_DIR.parent / "out"
+OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-arq = open("../data/bairros_recife - bairros_recife.csv", "r", encoding="utf-8")
+INPUT_FILE = DATA_DIR / "bairros_recife - bairros_recife.csv"
+if not INPUT_FILE.exists():
+    raise FileNotFoundError(f"Arquivo de entrada não encontrado: {INPUT_FILE}")
+
+arq = INPUT_FILE.open("r", encoding="utf-8")
 
 listBairros = arq.readlines()
 arq.seek(0)
@@ -138,12 +148,10 @@ for i in range(len(matrizBRcf) - 1, -1, -1):
 
 print(matrizBRcf)
 
-arq = open("../out/bairros_unique.csv", "w", encoding="utf-8")
-
-for i in range(len(matrizBRcf)):
-    arq.write(matrizBRcf[i] + "\n")
-
-arq.close()
+OUT_FILE = OUT_DIR / "bairros_unique.csv"
+with OUT_FILE.open("w", encoding="utf-8") as arq:
+    for i in range(len(matrizBRcf)):
+        arq.write(matrizBRcf[i] + "\n")
 
 # todos os passos de como a lista foi preparada e como cada informação saiu do arquivo inicial, foi tratada para entrar no arquivo final
 # está printado no terminal, já o arquivo criado será gerado na pasta "out". Rode o codigo para ver o arquivo processado (ele vai criar um arquivo 
