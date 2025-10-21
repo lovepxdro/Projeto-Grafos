@@ -34,25 +34,42 @@ Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, 
 <table>
   <tr>
     <td align="center">
-      <a href="https://github.com/BrunoBMayer">
-        <img src="https://avatars.githubusercontent.com/BrunoBMayer" width="100px;" alt="foto de Bruno Mayer"/>
-        <br>
-        <sub><b>Bruno Mayer</b></sub>
-      </a>
-      <br>
-      <sub><b>✉️ bbm@cesar.school</b></sub>
-    </td>
-    <td align="center">
       <a href="https://github.com/lovepxdro">
-        <img src="https://avatars.githubusercontent.com/lovepxdro" width="100px;" alt="foto de Pedro Antônio"/>
-        <br>
+        <img src="https://avatars.githubusercontent.com/lovepxdro" width="100px;" alt="Foto de Pedro Antônio"/>
+        <br />
         <sub><b>Pedro Antônio</b></sub>
       </a>
-      <br>
+      <br />
       <sub><b>✉️ pafm@cesar.school</b></sub>
     </td>
-
----
+    <td align="center">
+      <a href="https://github.com/emanusousa">
+        <img src="https://avatars.githubusercontent.com/emanusousa" width="100px;" alt="Foto de Emanuel"/>
+        <br />
+        <sub><b>Emanuel Sousa</b></sub>
+      </a>
+      <br />
+      <sub><b>✉️ @cesar.school</b></sub>
+    </td>
+    <td align="center">
+      <a href="https://github.com/BrunoBMayer">
+        <img src="https://avatars.githubusercontent.com/BrunoBMayer" width="100px;" alt="Foto de Bruno"/>
+        <br />
+        <sub><b>Bruno Mayer</b></sub>
+      </a>
+      <br />
+      <sub><b>✉️ bbm@cesar.school</b></sub>
+    </td>
+     <td align="center">
+        <a href="https://github.com/CaioAugustoMachadoDeMelo">
+           <img src="https://avatars.githubusercontent.com/CaioAugustoMachadoDeMelo" width="100px;" alt="Foto de Caio"/>
+           <br />
+           <sub><b>Caio Melo</b></sub>
+        </a>
+        <br />
+        <sub><b>✉️ @cesar.school</b></sub>
+     </td>
+  </tr>
+</table>
 
 ᓚᘏᗢ
-
