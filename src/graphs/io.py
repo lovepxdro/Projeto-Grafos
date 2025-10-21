@@ -1,9 +1,9 @@
 from pathlib import Path
 
-# Resolve paths relative to this script so the script works no matter the CWD
-BASE_DIR = Path(__file__).resolve().parent
-DATA_DIR = BASE_DIR.parent / "data"
-OUT_DIR = BASE_DIR.parent / "out"
+# Resolve paths from the repo root: this file is in src/graphs, so go up 2 levels to repo root
+REPO_ROOT = Path(__file__).resolve().parents[2]
+DATA_DIR = REPO_ROOT / "data"
+OUT_DIR = REPO_ROOT / "out"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 INPUT_FILE = DATA_DIR / "bairros_recife.csv"
