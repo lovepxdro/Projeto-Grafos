@@ -6,7 +6,7 @@ DATA_DIR = BASE_DIR.parent / "data"
 OUT_DIR = BASE_DIR.parent / "out"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-INPUT_FILE = DATA_DIR / "bairros_recife - bairros_recife.csv"
+INPUT_FILE = DATA_DIR / "bairros_recife.csv"
 if not INPUT_FILE.exists():
     raise FileNotFoundError(f"Arquivo de entrada não encontrado: {INPUT_FILE}")
 
