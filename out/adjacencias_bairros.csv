@@ -1,0 +1,449 @@
+bairro_origem,bairro_destino,logradouro,observacao,peso
+Recife,Santo Amaro,p.mauricio_nassau+p.limoeiro,p = ponte,1.0
+Boa Vista,Cabanga,p.boa_vista+p.de_ferro+vd.cinco_pontas,p = ponte; vd = viaduto,1.5
+Boa Vista,Ilha do Leite,r.dos_coelhos,r = rua,2.0
+Boa Vista,Paissandu,r.dos_coelhos+r.francisco_alves,r = rua,4.0
+Boa Vista,Santo Antonio,p.da_boa_vista,p = ponte,0.5
+Boa Vista,Sao Jose,p.da_boa_vista+p.de_ferro,p = ponte,1.0
+Boa Vista,Soledade,av.conde_da_boa_vista,av = avenida,1.0
+Cabanga,Ilha do Leite,vd.cinco_pontas+r.dr_jose_mariano+r.dos_coelhos,vd = viaduto; r = rua,4.5
+Cabanga,Paissandu,vd.cinco_pontas+r.dr_jose_mariano+r.dos_coelhos+r.francisco_alves,vd = viaduto; r = rua,6.5
+Cabanga,Santo Antonio,vd.cinco_pontas+p.de_ferro,vd = viaduto; p = ponte,1.0
+Cabanga,Sao Jose,vd.cinco_pontas,vd = viaduto,0.5
+Cabanga,Soledade,vd.cinco_pontas+p.de_ferro+p.da_boa_vista+av.conde_da_boa_vista,"vd = viaduto; p = ponte; av = avenida",2.5
+Ilha do Leite,Paissandu,r.francisco_alves,r = rua,2.0
+Ilha do Leite,Santo Antonio,r.dos_coelhos+p.da_boa_vista,r = rua; p = ponte,2.5
+Ilha do Leite,Sao Jose,r.dos_coelhos+r.dr_jose_mariano,r = rua,4.0
+Ilha do Leite,Soledade,r.dos_coelhos+av.conde_da_boa_vista,r = rua; av = avenida,3.0
+Paissandu,Santo Antonio,r.francisco_alves+r.dos_coelhos+p.da_boa_vista,r = rua; p = ponte,4.5
+Paissandu,Sao Jose,r.francisco_alves+r.dos_coelhos+r.dr_jose_mariano,r = rua,6.0
+Paissandu,Soledade,r.francisco_alves+r.dos_coelhos+av.conde_da_boa_vista,r = rua; av = avenida,5.0
+Santo Antonio,Sao Jose,p.de_ferro,p = ponte,0.5
+Santo Antonio,Soledade,p.da_boa_vista+av.conde_da_boa_vista,p = ponte; av = avenida,1.5
+Sao Jose,Soledade,p.de_ferro+p.da_boa_vista+av.conde_da_boa_vista,p = ponte; av = avenida,2.0
+Coelhos,Ilha Joana Bezerra,r.dr_jose_mariano+p.joaquim_cardoso,r = rua; p = ponte,2.5
+Arruda,Campina do Barreto,1av.beberibe,av = avenida,1.0
+Arruda,Campo Grande,est.de_belem+av.norte,est = estrada; av = avenida,2.5
+Arruda,Encruzilhada,av.beberibe+av.norte+r.dr_jose_maria,av = avenida; r = rua,4.0
+Arruda,Hipodromo,1est.de_belem,est = estrada,1.5
+Arruda,Peixinhos,1av.prof_jose_dos_anjos,av = avenida,1.0
+Arruda,Ponto de Parada,2av.beberibe,av = avenida,1.0
+Arruda,Rosarinho,1av.beberibe+av.norte,av = avenida,2.0
+Arruda,Torreao,est.de_belem+r.da_regeneracao,"est = estrada; r  = rua",3.5
+Campina do Barreto,Campo Grande,2av.beberibe+av.norte,av = avenida,2.0
+Campina do Barreto,Encruzilhada,3av.beberibe,av = avenida,1.0
+Campina do Barreto,Hipodromo,av.beberibe+est.de_belem,est = estrada; av = avenida,2.5
+Campina do Barreto,Peixinhos,2av.prof_jose_dos_anjos,av = avenida,1.0
+Campina do Barreto,Ponto de Parada,4av.beberibe,av = avenida,1.0
+Campina do Barreto,Rosarinho,3av.beberibe+av.norte,av = avenida,2.0
+Campina do Barreto,Torreao,"1av.beberibe+est.de_belem+r.da_regeneracao","est = estrada; av = avenida; r = rua",4.5
+Campo Grande,Encruzilhada,5av.beberibe,av = avenida,1.0
+Campo Grande,Hipodromo,av.norte+est.de_belem,est = estrada; av = avenida,2.5
+Campo Grande,Peixinhos,av.norte+est.de_belem+av.prof_jose_dos_anjos,est = estrada; av = avenida,3.5
+Campo Grande,Ponto de Parada,4av.beberibe+av.norte,av = avenida,2.0
+Campo Grande,Rosarinho,av.norte+r.dr_jose_maria,av = avenida; r = rua,3.0
+Campo Grande,Torreao,1av.agamenon_magalhaes+r.marques_do_parana,av = avenida; r = rua,3.0
+Encruzilhada,Hipodromo,2est.de_belem,est = estrada,1.5
+Encruzilhada,Peixinhos,1est.de_belem+av.prof_jose_dos_anjos,est = estrada; av = avenida,2.5
+Encruzilhada,Ponto de Parada,r.dr_jose_maria+av.norte,av = avenida; r = rua,3.0
+Encruzilhada,Rosarinho,r.dr_jose_maria,r = rua,2.0
+Encruzilhada,Torreao,2av.agamenon_magalhaes+r.marques_do_parana,av = avenida; r = rua,3.0
+Hipodromo,Peixinhos,2est.de_belem+av.prof_jose_dos_anjos,est = estrada; av = avenida,2.5
+Hipodromo,Ponto de Parada,est.de_belem+av.beberibe,est = estrada; av = avenida,2.5
+Hipodromo,Rosarinho,est.de_belem+r.dr_jose_maria,est = estrada; r = rua,3.5
+Hipodromo,Torreao,r.da_regeneracao,r = rua,2.0
+Peixinhos,Ponto de Parada,av.prof_jose_dos_anjos+av.beberibe,av = avenida,2.0
+Peixinhos,Rosarinho,av.prof_jose_dos_anjos+av.beberibe+av.norte,av = avenida,3.0
+Peixinhos,Torreao,"av.prof_jose_dos_anjos+est.de_belem+r.da_regeneracao","est = estrada; r = rua; av = avenida",4.5
+Ponto de Parada,Rosarinho,1av.norte,av = avenida,1.0
+Ponto de Parada,Torreao,"2av.beberibe+est.de_belem+r.da_regeneracao","est = estrada; r = rua; av = avenida",4.5
+Rosarinho,Torreao,"r.dr_jose_maria+est.de_belem+r.da_regeneracao","est = estrada; r = rua",5.5
+Agua Fria,Alto Santa Teresinha,r.corrego_do_euclides,r = rua,2.0
+Agua Fria,Bomba do Hemeterio,av.anibal_benevolo,av = avenida,1.0
+Agua Fria,Cajueiro,6av.beberibe,av = avenida,1.0
+Agua Fria,Fundao,5av.beberibe+av.norte,av = avenida,2.0
+Agua Fria,Porto da Madeira,7av.beberibe,av = avenida,1.0
+Agua Fria,Beberibe,8av.beberibe,av = avenida,1.0
+Agua Fria,Dois Unidos,1av.beberibe+av.hildebrando_vasconcelos,av = avenida,2.0
+Agua Fria,Linha do Tiro,2av.beberibe+av.hildebrando_vasconcelos,av = avenida,2.0
+Alto Santa Teresinha,Bomba do Hemeterio,r.corrego_do_euclides+av.anibal_benevolo,r = rua; av = avenida,3.0
+Alto Santa Teresinha,Cajueiro,1r.corrego_do_euclides+av.beberibe,r = rua; av = avenida,3.0
+Alto Santa Teresinha,Fundao,r.corrego_do_euclides+av.beberibe+av.norte,r = rua; av = avenida,4.0
+Alto Santa Teresinha,Porto da Madeira,2r.corrego_do_euclides+av.beberibe,r = rua; av = avenida,3.0
+Alto Santa Teresinha,Beberibe,3r.corrego_do_euclides+av.beberibe,r = rua; av = avenida,3.0
+Alto Santa Teresinha,Dois Unidos,"1r.corrego_do_euclides+av.beberibe+av.hildebrando_vasconcelos","r = rua; av = avenida",4.0
+Alto Santa Teresinha,Linha do Tiro,"2r.corrego_do_euclides+av.beberibe+av.hildebrando_vasconcelos","r = rua; av = avenida",4.0
+Bomba do Hemeterio,Cajueiro,1av.anibal_benevolo+av.beberibe,av = avenida,2.0
+Bomba do Hemeterio,Fundao,av.anibal_benevolo+av.beberibe+av.norte,av = avenida,3.0
+Bomba do Hemeterio,Porto da Madeira,2av.anibal_benevolo+av.beberibe,av = avenida,2.0
+Bomba do Hemeterio,Beberibe,3av.anibal_benevolo+av.beberibe,av = avenida,2.0
+Bomba do Hemeterio,Dois Unidos,"1av.anibal_benevolo+av.beberibe+av.hildebrando_vasconcelos","av = avenida",3.0
+Bomba do Hemeterio,Linha do Tiro,"2av.anibal_benevolo+av.beberibe+av.hildebrando_vasconcelos","av = avenida",3.0
+Cajueiro,Fundao,2av.norte,av = avenida,1.0
+Cajueiro,Porto da Madeira,9av.beberibe,av = avenida,1.0
+Cajueiro,Beberibe,10av.beberibe,av = avenida,1.0
+Cajueiro,Dois Unidos,3av.beberibe+av.hildebrando_vasconcelos,av = avenida,2.0
+Cajueiro,Linha do Tiro,4av.beberibe+av.hildebrando_vasconcelos,av = avenida,2.0
+Fundao,Porto da Madeira,1av.norte+av.beberibe,av = avenida,2.0
+Fundao,Beberibe,2av.norte+av.beberibe,av = avenida,2.0
+Fundao,Dois Unidos,"1av.norte+av.beberibe+av.hildebrando_vasconcelos","av = avenida",3.0
+Fundao,Linha do Tiro,"2av.norte+av.beberibe+av.hildebrando_vasconcelos","av = avenida",3.0
+Porto da Madeira,Beberibe,11av.beberibe,av = avenida,1.0
+Porto da Madeira,Dois Unidos,5av.beberibe+av.hildebrando_vasconcelos,av = avenida,2.0
+Porto da Madeira,Linha do Tiro,6av.beberibe+av.hildebrando_vasconcelos,av = avenida,2.0
+Beberibe,Dois Unidos,1av.hildebrando_vasconcelos,av = avenida,1.0
+Beberibe,Linha do Tiro,2av.hildebrando_vasconcelos,av = avenida,1.0
+Dois Unidos,Linha do Tiro,3av.hildebrando_vasconcelos,av = avenida,1.0
+Aflitos,Alto do Mandu,av.norte+av.santos_dumont,av = avenida,2.0
+Aflitos,Apipucos,"r. dos aflitos + r. alvares de azevedo + av. 17 de agosto","av= avenida ; r=rua",4.0
+Aflitos,Casa Amarela,"r.manuel_de_carvalho+av.santos_dumont+estr.do_arraial","av= avenida ; est=estrada",4.5
+Aflitos,Casa Forte,2av.cons.castro_alves+av.mascarenhas_de_moraes,"av=avenida; est= estrada",7.5
+Aflitos,Derby,"r.da_angustura+r.quarenta_e_oito+av.gov_agamenon_magalhaes","av= avenida; r=rua",5.0
+Aflitos,Dois Irmaos,"r.da_angustura+r.joao_de_barros+av.gov_agamenon_magalhaes+av.norte+av.professor_andrade_bezerra+br-101","av= avenida; r=rua",8.0
+Aflitos,Espinheiro,"r.da_angustura+r.quarenta_e_oito+av.joao_de_barros+r.do_espinheiro","r=rua; av= avenida",6.0
+Aflitos,Gracas,r.da_angustura+r.quarenta_e_oito+r.das_gracas,r=rua,6.0
+Aflitos,Jaqueira,"r.da_angustura+r.joao_de_barros+av.gov_agamenon_magalhaes+r.do_futuro","r=rua; av= avenida",6.0
+Aflitos,Monteiro,r.da_angustura+r.rosarinho+estr.do_arraial,"r=rua;est=estrada",5.5
+Aflitos,Parnamirim,r.da_angustura+r.rosarinho+av.dezessete_de_agosto,"r=rua;av=avenida",5.0
+Aflitos,Poco,r.da_angustura+r.joao_de_barros+r.do_arraial+av.dezessete_de_agosto,"r=rua;av=avenida",6.0
+Aflitos,Santana,"r.da_angustura+r.joao_de_barros+r.do_arraial+av.dezessete_de_agosto","r=rua;av=avenida",6.0
+Aflitos,Sitio dos Pintos,r.da_angustura+r.rosarinho+av.norte_miguel_arraes_de_alencar,"r=rua;av=avenida",5.0
+Aflitos,Tamarineira,"r.da_angustura+r.joao_de_barros+r.do_arraiál+av.norte_miguel_arraes_de_alencar","r=rua;av=avenida",6.0
+Alto do Mandu,Apipucos,r.mandacaru+r.de_apipucos,r=rua,4.0
+Alto do Mandu,Casa Amarela,r.pedro_de_barros+r.da_harmonia,r=rua,4.0
+Alto do Mandu,Casa Forte,1r.mandacaru+r.de_apipucos+av.dezessete_de_agosto,"r=rua;av=avenida",5.0
+Alto do Mandu,Derby,r.pedro_de_barros+av.norte_miguel_arraes_de_alencar,"r=rua;av=avenida",3.0
+Alto do Mandu,Dois Irmaos,r.mandacaru+r.dois_irmaos,r=rua,4.0
+Alto do Mandu,Espinheiro,"r.pedro_de_barros+r.da_harmonia+r.domingos_ferreira+av.conselheiro_rosa_e_silva","r=rua;av=avenida",7.0
+Alto do Mandu,Gracas,r.mandacaru+r.de_apipucos+av.dezessete_de_agosto+av.rui_barbosa,"r=rua;av=avenida",6.0
+Alto do Mandu,Jaqueira,r.pedro_de_barros+r.da_harmonia+r.conselheiro_aguiar+r.do_futuro,r=rua,8.0
+Alto do Mandu,Monteiro,r.mandacaru+r.de_apipucos+r.da_hora,r=rua,6.0
+Alto do Mandu,Parnamirim,"r.pedro_de_barros+r.da_harmonia+r.conselheiro_aguiar+av.dezessete_de_agosto","r=rua;av=avenida",7.0
+Alto do Mandu,Poco,2r.mandacaru+r.de_apipucos+av.dezessete_de_agosto,"r=rua;av=avenida",5.0
+Alto do Mandu,Santana,"r.mandacaru+r.de_apipucos+av.dezessete_de_agosto+av.joao_de_barros","r=rua;av=avenida",6.0
+Alto do Mandu,Sitio dos Pintos,r.dois_irmaos,"r=rua ",2.0
+Alto do Mandu,Tamarineira,"1r.pedro_de_barros+r.da_harmonia+av.norte_miguel_arraes_de_alencar","r=rua;av=avenida",5.0
+Apipucos,Casa Amarela,"r.mandacaru+r.padre_lemos","r=rua ",4.0
+Apipucos,Casa Forte,1r.de_apipucos+av.dezessete_de_agosto,"r=rua;av=avenida",3.0
+Apipucos,Derby,1r.de_apipucos+av.dezessete_de_agosto+av.rui_barbosa,"r=rua;av=avenida",4.0
+Apipucos,Dois Irmaos,r.de_apipucos+r.dois_irmaos,"r=rua ",4.0
+Apipucos,Espinheiro,"r.mandacaru+r.padre_lemos+av.norte_miguel_arraes_de_alencar","r=rua;av=avenida",5.0
+Apipucos,Gracas,2r.de_apipucos+av.dezessete_de_agosto+av.rui_barbosa,"r=rua;av=avenida",4.0
+Apipucos,Jaqueira,1r.de_apipucos+estr.do_encanamento,"r=rua; est=estrada",3.5
+Apipucos,Monteiro,1r.de_apipucos,r=rua,2.0
+Apipucos,Parnamirim,2r.de_apipucos+estr.do_encanamento,"r=rua; est=estrada",3.5
+Apipucos,Poco,2r.de_apipucos+av.dezessete_de_agosto,"r=rua;av=avenida",3.0
+Apipucos,Santana,3r.de_apipucos+av.dezessete_de_agosto,"r=rua;av=avenida",3.0
+Apipucos,Sitio dos Pintos,"r.dois_irmaos+r.manuel_de_medeiros+estr.dos_pintos","r=rua; est=estrada",5.5
+Apipucos,Tamarineira,"2r.pedro_de_barros+r.da_harmonia+av.norte_miguel_arraes_de_alencar","r=rua;av=avenida",5.0
+Casa Amarela,Casa Forte,estr.do_arraial+estr.do_encanamento,est=estrada,3.0
+Casa Amarela,Derby,r.da_harmonia+av.rui_barbosa,"r=rua;av=avenida",3.0
+Casa Amarela,Dois Irmaos,1estr.do_arraial+r.de_apipucos+r.dois_irmaos,"est=estrada; r=rua",5.5
+Casa Amarela,Espinheiro,1av.norte_miguel_arraes_de_alenca,av=avenida,1.0
+Casa Amarela,Gracas,"1estr.do_encanamento+av.rui_barbosa","est=estrada;  av= avenida",2.5
+Casa Amarela,Jaqueira,"r.da_harmonia+r.conselheiro_aguiar+r.do_futuro","r=rua ",6.0
+Casa Amarela,Monteiro,2estr.do_arraial+r.de_apipucos+r.dois_irmaos,"est=estrada; r=rua",5.5
+Casa Amarela,Parnamirim,"2estr.do_encanamento+av.rui_barbosa","est=estrada;  av= avenida",2.5
+Casa Amarela,Poco,estr.do_arraial+r.pedro_de_barros+r.da_harmonia,"est=estrada; r=rua",5.5
+Casa Amarela,Santana,"r.da_harmonia+r.conselheiro_aguiar+r.do_futuro+av.dezessete_de_agosto","r=rua;av=avenida",8.0
+Casa Amarela,Sitio dos Pintos,"r.da_harmonia+r.dois_irmaos+r.manuel_de_medeiros+estr.dos_pintos","r=rua; est=estrada",7.5
+Casa Amarela,Tamarineira,"av.norte_miguel_arraes_de_alencar+av.prof_jose_dos_anjos","av = avenida",2.0
+Casa Forte,Derby,"1av.rui_barbosa","av = avenida",1.0
+Casa Forte,Dois Irmaos,"av.dezessete_de_agosto+r.de_apipucos+r.dois_irmãos","av = avenida; r = rua",5.0
+Casa Forte,Espinheiro,"2av.rui_barbosa","av = avenida",1.0
+Casa Forte,Gracas,"3av.rui_barbosa","av = avenida",1.0
+Casa Forte,Jaqueira,r.afonso_de_albuquerque_melo,"r = rua",2.0
+Casa Forte,Monteiro,"1av.dezessete_de_agosto","av = avenida",1.0
+Casa Forte,Parnamirim,"2av.dezessete_de_agosto","av = avenida",1.0
+Casa Forte,Poco,praça_de_casa_forte+estr.real_do_poço,"estr = estrada",3.5
+Casa Forte,Santana,"praça_de_casa_forte+av.dezessete_de_agosto+r.sant_anna","av = avenida; r = rua",4.0
+Casa Forte,Sitio dos Pintos,av.dezessete_de_agosto,"av = avenida",1.0
+Casa Forte,Tamarineira,"3av.dezessete_de_agosto","av = avenida",1.0
+Derby,Dois Irmaos,1av.caxanga,"av = avenida",1.0
+Derby,Espinheiro,r.do_espinheiro,"r = rua",2.0
+Derby,Gracas,r.das_graças,"r = rua",2.0
+Derby,Jaqueira,1av.conselheiro_rosa_e_silva,"av = avenida",1.0
+Derby,Monteiro,"4av.dezessete_de_agosto","av = avenida",1.0
+Derby,Parnamirim,1r.jose_bonifacio,"r = rua",2.0
+Derby,Poco,2r.jose_bonifacio,"r = rua",2.0
+Derby,Santana,3r.jose_bonifacio,"r = rua",2.0
+Derby,Sitio dos Pintos,2av.caxanga,"av = avenida",1.0
+Derby,Tamarineira,2av.conselheiro_rosa_e_silva,"av = avenida",1.0
+Dois Irmaos,Espinheiro,"2av.norte_miguel_arraes_de_alencar","av = avenida",1.0
+Dois Irmaos,Gracas,"4av.rui_barbosa","av = avenida",1.0
+Dois Irmaos,Jaqueira,1estr.do_encanamento,"r = rua",1.5
+Dois Irmaos,Monteiro,r.caetes+r.de_apipucos,"r = rua",4.0
+Dois Irmaos,Parnamirim,2estr.do_encanamento,"estr = estrada",1.5
+Dois Irmaos,Poco,2r.de_apipucos,"r = rua",2.0
+Dois Irmaos,Santana,"5av.dezessete_de_agosto","av = avenida",1.0
+Dois Irmaos,Sitio dos Pintos,"r.manuel_de_medeiros+estr.dos_pintos","r = rua; estr = estrada",3.5
+Dois Irmaos,Tamarineira,"3av.norte_miguel_arraes_de_alencar","av = avenida",1.0
+Espinheiro,Gracas,av.gov_agamenon_magalhaes,"av = avenida",1.0
+Espinheiro,Jaqueira,3av.conselheiro_rosa_e_silva,"av = avenida",1.0
+Espinheiro,Monteiro,1estr.do_arraial,"estr = estrada",1.5
+Espinheiro,Parnamirim,4av.conselheiro_rosa_e_silva,"av = avenida",1.0
+Espinheiro,Poco,5av.conselheiro_rosa_e_silva,"av = avenida",1.0
+Espinheiro,Santana,6av.conselheiro_rosa_e_silva,"av = avenida",1.0
+Espinheiro,Sitio dos Pintos,2estr.do_arraial,"estr = estrada",1.5
+Espinheiro,Tamarineira,"4av.norte_miguel_arraes_de_alencar","av = avenida",1.0
+Gracas,Jaqueira,7av.conselheiro_rosa_e_silva,"av = avenida",1.0
+Gracas,Monteiro,"av.conselheiro_rosa_e_silva+estr.do_arraial","av = avenida; estr = estrada",2.5
+Gracas,Parnamirim,8av.conselheiro_rosa_e_silva,"av = avenida",1.0
+Gracas,Poco,4r.jose_bonifacio,"r = rua",2.0
+Gracas,Santana,5r.jose_bonifacio,"r = rua",2.0
+Gracas,Sitio dos Pintos,3av.caxanga,"av = avenida",1.0
+Gracas,Tamarineira,"av.conselheiro_rosa_e_silva+av.santos_dumont","av = avenida",2.0
+Jaqueira,Monteiro,3estr.do_arraial,"estr = estrada",1.5
+Jaqueira,Parnamirim,r.do_futuro,"r = rua",2.0
+Jaqueira,Poco,"r.leonardo_bezerra_cavalcante+av.dezessete_de_agosto","av = avenida; r = rua",3.0
+Jaqueira,Santana,r.leonardo_bezerra_cavalcante,"r = rua",2.0
+Jaqueira,Sitio dos Pintos,"av.norte+av.caxangá+av.sítio_dos_pintos","av = avenida",3.0
+Jaqueira,Tamarineira,"r.da_jaqueira+av.norte","av = avenida; r = rua",3.0
+Monteiro,Parnamirim,"av.são_mateus+av.norte","av = avenida",2.0
+Monteiro,Poco,"av.beira_rio+av.nossa_senhora_do_rosário","av = avenida",2.0
+Monteiro,Santana,"av.beira_rio+r.pedro_werneck","av = avenida; r = rua",3.0
+Monteiro,Sitio dos Pintos,"av.17_de_agosto+av.sítio_dos_pintos","av = avenida",2.0
+Monteiro,Tamarineira,"av.17_de_agosto+av.norte","av = avenida",2.0
+Parnamirim,Poco,av.norte+av.beira_rio,"av = avenida",2.0
+Parnamirim,Santana,"av.norte+r.pedro_werneck","av = avenida; r = rua",3.0
+Parnamirim,Sitio dos Pintos,"av.norte+av.17_de_agosto+av.sítio_dos_pintos","av = avenida",3.0
+Parnamirim,Tamarineira,3av.norte,"av = avenida",1.0
+Poco,Santana,r.pedro_werneck,"r = rua",2.0
+Poco,Sitio dos Pintos,"av.beira_rio+av.17_de_agosto+av.sítio_dos_pintos","av = avenida",3.0
+Poco,Tamarineira,av.beira_rio+av.norte,"av = avenida",2.0
+Santana,Sitio dos Pintos,"r.pedro_werneck+av.17_de_agosto+av.sítio_dos_pintos","av = avenida; r = rua",4.0
+Santana,Tamarineira,"r.pedro_werneck+av.norte","av = avenida; r = rua",3.0
+Sitio dos Pintos,Tamarineira,"av.sítio_dos_pintos+av.17_de_agosto+av.norte","av = avenida",3.0
+Alto Jose Bonifacio,Alto Jose do Pinho,"r.josé_bonifácio+av.boa_viagem+r.alto_do_pinho","av = avenida; r = rua",5.0
+Alto Jose Bonifacio,Mangabeira,"r.josé_bonifácio+av.boa_viagem+av.mangabeira","av = avenida; r = rua",4.0
+Alto Jose Bonifacio,Morro da Conceicao,"r.josé_bonifácio+av.boa_viagem+r.morro_da_conceição","av = avenida; r = rua",5.0
+Alto Jose Bonifacio,Vasco da Gama,"r.josé_bonifácio+av.boa_viagem+av.vasco_da_gama","av = avenida; r = rua",4.0
+Alto Jose do Pinho,Mangabeira,"av.boa_viagem+av.mangabeira","av = avenida",2.0
+Alto Jose do Pinho,Morro da Conceicao,"av.boa_viagem+r.morro_da_conceição","av = avenida; r = rua",3.0
+Alto Jose do Pinho,Vasco da Gama,"av.boa_viagem+av.vasco_da_gama","av = avenida",2.0
+Mangabeira,Morro da Conceicao,"av.mangabeira+r.morro_da_conceição","av = avenida; r = rua",3.0
+Mangabeira,Vasco da Gama,"av.mangabeira+av.vasco_da_gama","av = avenida",2.0
+Morro da Conceicao,Vasco da Gama,"r.morro_da_conceição+av.vasco_da_gama","av = avenida; r = rua",3.0
+Brejo da Guabiraba,Brejo de Beberibe,"av.brejo+r.de_beberibe","av = avenida; r = rua",3.0
+Brejo da Guabiraba,Corrego do Jenipapo,"av.brejo+r.córrego_do_jenipapo","av = avenida; r = rua",3.0
+Brejo da Guabiraba,Guabiraba,"av.brejo+r.guabiraba","av = avenida; r = rua",3.0
+Brejo da Guabiraba,Macaxeira,"av.brejo+av.macaxeira","av = avenida",2.0
+Brejo da Guabiraba,Nova Descoberta,"av.brejo+av.nova_descoberta","av = avenida",2.0
+Brejo da Guabiraba,Passarinho,"av.brejo+av.passarinho","av = avenida",2.0
+Brejo da Guabiraba,Pau-Ferro,"av.brejo+av.pau-ferro","av = avenida",2.0
+Brejo de Beberibe,Corrego do Jenipapo,"r.de_beberibe+r.córrego_do_jenipapo","r = rua",4.0
+Brejo de Beberibe,Guabiraba,"r.de_beberibe+av.guabiraba","av = avenida; r = rua",3.0
+Brejo de Beberibe,Macaxeira,"r.de_beberibe+av.macaxeira","av = avenida; r = rua",3.0
+Brejo de Beberibe,Nova Descoberta,"r.de_beberibe+av.nova_descoberta","av = avenida; r = rua",3.0
+Brejo de Beberibe,Passarinho,"r.de_beberibe+av.passarinho","av = avenida; r = rua",3.0
+Brejo de Beberibe,Pau-Ferro,"r.de_beberibe+av.pau-ferro","av = avenida; r = rua",3.0
+Corrego do Jenipapo,Guabiraba,"r.córrego_do_jenipapo+av.guabiraba","av = avenida; r = rua",3.0
+Corrego do Jenipapo,Macaxeira,"r.córrego_do_jenipapo+av.macaxeira","av = avenida; r = rua",3.0
+Corrego do Jenipapo,Nova Descoberta,"r.córrego_do_jenipapo+av.nova_descoberta","av = avenida; r = rua",3.0
+Corrego do Jenipapo,Passarinho,"r.córrego_do_jenipapo+av.passarinho","av = avenida; r = rua",3.0
+Corrego do Jenipapo,Pau-Ferro,"r.córrego_do_jenipapo+av.pau-ferro","av = avenida; r = rua",3.0
+Guabiraba,Macaxeira,"av.guabiraba+av.macaxeira","av = avenida",2.0
+Guabiraba,Nova Descoberta,"av.guabiraba+av.nova_descoberta","av = avenida",2.0
+Guabiraba,Passarinho,"av.guabiraba+av.passarinho","av = avenida",2.0
+Guabiraba,Pau-Ferro,"av.guabiraba+av.pau-ferro","av = avenida",2.0
+Macaxeira,Nova Descoberta,"av.macaxeira+av.nova_descoberta","av = avenida",2.0
+Macaxeira,Passarinho,"av.macaxeira+av.passarinho","av = avenida",2.0
+Macaxeira,Pau-Ferro,"av.macaxeira+av.pau-ferro","av = avenida",2.0
+Nova Descoberta,Passarinho,"av.nova_descoberta+av.passarinho","av = avenida",2.0
+Nova Descoberta,Pau-Ferro,"av.nova_descoberta+av.pau-ferro","av = avenida",2.0
+Passarinho,Pau-Ferro,"av.passarinho+av.pau-ferro","av = avenida",2.0
+Cordeiro,Ilha do Retiro,"av.cordeiro+av.ilha_do_retiro","av = avenida",2.0
+Cordeiro,Iputinga,"av.cordeiro+av.iputinga","av = avenida",2.0
+Cordeiro,Madalena,"av.cordeiro+av.madalena","av = avenida",2.0
+Cordeiro,Prado,"av.cordeiro+av.prado","av = avenida",2.0
+Cordeiro,Torre,"av.cordeiro+av.torre","av = avenida",2.0
+Cordeiro,Zumbi,"av.cordeiro+av.zumbi","av = avenida",2.0
+Ilha do Retiro,Iputinga,"av.ilha_do_retiro+av.iputinga","av = avenida",2.0
+Ilha do Retiro,Madalena,"av.ilha_do_retiro+av.madalena","av = avenida",2.0
+Ilha do Retiro,Prado,"av.ilha_do_retiro+av.prado","av = avenida",2.0
+Ilha do Retiro,Torre,"av.ilha_do_retiro+av.torre","av = avenida",2.0
+Ilha do Retiro,Zumbi,"av.ilha_do_retiro+av.zumbi","av = avenida",2.0
+Iputinga,Madalena,"av.iputinga+av.madalena","av = avenida",2.0
+Iputinga,Prado,"av.iputinga+av.prado","av = avenida",2.0
+Iputinga,Torre,"av.iputinga+av.torre","av = avenida",2.0
+Iputinga,Zumbi,"av.iputinga+av.zumbi","av = avenida",2.0
+Madalena,Prado,"av.madalena+av.prado","av = avenida",2.0
+Madalena,Torre,"av.madalena+av.torre","av = avenida",2.0
+Madalena,Zumbi,"av.madalena+av.zumbi","av = avenida",2.0
+Prado,Torre,"av.recife+av.beira_rio","av = avenida",2.0
+Prado,Zumbi,"av.recife+av.sul+av.maracanã","av = avenida",3.0
+Torre,Zumbi,"av.beira_rio+av.sul+av.maracanã","av = avenida",3.0
+Engenho do Meio,Torroes,"av.caxangá+r.torrões","av = avenida; r = rua",3.0
+Caxanga,Cidade Universitaria,"av.caxangá+r.prof.luís_freire","av = avenida; r = rua",3.0
+Caxanga,Varzea,"4av.caxangá","av = avenida",1.0
+Cidade Universitaria,Varzea,"r.prof.luís_freire","r = rua",2.0
+Afogados,Bongi,"av.sul+av.recife","av = avenida",2.0
+Afogados,Mangueira,"1av.recife+r.tres_de_marco","av = avenida; r = rua",3.0
+Afogados,Mustardinha,"av.sul+av.recife+r.mustardinha","av = avenida; r = rua",4.0
+Afogados,San Martin,"av.sul+av.recife+r.san_martin","av = avenida; r = rua",4.0
+Bongi,Mangueira,"2av.recife+r.tres_de_marco","av = avenida; r = rua",3.0
+Bongi,Mustardinha,"av.recife+r.mustardinha","av = avenida; r = rua",3.0
+Bongi,San Martin,"av.recife+r.san_martin","av = avenida; r = rua",3.0
+Mangueira,Mustardinha,"r.tres_de_marco+r.mustardinha","r = rua",4.0
+Mangueira,San Martin,"r.tres_de_marco+r.san_martin","r = rua",4.0
+Mustardinha,San Martin,"r.mustardinha+r.san_martin","r = rua",4.0
+Areias,Cacote,"r.areias+r.caçote","r = rua",4.0
+Areias,Estancia,"r.areias+r.estância","r = rua",4.0
+Areias,Jiquia,"r.areias+av.brigadeiro","av = avenida; r = rua",3.0
+Cacote,Estancia,"r.caçote+r.estância","r = rua",4.0
+Cacote,Jiquia,"r.caçote+av.brigadeiro","av = avenida; r = rua",3.0
+Estancia,Jiquia,"r.estância+av.brigadeiro","av = avenida; r = rua",3.0
+Barro,Coqueiral,"r.barro+av.brigadeiro+r.coqueiral","av = avenida; r = rua",5.0
+Barro,Curado,"r.barro+av.brigadeiro+r.curado","av = avenida; r = rua",5.0
+Barro,Jardim Sao Paulo,"r.barro+av.sul+r.jardim_são_paulo","av = avenida; r = rua",5.0
+Barro,Sancho,"r.barro+av.brigadeiro+r.sancho","av = avenida; r = rua",5.0
+Barro,Tejipio,"r.barro+av.brigadeiro+r.tejipio","av = avenida; r = rua",5.0
+Barro,Toto,"r.barro+av.brigadeiro+r.totó","av = avenida; r = rua",5.0
+Coqueiral,Curado,"1av.mascarenhas_de_moraes","av = avenida",1.0
+Coqueiral,Jardim Sao Paulo,"2av.mascarenhas_de_moraes","av = avenida",1.0
+Coqueiral,Sancho,"3av.mascarenhas_de_moraes","av = avenida",1.0
+Coqueiral,Tejipio,"4av.mascarenhas_de_moraes","av = avenida",1.0
+Coqueiral,Toto,"1av.mascarenhas_de_moraes+r.totó","av = avenida; r = rua",3.0
+Curado,Jardim Sao Paulo,"5av.mascarenhas_de_moraes","av = avenida",1.0
+Curado,Sancho,"6av.mascarenhas_de_moraes","av = avenida",1.0
+Curado,Tejipio,"7av.mascarenhas_de_moraes","av = avenida",1.0
+Curado,Toto,"2av.mascarenhas_de_moraes+r.totó","av = avenida; r = rua",3.0
+Jardim Sao Paulo,Sancho,"8av.mascarenhas_de_moraes","av = avenida",1.0
+Jardim Sao Paulo,Tejipio,"9av.mascarenhas_de_moraes","av = avenida",1.0
+Jardim Sao Paulo,Toto,"3av.mascarenhas_de_moraes+r.totó","av = avenida; r = rua",3.0
+Sancho,Tejipio,"10av.mascarenhas_de_moraes","av = avenida",1.0
+Sancho,Toto,"4av.mascarenhas_de_moraes+r.totó","av = avenida; r = rua",3.0
+Tejipio,Toto,"5av.mascarenhas_de_moraes+r.totó","av = avenida; r = rua",3.0
+Boa Viagem,Brasilia Teimosa,"av.cons.castro_alves+av.brigadeiro_campos","av = avenida",2.0
+Boa Viagem,Imbiribeira,"1av.cons.castro_alves+av.mascarenhas_de_moraes","av = avenida",2.0
+Boa Viagem,Ipsep,"av.cons.castro_alves+av.mascarenhas_de_moraes","av = avenida",2.0
+Boa Viagem,Pina,"av.cons.castro_alves+av.herculano_bandeira","av = avenida",2.0
+Brasilia Teimosa,Imbiribeira,"1av.brigadeiro_campos+av.mascarenhas_de_moraes","av = avenida",2.0
+Brasilia Teimosa,Ipsep,"2av.brigadeiro_campos+av.mascarenhas_de_moraes","av = avenida",2.0
+Brasilia Teimosa,Pina,"av.brigadeiro_campos+av.herculano_bandeira","av = avenida",2.0
+Imbiribeira,Ipsep,"11av.mascarenhas_de_moraes","av = avenida",1.0
+Imbiribeira,Pina,"1av.mascarenhas_de_moraes+av.herculano_bandeira","av = avenida",2.0
+Ipsep,Pina,"2av.mascarenhas_de_moraes+av.herculano_bandeira","av = avenida",2.0
+Ibura,Jordao,"1av.recife+av.prof.luiz_freire","av = avenida",2.0
+Ibura,Cohab,"2av.recife+av.prof.luiz_freire","av = avenida",2.0
+Jordao,Cohab,"3av.recife+av.prof.luiz_freire","av = avenida",2.0
+Recife,Aflitos,"pe-001+av.norte_miguel_arraes_de_alencar","av = avenida;  pe = rodovia pe",2.0
+Recife,Caxanga,"1av.norte_miguel_arraes_de_alencar+av.caxangá","av = avenida",2.0
+Recife,Agua Fria,"r.do_sol+r.siqueira_campos+av.norte_miguel_arraes_de_alencar","av = avenida; r = rua",5.0
+Recife,Engenho do Meio,"av.cais_do_apolo+ponte_buarque_de_macedo+av.caxangá+r.sao_miguel","av = avenida; r = rua",4.5
+Recife,Boa Viagem,"av.nossa_sra_do_carmo+r.do_sol+av.mascarenhas_de_moraes+av.boa_viagem","av = avenida",5.0
+Recife,Arruda,"1av.norte_miguel_arraes_de_alencar+av.joao_de_barros+r.dos_coelhos","av = avenida; r = rua",4.0
+Recife,Cordeiro,"av.caxangá+av.estrada_dos_remedios","av = avenida",2.5
+Recife,Boa Vista,"av.nossa_sra_do_carmo+ponte_de_recife+r.do_sol","av = avenida; r = rua",3.5
+Recife,Alto Jose Bonifacio,"1av.norte_miguel_arraes_de_alencar+r.correa_de_brito","av = avenida; r = rua",3.0
+Recife,Afogados,"av.dantas_barreto+r.padre_muniz+av.conselheiro_aguiar","av = avenida; r = rua",4.0
+Recife,Coelhos,"r.do_sol+av.dantas_barreto+viaduto_das_quinze_pontes+av.martin_luther_king","av = avenida; r = rua",6.5
+Recife,Brejo da Guabiraba,"1av.norte_miguel_arraes_de_alencar+av.dois_irmaos","av = avenida",2.0
+Recife,Areias,"av.brasilia+br-101+r.capitao_jose_leite","av = avenida; r = rua",4.0
+Recife,Ibura,"av.nossa_sra_do_carmo+av.mascarenhas_de_moraes+br-101","av = avenida",3.0
+Recife,Barro,"av.dantas_barreto+r.do_sol+av.nossa_sra_do_carmo+av.consolacao","av = avenida; r = rua",5.0
+Aflitos,Caxanga,av.beira_rio+av.caxangá,"av = avenida",2.0
+Aflitos,Agua Fria,"r.siqueira_campos+av.joao_de_barros+r.dos_coelhos","av = avenida; r = rua",5.0
+Aflitos,Engenho do Meio,"1av.caxangá+av.visconde_de_alagoinhas","av = avenida",2.0
+Aflitos,Boa Viagem,"av.joana_bezerra+av.agamenon_magalhaes+r.antonio_de_goes+r.padre_teotonio","av = avenida; r = rua",6.0
+Aflitos,Arruda,"av.norte_miguel_arraes_de_alencar+r.doutor_agostinho_campelo","av = avenida; r = rua",3.0
+Aflitos,Cordeiro,"1av.caxangá+r.sao_miguel+r.josue_de_sousa","av = avenida; r = rua",5.0
+Aflitos,Boa Vista,"av.conselheiro_rodrigues_alves+r.conde_de_boa_vista","av = avenida; r = rua",3.0
+Aflitos,Alto Jose Bonifacio,"1av.norte_miguel_arraes_de_alencar+r.correa_de_brito+r.joaquim_nabuco","av = avenida; r = rua",5.0
+Aflitos,Afogados,"av.visconde_de_alagoinhas+av.joana_bezerra+r.sao_miguel","av = avenida; r = rua",4.0
+Aflitos,Coelhos,"1r.dos_coelhos+r.da_aurora+r.do_sol+av.dantas_barreto","av = avenida; r = rua",7.0
+Aflitos,Brejo da Guabiraba,"av.dois_irmaos+r.joao_de_barros+r.siqueira_campos","av = avenida; r = rua",5.0
+Aflitos,Areias,"av.beira_rio+av.caxangá+br-101","av = avenida",3.0
+Aflitos,Ibura,"av.visconde_de_alagoinhas+av.joana_bezerra+av.agamenon_magalhaes+br-101","av = avenida",4.0
+Aflitos,Barro,"av.joana_bezerra+av.agamenon_magalhaes+r.sao_miguel+br-101","av = avenida; r = rua",4.0
+Caxanga,Agua Fria,"av.caxangá+av.norte_miguel_arraes_de_alencar","av = avenida",2.0
+Caxanga,Engenho do Meio,"2av.caxangá+av.visconde_de_alagoinhas","av = avenida",2.0
+Caxanga,Boa Viagem,"av.caxangá+r.sao_miguel+av.visconde_de_alagoinhas+av.joana_bezerra","av = avenida",5.0
+Caxanga,Arruda,"av.caxangá+av.norte_miguel_arraes_de_alencar+r.doutor_agostinho_campelo","av = avenida; r = rua",4.0
+Caxanga,Cordeiro,"2av.caxangá+r.sao_miguel+r.josue_de_sousa","av = avenida; r = rua",5.0
+Caxanga,Boa Vista,"1av.caxangá+av.conselheiro_rodrigues_alves+av.visconde_de_alagoinhas","av = avenida",3.0
+Caxanga,Alto Jose Bonifacio,"2av.norte_miguel_arraes_de_alencar+r.correa_de_brito","av = avenida; r = rua",3.0
+Caxanga,Afogados,"av.caxangá+r.sao_miguel+r.dr_francisco_de_assis+r.padre_muniz","av = avenida; r = rua",7.0
+Caxanga,Coelhos,"av.caxangá+av.visconde_de_alagoinhas+r.do_sol+av.dantas_barreto","av = avenida",5.0
+Caxanga,Brejo da Guabiraba,"av.dois_irmaos+r.do_sol+r.siqueira_campos+av.norte_miguel_arraes_de_alencar","av = avenida; r = rua",6.0
+Caxanga,Areias,"1av.caxangá+br-101+r.capitao_jose_leite","av = avenida; r = rua",4.0
+Caxanga,Ibura,"1av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua",4.0
+Caxanga,Barro,"2av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua",4.0
+Agua Fria,Engenho do Meio,"1av.norte_miguel_arraes_de_alencar+av.caxangá+r.sao_miguel","av = avenida; r = rua",4.0
+Agua Fria,Boa Viagem,"av.norte_miguel_arraes_de_alencar+av.joao_de_barros+av.agamenon_magalhaes+av.boa_viagem","av = avenida",4.0
+Agua Fria,Arruda,"r.dos_coelhos+r.da_aurora+r.do_sol+av.norte_miguel_arraes_de_alencar","av = avenida; r = rua",7.0
+Agua Fria,Cordeiro,"2av.norte_miguel_arraes_de_alencar+av.caxangá","av = avenida; r = rua",2.0
+Agua Fria,Boa Vista,"2av.norte_miguel_arraes_de_alencar+av.joao_de_barros+r.dos_coelhos","av = avenida; r = rua",4.0
+Agua Fria,Alto Jose Bonifacio,"2av.norte_miguel_arraes_de_alencar+r.correa_de_brito+r.joaquim_nabuco","av = avenida; r = rua",5.0
+Agua Fria,Afogados,"r.dos_coelhos+r.da_aurora+r.do_sol+av.dantas_barreto+r.padre_muniz+r.sao_miguel","r = rua; av = avenida",11.0
+Agua Fria,Coelhos,"2r.dos_coelhos+r.da_aurora+r.do_sol+av.dantas_barreto","r = rua; av = avenida",7.0
+Agua Fria,Brejo da Guabiraba,"av.dois_irmaos+r.joao_de_barros+r.siqueira_campos+av.norte_miguel_arraes_de_alencar","av = avenida; r = rua",7.0
+Agua Fria,Areias,"1av.norte_miguel_arraes_de_alencar+av.caxangá+br-101","av = avenida; r = rua; br = rodovia BR",3.0
+Agua Fria,Ibura,"1av.norte_miguel_arraes_de_alencar+av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",5.0
+Agua Fria,Barro,"2av.norte_miguel_arraes_de_alencar+av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",5.0
+Engenho do Meio,Boa Viagem,"av.caxangá+r.sao_miguel+av.visconde_de_alagoinhas+av.joana_bezerra+av.agamenon_magalhaes","av = avenida; r = rua",6.0
+Engenho do Meio,Arruda,"av.caxangá+r.sao_miguel+r.doutor_agostinho_campelo","av = avenida; r = rua",5.0
+Engenho do Meio,Cordeiro,"av.caxangá+r.sao_miguel","av = avenida; r = rua",3.0
+Engenho do Meio,Boa Vista,"av.caxangá+av.conselheiro_rodrigues_alves","av = avenida",2.0
+Engenho do Meio,Alto Jose Bonifacio,"1av.caxangá+av.norte_miguel_arraes_de_alencar+r.correa_de_brito","av = avenida; r = rua",4.0
+Engenho do Meio,Afogados,"2av.caxangá+r.sao_miguel+r.dr_francisco_de_assis+r.padre_muniz+r.sao_miguel","av = avenida; r = rua",9.0
+Engenho do Meio,Coelhos,"3av.caxangá+r.sao_miguel+r.josue_de_sousa","av = avenida; r = rua",5.0
+Engenho do Meio,Brejo da Guabiraba,"2av.caxangá+av.norte_miguel_arraes_de_alencar+av.dois_irmaos","av = avenida; r = rua",3.0
+Engenho do Meio,Areias,"av.caxangá+br-101","av = avenida; r = rua; br = rodovia BR",2.0
+Engenho do Meio,Ibura,"3av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",4.0
+Engenho do Meio,Barro,"4av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",4.0
+Boa Viagem,Arruda,"av.agamenon_magalhaes+av.norte_miguel_arraes_de_alencar","av = avenida",2.0
+Boa Viagem,Cordeiro,"av.herculano_bandeira+av.joana_bezerra+av.agamenon_magalhaes+av.caxangá","av = avenida",4.0
+Boa Viagem,Boa Vista,"av.consolacao+r.do_sol+av.dantas_barreto","av = avenida; r = rua",4.0
+Boa Viagem,Alto Jose Bonifacio,"3av.norte_miguel_arraes_de_alencar+r.correa_de_brito","av = avenida; r = rua",3.0
+Boa Viagem,Afogados,"av.mascarenhas_de_moraes+r.sao_miguel","av = avenida; r = rua",3.0
+Boa Viagem,Coelhos,"av.joana_bezerra+av.agamenon_magalhaes+r.do_sol","av = avenida; r = rua",4.0
+Boa Viagem,Brejo da Guabiraba,"2av.norte_miguel_arraes_de_alencar+av.dois_irmaos","av = avenida",2.0
+Boa Viagem,Areias,"av.mascarenhas_de_moraes+r.sao_miguel+br-101+r.capitao_jose_leite","av = avenida; r = rua; br = rodovia BR",6.0
+Boa Viagem,Ibura,"av.mascarenhas_de_moraes+br-101","av = avenida; br = rodovia BR",2.0
+Boa Viagem,Barro,"av.mascarenhas_de_moraes+br-101+r.capitao_jose_leite","av = avenida; r = rua; br = rodovia BR",4.0
+Arruda,Cordeiro,"2av.norte_miguel_arraes_de_alencar+av.caxangá+r.sao_miguel","av = avenida; r = rua",4.0
+Arruda,Boa Vista,"3av.norte_miguel_arraes_de_alencar+av.joao_de_barros+r.dos_coelhos","av = avenida; r = rua",4.0
+Arruda,Alto Jose Bonifacio,"3av.norte_miguel_arraes_de_alencar+r.correa_de_brito+r.joaquim_nabuco","av = avenida; r = rua",5.0
+Arruda,Afogados,"av.norte_miguel_arraes_de_alencar+r.siqueira_campos+r.padre_muniz+r.sao_miguel","av = avenida; r = rua; br = rodovia BR",7.0
+Arruda,Coelhos,"av.norte_miguel_arraes_de_alencar+r.joao_de_barros+r.dos_coelhos","av = avenida; r = rua",4.0
+Arruda,Brejo da Guabiraba,"3av.norte_miguel_arraes_de_alencar+av.dois_irmaos","av = avenida; r = rua",2.0
+Arruda,Areias,"2av.norte_miguel_arraes_de_alencar+av.caxangá+br-101","av = avenida; r = rua; br = rodovia BR",3.0
+Arruda,Ibura,"3av.norte_miguel_arraes_de_alencar+av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",5.0
+Arruda,Barro,"4av.norte_miguel_arraes_de_alencar+av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",5.0
+Cordeiro,Boa Vista,"2av.caxangá+av.conselheiro_rodrigues_alves+av.visconde_de_alagoinhas","av = avenida",3.0
+Cordeiro,Alto Jose Bonifacio,"2av.caxangá+av.norte_miguel_arraes_de_alencar+r.correa_de_brito","av = avenida; r = rua",4.0
+Cordeiro,Afogados,"1av.caxangá+r.sao_miguel+r.dr_francisco_de_assis+r.padre_muniz+r.sao_miguel","av = avenida; r = rua",9.0
+Cordeiro,Coelhos,"4av.caxangá+r.sao_miguel+r.josue_de_sousa","av = avenida; r = rua",5.0
+Cordeiro,Brejo da Guabiraba,"1av.caxangá+av.norte_miguel_arraes_de_alencar+av.dois_irmaos","av = avenida; r = rua",3.0
+Cordeiro,Areias,"av.caxangá+r.sao_miguel+br-101+r.capitao_jose_leite","av = avenida; r = rua; br = rodovia BR",6.0
+Cordeiro,Ibura,"5av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",4.0
+Cordeiro,Barro,"6av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",4.0
+Boa Vista,Alto Jose Bonifacio,"4av.norte_miguel_arraes_de_alencar+r.correa_de_brito","av = avenida; r = rua",3.0
+Boa Vista,Afogados,"av.dantas_barreto+r.do_sol+r.sao_miguel","av = avenida; r = rua",5.0
+Boa Vista,Coelhos,"r.dos_coelhos+r.da_aurora+r.do_sol+av.dantas_barreto","r = rua; av = avenida",7.0
+Boa Vista,Brejo da Guabiraba,"4av.norte_miguel_arraes_de_alencar+av.dois_irmaos","av = avenida; r = rua",2.0
+Boa Vista,Areias,"2av.caxangá+br-101+r.capitao_jose_leite","av = avenida; r = rua; br = rodovia BR",4.0
+Boa Vista,Ibura,"5av.norte_miguel_arraes_de_alencar+av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",5.0
+Boa Vista,Barro,"6av.norte_miguel_arraes_de_alencar+av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",5.0
+Alto Jose Bonifacio,Afogados,"av.norte_miguel_arraes_de_alencar+av.caxangá+r.sao_miguel+r.dr_francisco_de_assis","av = avenida; r = rua",7.0
+Alto Jose Bonifacio,Coelhos,"4av.norte_miguel_arraes_de_alencar+av.joao_de_barros+r.dos_coelhos","av = avenida; r = rua",4.0
+Alto Jose Bonifacio,Brejo da Guabiraba,"av.dois_irmaos+r.joaquim_nabuco+av.norte_miguel_arraes_de_alencar","av = avenida; r = rua",4.0
+Alto Jose Bonifacio,Areias,"7av.norte_miguel_arraes_de_alencar+av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",5.0
+Alto Jose Bonifacio,Ibura,"8av.norte_miguel_arraes_de_alencar+av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",5.0
+Alto Jose Bonifacio,Barro,"9av.norte_miguel_arraes_de_alencar+av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",5.0
+Afogados,Coelhos,"r.sao_miguel+r.do_sol+av.dantas_barreto","r = rua; av = avenida",5.0
+Afogados,Brejo da Guabiraba,"av.brejo_da_guabiraba+r.dois_irmaos+av.norte_miguel_arraes_de_alencar","av = avenida; r = rua",4.0
+Afogados,Areias,"1br-101+av.recife+r.capitao_jose_leite","av = avenida; r = rua; br = rodovia BR",4.0
+Afogados,Ibura,"1r.sao_miguel+br-101","r = rua; br = rodovia BR",3.0
+Afogados,Barro,"2r.sao_miguel+br-101","r = rua; br = rodovia BR",3.0
+Coelhos,Brejo da Guabiraba,"r.dos_coelhos+av.norte_miguel_arraes_de_alencar+av.dois_irmaos","r = rua; av = avenida",4.0
+Coelhos,Areias,"r.dos_coelhos+r.da_aurora+r.do_sol+av.nossa_sra_do_carmo+av.brasilia+br-101","r = rua; av = avenida; br = rodovia BR",9.0
+Coelhos,Ibura,"r.dos_coelhos+r.da_aurora+r.do_sol+av.consolacao+av.recife+br-101","r = rua; av = avenida; br = rodovia BR",9.0
+Coelhos,Barro,"av.dantas_barreto+r.padre_muniz+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",6.0
+Brejo da Guabiraba,Areias,"3av.dois_irmaos+av.norte_miguel_arraes_de_alencar+av.caxangá+br-101","av = avenida; r = rua; br = rodovia BR",4.0
+Brejo da Guabiraba,Ibura,"1av.dois_irmaos+av.norte_miguel_arraes_de_alencar+av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",6.0
+Brejo da Guabiraba,Barro,"2av.dois_irmaos+av.norte_miguel_arraes_de_alencar+av.caxangá+r.sao_miguel+br-101","av = avenida; r = rua; br = rodovia BR",6.0
+Areias,Ibura,"1av.recife+r.capitao_jose_leite+br-101","av = avenida; r = rua; br = rodovia BR",4.0
+Areias,Barro,"2av.recife+r.capitao_jose_leite+br-101","av = avenida; r = rua; br = rodovia BR",4.0
+Ibura,Barro,"2br-101+av.recife+r.capitao_jose_leite","av = avenida; r = rua; br = rodovia BR",4.0
