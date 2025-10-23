@@ -148,8 +148,8 @@ for i in range(len(matrizBRcf) - 1, -1, -1):
 
 print(matrizBRcf)
 
-OUT_FILE = OUT_DIR / "bairros_unique.csv"
-with OUT_FILE.open("w", encoding="utf-8") as arq:
+DATA_FILE = DATA_DIR / "bairros_unique.csv"
+with DATA_FILE.open("w", encoding="utf-8") as arq:
     for i in range(len(matrizBRcf)):
         arq.write(matrizBRcf[i] + "\n")
 
