@@ -33,22 +33,15 @@ class Graph:
         Adiciona uma aresta NÃO-DIRECIONADA  entre os nós 'u' e 'v'.
         'kwargs' pode conter dados da aresta como 'logradouro', 'observacao'.
         """
-        # Garante que os nós existem no grafo
         if u not in self.adj:
-            # Fallback caso o nó não tenha sido carregado
             self.add_node(u, microrregiao="DESCONHECIDA")
         if v not in self.adj:
             self.add_node(v, microrregiao="DESCONHECIDA")
             
-        # Adiciona a aresta nos dois sentidos (não-direcionado)
-        
-        # Dados da aresta (logradouro, observacao, etc.)
         edge_data = kwargs
         
-        # Adiciona Aresta u -> v
         self.adj[u].append({"node": v, "weight": weight, "data": edge_data})
         
-        # Adiciona Aresta v -> u
         self.adj[v].append({"node": u, "weight": weight, "data": edge_data})
 
     def load_from_csvs(self, nodes_file: Path, edges_file: Path):
@@ -56,7 +49,6 @@ class Graph:
         Carrega os nós e as arestas a partir dos arquivos CSV especificados.
         """
         print(f"Carregando nós de: {nodes_file}")
-        # --- 1. Carregar Nós ---
         try:
             with open(nodes_file, 'r', encoding='utf-8') as f:
                 for linha in f:
@@ -64,7 +56,6 @@ class Graph:
                     if not linha_limpa:
                         continue
                     
-                    # Espera o formato "Nome do Bairro X.Y"
                     partes = linha_limpa.rsplit(' ', 1)
                     if len(partes) == 2:
                         bairro, microrregiao = partes[0].strip(), partes[1].strip()
@@ -78,7 +69,6 @@ class Graph:
             return
 
         print(f"Carregando arestas de: {edges_file}")
-        # --- 2. Carregar Arestas ---
         try:
             with open(edges_file, 'r', encoding='utf-8') as f:
                 reader = csv.DictReader(f)
