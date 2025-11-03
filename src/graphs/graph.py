@@ -70,6 +70,23 @@ class Graph:
         except Exception as e:
             print(f"ERRO ao ler arquivo de nós: {e}")
             return
+        # === Normalização e mapeamento canônico de nomes ===
+        import unicodedata, re
+
+        def _normalize_key(name: str) -> str:
+            name = (name or "").strip()
+            name = re.sub(r"\s+", " ", name)
+            name = ''.join(c for c in unicodedata.normalize('NFD', name)
+                           if unicodedata.category(c) != 'Mn')
+            return name.lower()
+
+        # Cria um dicionário que mapeia a forma normalizada para o nome original já carregado
+        canon_map = { _normalize_key(n): n for n in self.nodes_data.keys() }
+
+        def _canon_name(raw: str) -> str:
+            """Tenta encontrar o nome canônico já existente; se não achar, devolve formatado."""
+            key = _normalize_key(raw)
+            return canon_map.get(key, raw.strip().title())
 
         print(f"Carregando arestas de: {edges_file}")
         try:
@@ -82,10 +99,23 @@ class Graph:
                     except ValueError:
                         print(f"Aviso: Peso inválido '{row['peso']}' para {row['bairro_origem']}-{row['bairro_destino']}. Usando 1.0.")
                         weight_float = 1.0
-                    
+
+                    # Normaliza e busca forma canônica
+                    u = _canon_name(row['bairro_origem'])
+                    v = _canon_name(row['bairro_destino'])
+
+                    # Se ainda não existir, cria (com aviso)
+                    if u not in self.nodes_data:
+                        print(f"[AVISO] '{u}' não encontrado. Criando nó DESCONHECIDA.")
+                        self.add_node(u, microrregiao="DESCONHECIDA")
+                    if v not in self.nodes_data:
+                        print(f"[AVISO] '{v}' não encontrado. Criando nó DESCONHECIDA.")
+                        self.add_node(v, microrregiao="DESCONHECIDA")
+
+                    # Adiciona a aresta
                     self.add_edge(
-                        u=row['bairro_origem'],
-                        v=row['bairro_destino'],
+                        u=u,
+                        v=v,
                         weight=weight_float,
                         logradouro=row['logradouro'],
                         observacao=row['observacao']
@@ -123,7 +153,7 @@ class Graph:
             return self.nodes_data[node_name].get('microrregiao')
         return None
      
-        # === Funções do item 2 ===
+    # === Funções do item 2 ===
     @staticmethod
     def _densidade(n: int, e: int) -> float:
         if n < 2:
@@ -170,7 +200,44 @@ class Graph:
             json.dump(resultados, f, indent=4, ensure_ascii=False)
 
         print(f"Métricas por microrregião salvas em: {saida}")
+        
+    # === Funções para calcular o ego-rede de um bairro (item 3) ===
+    def _vizinhos(self, u: str) -> set[str]:
+        """Retorna o conjunto de vizinhos imediatos de u."""
+        return {info["node"] for info in self.adj.get(u, [])}
 
+    def ego_metrics_for(self, v: str) -> dict:
+        """
+        Calcula métricas da ego-rede de v: S = {v} ∪ N(v).
+        Retorna: bairro, grau, ordem_ego, tamanho_ego, densidade_ego.
+        """
+        grau = self.get_grau(v)
+        S = {v} | self._vizinhos(v)          # {v} ∪ N(v)
+        N = len(S)                           # ordem_ego
+        E = self._contar_arestas_internas(S) # tamanho_ego
+        dens = self._densidade(N, E)         # densidade_ego
+        return {
+            "bairro": v,
+            "grau": grau,
+            "ordem_ego": N,
+            "tamanho_ego": E,
+            "densidade_ego": dens
+        }
+
+    def export_ego_csv(self, saida: Path = OUT_DIR / "ego_bairro.csv"):
+        """
+        Gera out/ego_bairro.csv com colunas:
+        bairro, grau, ordem_ego, tamanho_ego, densidade_ego.
+        """
+        OUT_DIR.mkdir(parents=True, exist_ok=True)
+        campos = ["bairro", "grau", "ordem_ego", "tamanho_ego", "densidade_ego"]
+        with open(saida, "w", encoding="utf-8", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=campos)
+            w.writeheader()
+            # usa os bairros carregados em nodes_data (garante presença mesmo sem arestas)
+            for bairro in sorted(self.nodes_data.keys()):
+                w.writerow(self.ego_metrics_for(bairro))
+        print(f"Ego-métricas salvas em: {saida}")
 
 # --- Bloco de Teste ---
 if __name__ == "__main__":
@@ -204,3 +271,15 @@ if __name__ == "__main__":
         g.export_microrregioes_json()   # gera out/microrregioes.json
     except Exception as e:
         print(f"[microrregioes] erro: {e}")
+    
+    # === Item 3: exporta métricas por microrregião ===
+    try:
+        g.export_microrregioes_json()   # gera out/microrregioes.json
+    except Exception as e:
+        print(f"[microrregioes] erro: {e}")
+
+    # === Ego-network por bairro ===
+    try:
+        g.export_ego_csv()              # gera out/ego_bairro.csv
+    except Exception as e:
+        print(f"[ego_bairro] erro: {e}")
