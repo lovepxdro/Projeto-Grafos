@@ -200,7 +200,7 @@ class Graph:
             json.dump(resultados, f, indent=4, ensure_ascii=False)
 
         print(f"Métricas por microrregião salvas em: {saida}")
-        
+
     # === Funções para calcular o ego-rede de um bairro (item 3) ===
     def _vizinhos(self, u: str) -> set[str]:
         """Retorna o conjunto de vizinhos imediatos de u."""
@@ -238,6 +238,58 @@ class Graph:
             for bairro in sorted(self.nodes_data.keys()):
                 w.writerow(self.ego_metrics_for(bairro))
         print(f"Ego-métricas salvas em: {saida}")
+
+    # === Item 4: graus e rankings ===
+
+    def export_graus_csv(self, saida: Path = OUT_DIR / "graus.csv"):
+        """
+        Gera out/graus.csv com colunas:
+        bairro, grau (número de interconexões do bairro).
+        """
+        OUT_DIR.mkdir(parents=True, exist_ok=True)
+        campos = ["bairro", "grau"]
+        with open(saida, "w", encoding="utf-8", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=campos)
+            w.writeheader()
+            for bairro in sorted(self.nodes_data.keys()):
+                w.writerow({
+                    "bairro": bairro,
+                    "grau": self.get_grau(bairro)
+                })
+        print(f"Lista de graus salva em: {saida}")
+
+    def get_bairro_maior_grau(self) -> tuple[str, int]:
+        """
+        Retorna (bairro, grau) do bairro com maior grau no grafo.
+        """
+        melhor_bairro = None
+        melhor_grau = -1
+
+        for bairro in self.nodes_data.keys():
+            g = self.get_grau(bairro)
+            if g > melhor_grau:
+                melhor_bairro = bairro
+                melhor_grau = g
+
+        return melhor_bairro, melhor_grau
+
+    def get_bairro_mais_denso_ego(self) -> dict:
+        """
+        Retorna o dicionário de métricas da ego-rede do
+        bairro com maior densidade_ego.
+        """
+        melhor_metrics = None
+        melhor_dens = -1.0
+
+        for bairro in self.nodes_data.keys():
+            metrics = self.ego_metrics_for(bairro)
+            dens = metrics["densidade_ego"]
+            if dens > melhor_dens:
+                melhor_dens = dens
+                melhor_metrics = metrics
+
+        return melhor_metrics
+
 
 # --- Bloco de Teste ---
 if __name__ == "__main__":
@@ -283,3 +335,21 @@ if __name__ == "__main__":
         g.export_ego_csv()              # gera out/ego_bairro.csv
     except Exception as e:
         print(f"[ego_bairro] erro: {e}")
+
+
+    # === Item 4: graus e rankings ===
+    try:
+        g.export_graus_csv()  # gera out/graus.csv
+    except Exception as e:
+        print(f"[graus] erro: {e}")
+
+    bairro_max_grau, max_grau = g.get_bairro_maior_grau()
+    print(f"\n[Bairro com maior grau]")
+    print(f"- Bairro: {bairro_max_grau}")
+    print(f"- Grau: {max_grau}")
+
+    ego_max = g.get_bairro_mais_denso_ego()
+    if ego_max:
+        print(f"\n[Bairro mais denso na ego-rede]")
+        print(f"- Bairro: {ego_max['bairro']}")
+        print(f"- Densidade_ego: {ego_max['densidade_ego']:.4f}")
