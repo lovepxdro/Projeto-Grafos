@@ -1,9 +1,10 @@
 import csv
 from pathlib import Path
 from typing import Dict, List, Any
-from pathlib import Path
 import json
-OUT_DIR = Path("out")
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+OUT_DIR = REPO_ROOT / "out"
 
 class Graph:
     """
@@ -289,67 +290,3 @@ class Graph:
                 melhor_metrics = metrics
 
         return melhor_metrics
-
-
-# --- Bloco de Teste ---
-if __name__ == "__main__":
-    # Este código só executa se você rodar 'python src/graphs/graph.py'
-    # Ele serve para testar se a classe está funcionando.
-
-    print("Testando a classe Graph...")
-
-    # Caminhos relativos à raiz do projeto
-    nodes_path = Path("data") / "bairros_unique.csv"
-    edges_path = Path("data") / "adjacencias_bairros.csv"
-
-    g = Graph()
-    g.load_from_csvs(nodes_file=nodes_path, edges_file=edges_path)
-
-    print("\n--- Teste de Carregamento ---")
-    print(f"Ordem |V| (calculado): {g.get_ordem()}")
-    print(f"Tamanho |E| (calculado): {g.get_tamanho()}")
-
-    # Testar um bairro específico
-    bairro_teste = "Recife"
-    print(f"\nGrau do '{bairro_teste}': {g.get_grau(bairro_teste)}")
-    print(f"Microrregiao do '{bairro_teste}': {g.get_microrregiao(bairro_teste)}")
-    print(f"Vizinhos do '{bairro_teste}':")
-    if bairro_teste in g.adj:
-        for vizinho in g.adj[bairro_teste]:
-            print(f"  -> {vizinho['node']} (Peso: {vizinho['weight']})")
-
-    # === Item 2: exporta métricas por microrregião ===
-    try:
-        g.export_microrregioes_json()   # gera out/microrregioes.json
-    except Exception as e:
-        print(f"[microrregioes] erro: {e}")
-    
-    # === Item 3: exporta métricas por microrregião ===
-    try:
-        g.export_microrregioes_json()   # gera out/microrregioes.json
-    except Exception as e:
-        print(f"[microrregioes] erro: {e}")
-
-    # === Ego-network por bairro ===
-    try:
-        g.export_ego_csv()              # gera out/ego_bairro.csv
-    except Exception as e:
-        print(f"[ego_bairro] erro: {e}")
-
-
-    # === Item 4: graus e rankings ===
-    try:
-        g.export_graus_csv()  # gera out/graus.csv
-    except Exception as e:
-        print(f"[graus] erro: {e}")
-
-    bairro_max_grau, max_grau = g.get_bairro_maior_grau()
-    print(f"\n[Bairro com maior grau]")
-    print(f"- Bairro: {bairro_max_grau}")
-    print(f"- Grau: {max_grau}")
-
-    ego_max = g.get_bairro_mais_denso_ego()
-    if ego_max:
-        print(f"\n[Bairro mais denso na ego-rede]")
-        print(f"- Bairro: {ego_max['bairro']}")
-        print(f"- Densidade_ego: {ego_max['densidade_ego']:.4f}")
