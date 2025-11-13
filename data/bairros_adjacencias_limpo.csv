@@ -1,0 +1,225 @@
+bairro_origem,bairro_destino,logradouro,observacao,peso
+Recife,Santo Amaro,p. do limoeiro,p = ponte ,2.0
+Recife,Santo Antonio,p. mauricio de nassau,p= ponte,2.0
+Recife,Sao Jose,p. giratoria ,p = ponte,2.0
+Santo Amaro,Santo Antonio,p. princesa isabel,p = ponte,2.0
+Santo Amaro,Boa Vista,r. da saudade ,r = rua + semaforo,1.2
+Santo Amaro,Soledade,r. bispo cardoso ayres,r = rua,1.0
+Santo Amaro,Espinheiro,av. norte,av = avenida,2.0
+Santo Amaro,Torreao,r. othon paraíso,r = rua + semaforo,1.2
+Santo Amaro,Campo Grande,r.dr jaime da fonte,r = rua ,1.0
+Boa Vista,Santo Antonio,p. da boa vista,p = ponte,2.0
+Boa Vista,Coelhos,r. de são gonçalo ,r = rua,1.0
+Boa Vista,Ilha do Leite,r. joaquim de brito,r = rua + semaforo,1.2
+Boa Vista,Paissandu,r. general joaquim inacío ,r = rua,1.0
+Boa Vista,Soledade,r. do progresso,r = rua,1.0
+Boa Vista,Derby,r. henrique dias,r = rua + semaforo,1.2
+Boa Vista,Graças,av. rui barbosa,av = avenida,2.0
+Boa Vista,Espinheiro,r. buenos aires,r = rua,1.0
+Cabanga,Pina,p. gov paulo guerra,p = ponte,2.0
+Cabanga,Sao Jose,av. eng josé estelita,av = avenida + semaforo,2.2
+Cabanga,Afogados,av. sul,av = avenida,2.0
+Ilha do Leite,Coelhos,r. francisco alves,r = rua,1.0
+Ilha do Leite,Ilha Joana Bezerra,av. gov agamenon magalhães,av = avenida,2.0
+Ilha do Leite,Paissandu,r. frei matias teves,r = rua + semaforo,1.2
+Paissandu,Ilha Joana Bezerra,p. josé barros lima,p = ponte,2.0
+Paissandu,Ilha do Retiro,p. prefeito lima e castro,p = ponte ,2.0
+Paissandu,Derby,r. epaminondas de melo,av = avenida,1.0
+Paissandu,Madalena,p. prefeito lima e castro,p = ponte,2.0
+Santo Antonio,Sao Jose,av. dantas barreto,av = avenida,2.0
+Santo Antonio,Coelhos,r. josé mariano, r =. rua + semaforo ,1.2
+Sao Jose,Coelhos,p. 6 de março,,2.0
+Sao Jose,Ilha Joana Bezerra,v. papa joão paulo II,v = viaduto,3.0
+Coelhos,Ilha Joana Bezerra,p. joaquim cardoso,,2.0 
+Ilha Joana Bezerra,Afogados,p. sem nome,,2.0
+Ilha Joana Bezerra,Ilha do Retiro,p. gregório bezerra,,2.0
+Arruda,Agua Fria,r. da regeneração,,1.0
+Arruda,Campina do Barreto,r. das moças ,r = rua + semaforo ,1.2
+Arruda,Peixinhos,av. professor josé dos anjos,,2.0
+Arruda,Campo Grande,r. mário sete,,1.0
+Arruda,Ponto de Parada,r. carneiro vilela,r = rua + semaforo,1.2
+Arruda,Tamarineira,e. velha de água fria,e = estrada,2.0
+Arruda,Mangabeira,r. jacob,,1.0
+Arruda,Bomba do Hemeterio,r. bomba do hemetério,,1.0
+Campina do Barreto,Peixinhos,r. passarela,,1.0
+Campina do Barreto,Agua Fria,r. da constância,,1.0
+Campina do Barreto,Fundao,r. coronel urbano ribeiro de sena,rua + semaforo,1.2
+Campina do Barreto,Cajueiro,r. couto soares,,1.0
+Campo Grande,Ponto de Parada,r. pe. villeman,,1.0
+Campo Grande,Hipodromo,r. carlos fernandes,,1.0
+Campo Grande,Encruzilhada,r. marechal deodoro,,1.0
+Campo Grande,Torreao,r. dom joão costa,r = rua + semaforo ,1.2
+Encruzilhada,Ponto de Parada,r. joaquim távora,,1.0
+Encruzilhada,Hipodromo,e. de belém,,2.0
+Encruzilhada,Torreao,r. padre miguelinho,,1.0
+Encruzilhada,Espinheiro,r. marquês  do paraná,,1.0
+Encruzilhada,Aflitos,r. custodia portela,,1.0
+Encruzilhada,Graças,r. teles junior,r = rua + semaforo,1.2
+Encruzilhada,Rosarinho,r. engenheiro sampaio,r = rua + semaforo,1.2
+Hipodromo,Ponto de Parada,r. men de sá,,1.0
+Ponto de Parada,Rosarinho,r. couto magalhães,r = rua + semaforo,1.2
+Ponto de Parada,Tamarineira,r. engenheiro magalhães melo,,1.0
+Rosarinho,Aflitos,av. santos dumont,,2.0
+Rosarinho,Graças,r. desembargador martins pereira,,1.0
+Rosarinho,Tamarineira,r. dr josé maria,,1.0
+Torreao,Espinheiro,r. candido lacerda,r = rua + semaforo,1.2
+Agua Fria,Fundao,r. jornalista josé campelo junior,,1.0
+Agua Fria,Bomba do Hemeterio,r. são sebastião,,1.0
+Agua Fria,Alto Santa Teresinha,r. grupiara,,1.0
+Agua Fria,Linha do Tiro,r. sodrelândia,,1.0
+Agua Fria,Beberibe,av. aníbal benevolo,,2.0
+Agua Fria,Porto da Madeira,r. conselheiro barros barreto,,1.0
+Alto Santo Teresinha,Linha do Tiro,r. professor josé amarino dos reis,,1.0
+Alto Santo Teresinha,Bomba do Hemeterio,r. arlindo cisneiros,,1.0
+Alto Santo Teresinha,Alto Jose do Pinho,r. são simão,r = rua + semaforo,1.2
+Alto Santo Teresinha,Morro da Conceiçao,r. belarmino henrique,,1.0
+Alto Santo Teresinha,Alto Jose Bonifacio,r. alto josé bonifacio,r = rua + semaforo ,1.2
+Bomba do Hemeterio,Mangabeira,r. desembargador heraclito cavalcanti,,1.0
+Bomba do Hemeterio,Alto Jose do Pinho,r. do rio,,1.0
+Cajueiro,Porto da Madeira,av. sebastião salazar,,2.0
+Cajueiro,Fundao,r. raul cesário de melo,,1.0
+Fundao,Porto da Madeira,r. alto do benjamin,r = rua + semaforo ,1.2
+Porto da Madeira,Beberibe,r. do anil,r = rua + semaforo ,1.2
+Beberibe,Linha do Tiro,av. hidelbrando de vasconselos,,2.0
+Beberibe,Dois Unidos,r. uriel de holanda,,1.0 
+Dois Unidos,Linha do Tiro,r. guarajá,,1.0
+Dois Unidos,Brejo de Beberibe,r. tupiraçaba,,1.0
+Dois Unidos,Passarinho,r. pereira barreto,,1.0
+Linha do Tiro,Alto Jose Bonifacio,r. visconde de sá bandeira,r = rua + semaforo,1.2
+Linha do Tiro,Brejo de Beberibe,av. vereador otacílio de azevedo,,2.0
+Aflitos,Espinheiro,r. quarenta e oito,,1.0
+Aflitos,Graças,av. conselheiro rosa e silva,,2.0
+Alto do Mandu,Apipucos,r. massaranduba,,1.0
+Alto do Mandu,Monteiro,av. dr eurico chaves,,2.0
+Alto do Mandu,Casa Amarela,av. malacó,,2.0
+Alto do Mandu,Nova Descoberta,r. nova descoberta,,1.0
+Apipucos,Macaxeira,r. dolcinópolis,r = rua + semaforo,1.2
+Apipucos,Monteiro,r. de apipucos,,1.0
+Apipucos,Caxanga,br 101,,3.0
+Apipucos,Dois Irmaos,r. dois irmãos,,1.2
+Apipucos,Corrego do Jenipapo,r. aj moraes,r = rua + semaforo,1.0
+Casa Amarela,Morro da Conceiçao,r. adalberto guerra,,1.0
+Casa Amarela,Alto Jose do Pinho,r. príncipal,r = rua + semaforo,1.2
+Casa Amarela,Tamarineira,e. do arraial,,2.0
+Casa Amarela,Parnamirim,e. do encanamento,,2.0
+Casa Amarela,Casa Forte,e. das ubaias ,,2.0
+Casa Amarela,Poço,r. engenheiro oscar ferreira,,1.0
+Casa Amarela,Monteiro,r. santa isabel,,1.0
+Casa Amarela,Nova Descoberta,r. paraisopolis,,1.0
+Casa Amarela,Vasco da Gama,r. rosália cisneiros,,1.0
+Casa Forte,Parnamirim,av. dessesete de agosto,,2.0
+Casa Forte,Santana,r. samuel de farias,r = rua + semaforo,1.2
+Casa Forte,Poço,e. real do poço,,2.0
+Derby,Ilha do Retiro,p. prefeito lima e castro,,2.0
+Derby,Madalena,p. professor moraes rego,,2.0
+Derby,Graças,r. joaquim nabuco,,1.0
+Dois Irmaos,Guabiraba,av. assis chateaubriand,,2.0
+Dois Irmaos,Sitio dos Pintos,e. dos pintos,,2.0
+Dois Irmaos,Caxanga,r. manoel de medeiros,,1.0
+Dois Irmaos,Corrego do Jenipapo,r. bento de abreu,,1.0
+Espinheiro,Graças,r. da hora,,1.0
+Graças,Madalena,av beira rio,,2.0
+Graças,Torre,p. da torre,,2.0
+Graças,Jaqueira,av. doutor malaquias,,2.0
+Graças,Tamarineira,r. coronel uriel sergio cardim,r = rua + semaforo ,1.2
+Jaqueira,Parnamirim,av. parnamirim,,2.0
+Jaqueira,Tamarineira,r. padre roma,,1.0
+Jaqueira,Torre,v. governador cordeiro farias,,3.0
+Jaqueira,Santana,r. leonardo cavalcanti,,1.0
+Monteiro,Poço,r. piauí,,1.0
+Parnamirim,Santana,r. sant'anna,,1.0
+Parnamirim,Tamarineira,r. tito rosas,r = rua + semaforo,1.2
+Poço,Santana,r. nestor silva,r = rua + semaforo,1.2
+Tamarineira,Mangabeira,r. lindóia,,1.0
+Tamarineira,Alto Jose do Pinho,r. guimarães peixoto,r = rua + semaforo,1.2
+Alto Jose Bonifacio,Vasco da Gama,r.alto serrinha,,1.0
+Alto Jose Bonifacio,Morro da Conceiçao,r. córrego do bartolomeu,r = rua + semaforo,1.2
+Alto Jose Bonifacio,Alto Jose do Pinho,r. padre oliveira,,1.0
+Alto Jose Bonifacio,Brejo de Beberibe,r. corrego de euclides,r = rua + semaforo,1.2
+Alto Jose do Pinho,Mangabeira,r. mangabeira,,1.0
+Alto Jose do Pinho,Morro da Conceiçao,l. do bartolomeu,l - ladeira,3.0
+Morro da Conceiçao,Vasco da Gama,r. de fevereiro,,1.0
+Vasco da Gama,Brejo de Beberibe,r. ary peter,,1.0
+Vasco da Gama,Nova Descoberta,r. nova esperança,,1.0
+Brejo da Guabiraba,Guabiraba,r. amadeu do carmo ferreira,,1.0
+Brejo da Guabiraba,Corrego do Jenipapo,r. umirim,r = rua + semaforo,1.2
+Brejo da Guabiraba,Nova Descoberta,r. manjeiro,,1.0
+Brejo da Guabiraba,Brejo de Beberibe,r. teolândia,,1.0
+Brejo da Guabiraba,Passarinho,r. santa tereza,,1.0
+Brejo de Beberibe,Passarinho,r. só nós dois,,1.0
+Brejo de Beberibe,Nova Descoberta,r. floresta azul ,,1.0
+Corrego do Jenipapo,Guabiraba,r. córrego da loura,,1.0
+Corrego do Jenipapo,Nova Descoberta,r. do alto do cruzeiro,r = rua + semaforo,1.2
+Corrego do Jenipapo,Macaxeira,r. valdemar,,1.0
+Guabiraba,Pau-Ferro,r. marcia lopes de melo,,1.0
+Guabiraba,Passarinho,e. passarinho,,2.0
+Macaxeira,Nova Descoberta,r. hilda machado,,1.0
+Cordeiro,Iputinga,av. mario alvares pereira de lyra,,2.0
+Cordeiro,Torre,r. dianopoles ,,1.0
+Cordeiro,Zumbi,r. ribeiro roma,,1.0
+Cordeiro,Prado,r. gomes taborda,,1.0
+Cordeiro,San Martin,av. general san martin,,2.0
+Cordeiro,Torroes,r. maravilha,,1.0
+Cordeiro,Engenho do Meio,r. dr miguel vieira ,,1.2
+Ilha do Retiro,Afogados,r. teofilo tworz,,1.2
+Ilha do Retiro,Prado,av. engenheiro abdias de carvalho,,2.0
+Ilha do Retiro,Madalena,r. comendador bento aguiar,,1.0
+Iputinga,Caxanga,r. ministro joão alberto ,,1.0
+Iputinga,Engenho do Meio,r. alvaro teixeira de mesquita,,1.0
+Iputinga,Cidade Universitaria,r. costa sepúlveda,,1.2
+Iputinga,Varzea,r. joão sales menezes ,,1.0
+Madalena,Zumbi,r. visconde do uruguai ,,1.0
+Madalena,Torre,r. davino pontual,,1.2
+Madalena,Prado,r. professor lins e silva,,1.2
+Prado,Zumbi,r. guapé,,1.0
+Prado,Afogados,r. escritor alexandre,,1.2
+Prado,Bongi,r. doutor severino jatobá,,1.0
+Prado,San Martin,av. engenheiro abdias de carvalho,,2.0
+Torre,Zumbi,r. thomaz gonzaga,,1.0
+Engenho do Meio,Cidade Universitaria,r. josé dos santos,,1.2
+Engenho do Meio,Torroes,r. carneiro de mariz,,1.0
+Torroes,San Martin,r. 21 de março,,1.0
+Caxanga,Varzea,r. ribeiro pessoa ,,1.0
+Cidade Universitaria,Varzea,r. academico hélio fernandes,,1.2
+Cidade Universitaria,Curado,av. visconde de são leopoldo,,2.0
+Afogados,Mangueira,r. 21 de abril,,1.0 
+Afogados,Mustardinha,av. mustardinha,rua + semaforo,2.2
+Afogados,Bongi,est. do bongi ,,2.0
+Afogados,Imbiribeira,r. arquiteto luiz nunes,,1.0
+Afogados,Jiquia,r. bom jardin,,1.2
+Bongi,San Martin,r. isaac,,1.0
+Bongi,Mustardinha,av. manoel gonçalves da luz ,,2.0
+Mangueira,Mustardinha,r. são severino,r = rua + semaforo,1.2
+Mangueira,Jiquia,av. central,,2.0
+Mangueira,San Martin,r. mineirolândia ,,1.2
+Mustardinha,San Martin,r. queiroz de oliveira ,,1.0
+San Martin,Jardim Sao Paulo,av. recife,,2.2
+San Martin,Curado,r. gomes bezerra cavalcante,,1.0
+San Martin,Jiquia,av. joão cabral de melo neto,,2.2
+Areias,Caçote,r. aurora caçote,,1.0
+Areias,Estancia,r. mearim,,1.2
+Areias,Jiquia,r. água comprida,,1.0
+Areias,Jardim Sao Paulo,av. são paulo,av = avenida + semaforo,2.2
+Areias,Barro,r. rodrigues,,1.0
+Estancia,Jiquia,av. dr. josé rufino,,2.0
+Estancia,Jardim Sao Paulo,r. nossa senhora de fátima ,,1.0
+Barro,Tejipo,r. itaenga,,1.0
+Barro,Jardim Sao Paulo,r. italacy,,1.2
+Barro,Cohab,av. 12 de junho,,2.2
+Coquerial,Toto,r. papanduva,,1.0
+Coquerial,Sancho,r. manduzinho,,1.0
+Coquerial,Tejipo,r. alcântara,,1.2
+Curado,Jardim Sao Paulo,av. piraciaba,,2.0
+Curado,Toto,r. utinga,,1.0
+Jardim Sao Paulo,Tejipo,av. liberdade,,2.2
+Sancho,Toto,r. do nascente,,1.0
+Sancho,Tejipo,r. aprigio guimaraes,,1.0
+Boa Viagem,Imbiribeira,av. dom joao vi,,2.2
+Boa Viagem,Pina,av. engenheiro domingos ferreira,,1.0
+Boa Viagem,Jordao,av. marechal mascarenhas,,2.0
+Brasilia Teimosa,Pina,r. francisco valpassos,,1.0
+Imbiribeira,Ipsep,r. rio oceanico,,1.0
+Imbiribeira,Ibura,av. presidente dutra,,2.0
+Ipsep,Ibura,av. senador robert kennedy,,2.2
+Ibura,Jordao,r. jose martorano,,1.0
+Jordao,Cohab,r. uiarauna,,2.0
