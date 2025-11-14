@@ -236,7 +236,7 @@ def executar_task_7_arvore_percurso(g: Graph, resultado_percurso: dict | None):
         print(f"  [ERRO FATAL] Falha ao salvar {arquivo_saida}: {e}")
 
 
-# <--- INÍCIO DA MUDANÇA (Task 9) --->
+# <--- INÍCIO DA MUDANÇA (Task 9 Correção) --->
 def executar_task_9_visualizacao_interativa(g: Graph, resultado_percurso: dict | None):
     """
     Task 9: Gera o HTML interativo completo com tooltips,
@@ -250,35 +250,32 @@ def executar_task_9_visualizacao_interativa(g: Graph, resultado_percurso: dict |
         
     arquivo_saida = OUT_DIR / "grafo_interativo.html"
     
-    # Pega o caminho especial (lista de nós) para destacar
     path_nodes = []
     if resultado_percurso and resultado_percurso.get("percurso"):
         path_nodes = resultado_percurso.get("percurso", [])
         
-    # Requisito 2: Adiciona menus de seleção (Busca e Filtro)
     net = Network(
         height="900px", 
         width="100%", 
         notebook=False, 
         cdn_resources='remote', 
         directed=False,
-        select_menu=True, # Caixa de busca por nó (Requisito 9.2)
-        filter_menu=True  # Filtro por grupo (para o Requisito 9.3)
+        select_menu=True, # Caixa de busca por nó
+        filter_menu=True  # Filtro por grupo
     )
 
     # Adiciona todos os Nós
     print("  ... Adicionando nós (calculando métricas de ego)...")
     for node_name in g.nodes_data.keys():
         
-        # Requisito 1: Tooltip com grau, microrregião, densidade_ego
+        # Requisito 1: Tooltip
         grau = g.get_grau(node_name)
         micro = g.get_microrregiao(node_name) or "N/A"
-        
         try:
             ego_metrics = g.ego_metrics_for(node_name)
             densidade_ego = ego_metrics.get("densidade_ego", 0.0)
         except Exception:
-            densidade_ego = 0.0 # Fallback
+            densidade_ego = 0.0 
             
         tooltip = (
             f"Bairro: {node_name}<br>"
@@ -290,22 +287,16 @@ def executar_task_9_visualizacao_interativa(g: Graph, resultado_percurso: dict |
         # Requisito 3: Agrupa o percurso especial
         # O grupo padrão será a Microrregião
         grupo = micro
-        cor_node = None # Deixa o pyvis decidir a cor com base no grupo
-        tamanho_node = 15
-        
         if node_name in path_nodes:
             # Sobrepõe o grupo para ser o do percurso
             grupo = "Percurso (Nova Descoberta -> Setúbal)" 
-            cor_node = "#FF5733" # Cor de destaque
-            tamanho_node = 25
         
+        # NÃO definimos cor ou tamanho manualmente
         net.add_node(
             node_name, 
             label=node_name, 
             title=tooltip,
-            group=grupo, # Agrupa por microrregião OU pelo percurso
-            color=cor_node,
-            size=tamanho_node
+            group=grupo # Apenas o grupo é definido
         )
 
     # Adiciona todas as Arestas
@@ -323,31 +314,11 @@ def executar_task_9_visualizacao_interativa(g: Graph, resultado_percurso: dict |
             
             tooltip_aresta = f"{u} <-> {v}<br>Peso: {edge_weight}<br>Logradouro: {logradouro}"
             
-            # Requisito 3: Realçar arestas do caminho
-            cor_aresta = "#DDDDDD" # Cor padrão
-            largura_aresta = 2
-            
-            # Verifica se a aresta (u,v) ou (v,u) faz parte do caminho
-            is_path_edge = False
-            if u in path_nodes and v in path_nodes:
-                try:
-                    idx_u = path_nodes.index(u)
-                    idx_v = path_nodes.index(v)
-                    if abs(idx_u - idx_v) == 1:
-                        is_path_edge = True
-                except ValueError:
-                    pass 
-            
-            if is_path_edge:
-                cor_aresta = "#FF5733" # Cor de destaque
-                largura_aresta = 5
-            
+            # NÃO definimos cor ou largura manualmente
             net.add_edge(
                 u, v, 
                 value=edge_weight, 
-                title=tooltip_aresta,
-                color=cor_aresta,
-                width=largura_aresta
+                title=tooltip_aresta
             )
             arestas_adicionadas.add((u, v))
 
@@ -378,7 +349,7 @@ def executar_task_9_visualizacao_interativa(g: Graph, resultado_percurso: dict |
         print(f"  -> {arquivo_saida} gerado com sucesso.")
     except Exception as e:
         print(f"  [ERRO FATAL] Falha ao salvar {arquivo_saida}: {e}")
-# <--- FIM DA MUDANÇA (Task 9) --->
+# <--- FIM DA MUDANÇA (Task 9 Correção) --->
 
 
 def main():
