@@ -1,0 +1,18 @@
+{
+    "origem_solicitada": "Nova Descoberta",
+    "destino_solicitado": "Setúbal",
+    "origem_mapeada": "Nova Descoberta",
+    "destino_mapeado": "Boa Viagem",
+    "custo": 11.600000000000001,
+    "percurso": [
+        "Nova Descoberta",
+        "Casa Amarela",
+        "Tamarineira",
+        "Graças",
+        "Derby",
+        "Ilha do Retiro",
+        "Afogados",
+        "Imbiribeira",
+        "Boa Viagem"
+    ]
+}
