@@ -69,11 +69,11 @@ Agua Fria,Alto Santa Teresinha,r. grupiara,,1.0
 Agua Fria,Linha do Tiro,r. sodrelândia,,1.0
 Agua Fria,Beberibe,av. aníbal benevolo,,2.0
 Agua Fria,Porto da Madeira,r. conselheiro barros barreto,,1.0
-Alto Santo Teresinha,Linha do Tiro,r. professor josé amarino dos reis,,1.0
-Alto Santo Teresinha,Bomba do Hemeterio,r. arlindo cisneiros,,1.0
-Alto Santo Teresinha,Alto Jose do Pinho,r. são simão,r = rua + semaforo,1.2
-Alto Santo Teresinha,Morro da Conceiçao,r. belarmino henrique,,1.0
-Alto Santo Teresinha,Alto Jose Bonifacio,r. alto josé bonifacio,r = rua + semaforo ,1.2
+Alto Santa Teresinha,Linha do Tiro,r. professor josé amarino dos reis,,1.0
+Alto Santa Teresinha,Bomba do Hemeterio,r. arlindo cisneiros,,1.0
+Alto Santa Teresinha,Alto Jose do Pinho,r. são simão,r = rua + semaforo,1.2
+Alto Santa Teresinha,Morro da Conceiçao,r. belarmino henrique,,1.0
+Alto Santa Teresinha,Alto Jose Bonifacio,r. alto josé bonifacio,r = rua + semaforo ,1.2
 Bomba do Hemeterio,Mangabeira,r. desembargador heraclito cavalcanti,,1.0
 Bomba do Hemeterio,Alto Jose do Pinho,r. do rio,,1.0
 Cajueiro,Porto da Madeira,av. sebastião salazar,,2.0
@@ -203,17 +203,17 @@ Areias,Jardim Sao Paulo,av. são paulo,av = avenida + semaforo,2.2
 Areias,Barro,r. rodrigues,,1.0
 Estancia,Jiquia,av. dr. josé rufino,,2.0
 Estancia,Jardim Sao Paulo,r. nossa senhora de fátima ,,1.0
-Barro,Tejipo,r. itaenga,,1.0
+Barro,Tejipio,r. itaenga,,1.0
 Barro,Jardim Sao Paulo,r. italacy,,1.2
 Barro,Cohab,av. 12 de junho,,2.2
-Coquerial,Toto,r. papanduva,,1.0
-Coquerial,Sancho,r. manduzinho,,1.0
-Coquerial,Tejipo,r. alcântara,,1.2
+Coqueiral,Toto,r. papanduva,,1.0
+Coqueiral,Sancho,r. manduzinho,,1.0
+Coqueiral,Tejipio,r. alcântara,,1.2
 Curado,Jardim Sao Paulo,av. piraciaba,,2.0
 Curado,Toto,r. utinga,,1.0
-Jardim Sao Paulo,Tejipo,av. liberdade,,2.2
+Jardim Sao Paulo,Tejipio,av. liberdade,,2.2
 Sancho,Toto,r. do nascente,,1.0
-Sancho,Tejipo,r. aprigio guimaraes,,1.0
+Sancho,Tejipio,r. aprigio guimaraes,,1.0
 Boa Viagem,Imbiribeira,av. dom joao vi,,2.2
 Boa Viagem,Pina,av. engenheiro domingos ferreira,,1.0
 Boa Viagem,Jordao,av. marechal mascarenhas,,2.0

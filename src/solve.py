@@ -4,13 +4,13 @@ from pathlib import Path
 import unicodedata
 import re
 
-# <--- NOVO: Importação da Pyvis Network --->
+# Importações (Network já deve estar aqui da Task 7)
 try:
     from pyvis.network import Network
 except ImportError:
     print("Aviso: 'pyvis' não instalado. Task 7 e Task 9 não funcionarão.")
     print("Execute: pip install pyvis")
-    Network = None # Define como None para podermos checar depois
+    Network = None 
 
 try:
     from graphs.graph import Graph
@@ -20,7 +20,7 @@ except ImportError:
     print("Certifique-se de que 'src/graphs/graph.py' e 'src/graphs/algorithms.py' existem.")
     exit(1)
 
-# ... (O restante das importações e caminhos REPO_ROOT, DATA_DIR, OUT_DIR) ...
+# ... (Caminhos REPO_ROOT, DATA_DIR, OUT_DIR) ...
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = REPO_ROOT / "data"
 OUT_DIR = REPO_ROOT / "out"
@@ -132,8 +132,7 @@ def executar_task_6_distancias(g: Graph):
     except Exception as e:
         print(f"  [ERRO FATAL] Falha ao salvar {arquivo_saida}: {e}")
 
-
-# <--- MUDANÇA: Função agora retorna o dicionário 'output_data' --->
+# ... (Função executar_task_6_percurso_especial(...) permanece a mesma) ...
 def executar_task_6_percurso_especial(g: Graph) -> dict | None:
     """
     Task 6.2: Calcula o percurso "Nova Descoberta -> Setúbal"
@@ -167,14 +166,13 @@ def executar_task_6_percurso_especial(g: Graph) -> dict | None:
             json.dump(output_data, f, indent=4, ensure_ascii=False)
         
         print(f"  -> {arquivo_saida} gerado com sucesso.")
-        return output_data # <--- MUDANÇA (retorna o resultado)
+        return output_data # Retorna o resultado
 
     except Exception as e:
         print(f"  [ERRO FATAL] Falha ao calcular percurso especial: {e}")
-        return None # <--- MUDANÇA (retorna None em falha)
+        return None # Retorna None em falha
 
-
-# <--- NOVO: Função da Task 7 --->
+# ... (Função executar_task_7_arvore_percurso(...) permanece a mesma) ...
 def executar_task_7_arvore_percurso(g: Graph, resultado_percurso: dict | None):
     """
     Task 7: Cria uma visualização (pyvis) apenas com o
@@ -197,12 +195,9 @@ def executar_task_7_arvore_percurso(g: Graph, resultado_percurso: dict | None):
         
     arquivo_saida = OUT_DIR / "arvore_percurso.html"
     
-    # Cria uma nova rede pyvis
     net = Network(height="700px", width="100%", notebook=False, cdn_resources='remote', directed=True)
 
-    # Adiciona os Nós
     for node_name in path_nodes:
-        # Pega a microrregião do grafo principal para o tooltip
         micro = g.get_microrregiao(node_name) or "N/A"
         net.add_node(
             node_name, 
@@ -210,13 +205,11 @@ def executar_task_7_arvore_percurso(g: Graph, resultado_percurso: dict | None):
             title=f"Bairro: {node_name}<br>Microrregião: {micro}"
         )
 
-    # Adiciona as Arestas
     for i in range(len(path_nodes) - 1):
         u = path_nodes[i]
         v = path_nodes[i+1]
         
-        # Busca o peso da aresta no grafo principal
-        edge_weight = 1.0 # default
+        edge_weight = 1.0 
         logradouro = "N/A"
         try:
             for neighbor_info in g.adj.get(u, []):
@@ -225,15 +218,14 @@ def executar_task_7_arvore_percurso(g: Graph, resultado_percurso: dict | None):
                     logradouro = neighbor_info.get("data", {}).get("logradouro", "N/A")
                     break
         except Exception:
-            pass # Usa o default
+            pass 
         
-        # Adiciona a aresta destacada (vermelha e mais grossa)
         net.add_edge(
             u, v, 
             value=edge_weight, 
             title=f"{u} -> {v}<br>Custo: {edge_weight}<br>Logradouro: {logradouro}",
-            color="#FF5733", # Cor de destaque
-            width=4           # Espessura de destaque
+            color="#FF5733", 
+            width=4           
         )
 
     try:
@@ -241,7 +233,147 @@ def executar_task_7_arvore_percurso(g: Graph, resultado_percurso: dict | None):
         print(f"  -> {arquivo_saida} gerado com sucesso.")
     except Exception as e:
         print(f"  [ERRO FATAL] Falha ao salvar {arquivo_saida}: {e}")
+
+
+# <--- NOVO: Função da Task 9 --->
+def executar_task_9_visualizacao_interativa(g: Graph, resultado_percurso: dict | None):
+    """
+    Task 9: Gera o HTML interativo completo com tooltips,
+    busca e destaque do caminho.
+    """
+    print("Executando Task 9: Visualização Interativa do Grafo...")
+    
+    if Network is None:
+        print("  [AVISO] 'pyvis' não está instalado. Pulando Task 9.")
+        return
+        
+    arquivo_saida = OUT_DIR / "grafo_interativo.html"
+    
+    # Pega o caminho especial (lista de nós) para destacar
+    path_nodes = []
+    if resultado_percurso and resultado_percurso.get("percurso"):
+        path_nodes = resultado_percurso.get("percurso", [])
+        
+    # Requisito 2: Adiciona menus de seleção (Caixa de Busca)
+    net = Network(
+        height="900px", 
+        width="100%", 
+        notebook=False, 
+        cdn_resources='remote', 
+        directed=False,
+        select_menu=True, # <--- Caixa de busca por nó
+        filter_menu=True  # <--- Filtro por grupo (microrregião)
+    )
+
+    # Adiciona todos os Nós
+    print("  ... Adicionando nós (calculando métricas de ego)...")
+    for node_name in g.nodes_data.keys():
+        
+        # Requisito 1: Tooltip com grau, microrregião, densidade_ego
+        grau = g.get_grau(node_name)
+        micro = g.get_microrregiao(node_name) or "N/A"
+        
+        # Calcula a métrica de ego-rede (pode ser um pouco lento se o grafo for grande)
+        try:
+            ego_metrics = g.ego_metrics_for(node_name)
+            densidade_ego = ego_metrics.get("densidade_ego", 0.0)
+        except Exception:
+            densidade_ego = 0.0 # Fallback
+            
+        tooltip = (
+            f"Bairro: {node_name}<br>"
+            f"Microrregião: {micro}<br>"
+            f"Grau: {grau}<br>"
+            f"Densidade_Ego: {densidade_ego:.4f}"
+        )
+        
+        # Requisito 3: Realçar o caminho
+        cor_node = "#97C2FC" # Cor padrão
+        tamanho_node = 15
+        if node_name in path_nodes:
+            cor_node = "#FF5733" # Cor de destaque
+            tamanho_node = 25
+        
+        net.add_node(
+            node_name, 
+            label=node_name, 
+            title=tooltip,
+            group=micro, # Agrupa por microrregião
+            color=cor_node,
+            size=tamanho_node
+        )
+
+    # Adiciona todas as Arestas
+    print("  ... Adicionando arestas...")
+    # Usamos um 'set' para não adicionar arestas duplicadas (u->v e v->u)
+    arestas_adicionadas = set()
+    for u, neighbors in g.adj.items():
+        for info in neighbors:
+            v = info["node"]
+            
+            # Evita duplicatas
+            if (v, u) in arestas_adicionadas:
+                continue
+                
+            edge_weight = info.get("weight", 1.0)
+            logradouro = info.get("data", {}).get("logradouro", "N/A")
+            
+            tooltip_aresta = f"{u} <-> {v}<br>Peso: {edge_weight}<br>Logradouro: {logradouro}"
+            
+            # Requisito 3: Realçar arestas do caminho
+            cor_aresta = "#DDDDDD" # Cor padrão
+            largura_aresta = 2
+            
+            # Verifica se a aresta (u,v) ou (v,u) faz parte do caminho
+            if u in path_nodes and v in path_nodes:
+                # Checa se são adjacentes no *caminho*
+                try:
+                    idx_u = path_nodes.index(u)
+                    idx_v = path_nodes.index(v)
+                    if abs(idx_u - idx_v) == 1:
+                        cor_aresta = "#FF5733" # Cor de destaque
+                        largura_aresta = 5
+                except ValueError:
+                    pass # Um dos nós não estava no caminho
+            
+            net.add_edge(
+                u, v, 
+                value=edge_weight, 
+                title=tooltip_aresta,
+                color=cor_aresta,
+                width=largura_aresta
+            )
+            arestas_adicionadas.add((u, v))
+
+    # Configura a física (como no seu script original)
+    print("  ... Configurando física e salvando HTML...")
+    net.set_options("""
+    var options = {
+      "physics": {
+        "forceAtlas2Based": {
+          "gravitationalConstant": -100,
+          "centralGravity": 0.01,
+          "springLength": 100,
+          "springConstant": 0.08,
+          "avoidOverlap": 1
+        },
+        "minVelocity": 0.75,
+        "solver": "forceAtlas2Based"
+      },
+      "interaction": {
+        "tooltipDelay": 200,
+        "hideEdgesOnDrag": true
+      }
+    }
+    """)
+
+    try:
+        net.save_graph(str(arquivo_saida))
+        print(f"  -> {arquivo_saida} gerado com sucesso.")
+    except Exception as e:
+        print(f"  [ERRO FATAL] Falha ao salvar {arquivo_saida}: {e}")
 # <--- FIM NOVO --->
+
 
 
 def main():
@@ -327,12 +459,13 @@ def main():
     
     # Task 6: Distâncias e Percursos
     executar_task_6_distancias(g)
-    
-    # <--- MUDANÇA: Capturamos o retorno da Task 6.2 --->
     resultado_percurso_especial = executar_task_6_percurso_especial(g)
     
-    # <--- NOVO: Chamada para a Task 7 --->
+    # Task 7: Árvore de Percurso
     executar_task_7_arvore_percurso(g, resultado_percurso_especial)
+    
+    # <--- NOVO: Chamada para a Task 9 --->
+    executar_task_9_visualizacao_interativa(g, resultado_percurso_especial)
     
     print("-" * 30)
     print("Execução das tasks concluída.")
