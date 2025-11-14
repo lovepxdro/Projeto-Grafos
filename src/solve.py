@@ -4,7 +4,7 @@ from pathlib import Path
 import unicodedata
 import re
 
-# Importações (Network já deve estar aqui da Task 7)
+# Importações
 try:
     from pyvis.network import Network
 except ImportError:
@@ -20,7 +20,7 @@ except ImportError:
     print("Certifique-se de que 'src/graphs/graph.py' e 'src/graphs/algorithms.py' existem.")
     exit(1)
 
-# ... (Caminhos REPO_ROOT, DATA_DIR, OUT_DIR) ...
+# Caminhos
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = REPO_ROOT / "data"
 OUT_DIR = REPO_ROOT / "out"
@@ -65,6 +65,7 @@ def _get_nome_canonico(nome_bairro_raw: str, graph: Graph) -> str | None:
     # 5. Se falhou tudo, retorna o nome original para o Dijkstra (que vai falhar e logar o erro)
     print(f"  [Aviso] Nome de bairro '{nome_bairro_raw}' não mapeado. Usando como está.")
     return nome_bairro_raw.strip()
+
 
 # ... (Função executar_task_6_distancias(...) permanece a mesma) ...
 def executar_task_6_distancias(g: Graph):
@@ -235,11 +236,11 @@ def executar_task_7_arvore_percurso(g: Graph, resultado_percurso: dict | None):
         print(f"  [ERRO FATAL] Falha ao salvar {arquivo_saida}: {e}")
 
 
-# <--- NOVO: Função da Task 9 --->
+# <--- INÍCIO DA MUDANÇA (Task 9) --->
 def executar_task_9_visualizacao_interativa(g: Graph, resultado_percurso: dict | None):
     """
     Task 9: Gera o HTML interativo completo com tooltips,
-    busca e destaque do caminho.
+    busca e filtro de "camada" para o percurso.
     """
     print("Executando Task 9: Visualização Interativa do Grafo...")
     
@@ -254,15 +255,15 @@ def executar_task_9_visualizacao_interativa(g: Graph, resultado_percurso: dict |
     if resultado_percurso and resultado_percurso.get("percurso"):
         path_nodes = resultado_percurso.get("percurso", [])
         
-    # Requisito 2: Adiciona menus de seleção (Caixa de Busca)
+    # Requisito 2: Adiciona menus de seleção (Busca e Filtro)
     net = Network(
         height="900px", 
         width="100%", 
         notebook=False, 
         cdn_resources='remote', 
         directed=False,
-        select_menu=True, # <--- Caixa de busca por nó
-        filter_menu=True  # <--- Filtro por grupo (microrregião)
+        select_menu=True, # Caixa de busca por nó (Requisito 9.2)
+        filter_menu=True  # Filtro por grupo (para o Requisito 9.3)
     )
 
     # Adiciona todos os Nós
@@ -273,7 +274,6 @@ def executar_task_9_visualizacao_interativa(g: Graph, resultado_percurso: dict |
         grau = g.get_grau(node_name)
         micro = g.get_microrregiao(node_name) or "N/A"
         
-        # Calcula a métrica de ego-rede (pode ser um pouco lento se o grafo for grande)
         try:
             ego_metrics = g.ego_metrics_for(node_name)
             densidade_ego = ego_metrics.get("densidade_ego", 0.0)
@@ -287,10 +287,15 @@ def executar_task_9_visualizacao_interativa(g: Graph, resultado_percurso: dict |
             f"Densidade_Ego: {densidade_ego:.4f}"
         )
         
-        # Requisito 3: Realçar o caminho
-        cor_node = "#97C2FC" # Cor padrão
+        # Requisito 3: Agrupa o percurso especial
+        # O grupo padrão será a Microrregião
+        grupo = micro
+        cor_node = None # Deixa o pyvis decidir a cor com base no grupo
         tamanho_node = 15
+        
         if node_name in path_nodes:
+            # Sobrepõe o grupo para ser o do percurso
+            grupo = "Percurso (Nova Descoberta -> Setúbal)" 
             cor_node = "#FF5733" # Cor de destaque
             tamanho_node = 25
         
@@ -298,20 +303,18 @@ def executar_task_9_visualizacao_interativa(g: Graph, resultado_percurso: dict |
             node_name, 
             label=node_name, 
             title=tooltip,
-            group=micro, # Agrupa por microrregião
+            group=grupo, # Agrupa por microrregião OU pelo percurso
             color=cor_node,
             size=tamanho_node
         )
 
     # Adiciona todas as Arestas
     print("  ... Adicionando arestas...")
-    # Usamos um 'set' para não adicionar arestas duplicadas (u->v e v->u)
     arestas_adicionadas = set()
     for u, neighbors in g.adj.items():
         for info in neighbors:
             v = info["node"]
             
-            # Evita duplicatas
             if (v, u) in arestas_adicionadas:
                 continue
                 
@@ -325,16 +328,19 @@ def executar_task_9_visualizacao_interativa(g: Graph, resultado_percurso: dict |
             largura_aresta = 2
             
             # Verifica se a aresta (u,v) ou (v,u) faz parte do caminho
+            is_path_edge = False
             if u in path_nodes and v in path_nodes:
-                # Checa se são adjacentes no *caminho*
                 try:
                     idx_u = path_nodes.index(u)
                     idx_v = path_nodes.index(v)
                     if abs(idx_u - idx_v) == 1:
-                        cor_aresta = "#FF5733" # Cor de destaque
-                        largura_aresta = 5
+                        is_path_edge = True
                 except ValueError:
-                    pass # Um dos nós não estava no caminho
+                    pass 
+            
+            if is_path_edge:
+                cor_aresta = "#FF5733" # Cor de destaque
+                largura_aresta = 5
             
             net.add_edge(
                 u, v, 
@@ -345,7 +351,7 @@ def executar_task_9_visualizacao_interativa(g: Graph, resultado_percurso: dict |
             )
             arestas_adicionadas.add((u, v))
 
-    # Configura a física (como no seu script original)
+    # Configura a física
     print("  ... Configurando física e salvando HTML...")
     net.set_options("""
     var options = {
@@ -372,8 +378,7 @@ def executar_task_9_visualizacao_interativa(g: Graph, resultado_percurso: dict |
         print(f"  -> {arquivo_saida} gerado com sucesso.")
     except Exception as e:
         print(f"  [ERRO FATAL] Falha ao salvar {arquivo_saida}: {e}")
-# <--- FIM NOVO --->
-
+# <--- FIM DA MUDANÇA (Task 9) --->
 
 
 def main():
@@ -464,7 +469,7 @@ def main():
     # Task 7: Árvore de Percurso
     executar_task_7_arvore_percurso(g, resultado_percurso_especial)
     
-    # <--- NOVO: Chamada para a Task 9 --->
+    # Task 9: Visualização Interativa
     executar_task_9_visualizacao_interativa(g, resultado_percurso_especial)
     
     print("-" * 30)
