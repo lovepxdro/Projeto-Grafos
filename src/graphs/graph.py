@@ -6,51 +6,113 @@ import json
 REPO_ROOT = Path(__file__).resolve().parents[2]
 OUT_DIR = REPO_ROOT / "out"
 
+
 class Graph:
     """
-    Representa o grafo dos bairros do Recife usando uma lista de adjacência.
-    
+    Representa o grafo usando uma lista de adjacência.
+
     Atributos:
         nodes_data (dict): Armazena dados dos nós (ex: microrregião).
                            Formato: { "nome_bairro": {"microrregiao": "X.Y"} }
         adj (dict): A lista de adjacência do grafo.
-                    Formato: { "bairro_A": [{"node": "bairro_B", "weight": 1.0, "data": {...}}, ...] }
+                    Formato: {
+                        "bairro_A": [
+                            {"node": "bairro_B", "weight": 1.0, "data": {...}},
+                            ...
+                        ],
+                        ...
+                    }
     """
 
-    def __init__(self):
-        """Inicializa um grafo vazio."""
+    def __init__(self, directed: bool = False, weighted: bool = True):
+        """
+        directed: True  -> grafo dirigido
+                  False -> não dirigido (padrão, caso dos bairros)
+        weighted: True  -> usa pesos das arestas (padrão)
+                  False -> grafo não ponderado (peso tratado como 1.0)
+        """
+        self.directed = directed
+        self.weighted = weighted
+
         self.nodes_data: Dict[str, Dict[str, Any]] = {}
         self.adj: Dict[str, List[Dict[str, Any]]] = {}
+
         print("Instância do Grafo criada.")
+
+    # === Métricas genéricas (úteis para a Parte 2) ===
+
+    @property
+    def num_vertices(self) -> int:
+        """Número de vértices |V|."""
+        # usa a adjacência, que sempre existe
+        return len(self.adj)
+
+    @property
+    def num_edges(self) -> int:
+        """
+        Número de arestas |E|.
+        - Se o grafo é dirigido, conta todas as entradas da lista de adjacência.
+        - Se não é dirigido, divide por 2 (pois cada aresta aparece duas vezes).
+        """
+        total = sum(len(vizinhos) for vizinhos in self.adj.values())
+        return total if self.directed else total // 2
+
+    def degrees(self) -> Dict[str, int]:
+        """Retorna um dicionário {nó: grau(nó)}."""
+        return {v: len(vizinhos) for v, vizinhos in self.adj.items()}
+
+    def degree_distribution(self) -> Dict[int, int]:
+        """
+        Distribuição de graus: {grau k: quantidade de vértices com esse grau}.
+        Serve direto para montar o item 'distribuição de graus' da Parte 2.
+        """
+        dist: Dict[int, int] = {}
+        for d in self.degrees().values():
+            dist[d] = dist.get(d, 0) + 1
+        return dist
+
+    # === Operações básicas de construção ===
 
     def add_node(self, node_name: str, **kwargs):
         """
-        Adiciona um nó (bairro) ao grafo.
+        Adiciona um nó ao grafo.
         'kwargs' pode conter dados como 'microrregiao'.
         """
         if node_name not in self.nodes_data:
             self.nodes_data[node_name] = kwargs
             self.adj[node_name] = []
 
-    def add_edge(self, u: str, v: str, weight: float, **kwargs):
+    def add_edge(self, u: str, v: str, weight: float = 1.0, **kwargs):
         """
-        Adiciona uma aresta NÃO-DIRECIONADA  entre os nós 'u' e 'v'.
-        'kwargs' pode conter dados da aresta como 'logradouro', 'observacao'.
+        Adiciona uma aresta entre 'u' e 'v'.
+        - Se self.directed == False, adiciona nos dois sentidos (u->v e v->u).
+        - Se self.weighted == False, o peso é tratado como 1.0.
+        'kwargs' pode conter dados da aresta (logradouro, observacao, etc.).
         """
         if u not in self.adj:
             self.add_node(u, microrregiao="DESCONHECIDA")
         if v not in self.adj:
             self.add_node(v, microrregiao="DESCONHECIDA")
-            
+
         edge_data = kwargs
-        
+
+        # Se o grafo não for ponderado, ignoramos o peso passado e usamos 1.0
+        if not self.weighted:
+            weight = 1.0
+
+        # Aresta u -> v
         self.adj[u].append({"node": v, "weight": weight, "data": edge_data})
-        
-        self.adj[v].append({"node": u, "weight": weight, "data": edge_data})
+
+        # Se não for dirigido, duplicamos a aresta no sentido contrário
+        if not self.directed:
+            self.adj[v].append({"node": u, "weight": weight, "data": edge_data})
+
+    # === Carregamento específico dos bairros do Recife (Parte 1) ===
 
     def load_from_csvs(self, nodes_file: Path, edges_file: Path):
         """
-        Carrega os nós e as arestas a partir dos arquivos CSV especificados.
+        Carrega os nós e as arestas a partir dos arquivos CSV especificados
+        (formato da Parte 1: bairros + adjacencias_bairros.csv).
         """
         print(f"Carregando nós de: {nodes_file}")
         try:
@@ -59,7 +121,7 @@ class Graph:
                     linha_limpa = linha.strip()
                     if not linha_limpa:
                         continue
-                    
+
                     partes = linha_limpa.rsplit(' ', 1)
                     if len(partes) == 2:
                         bairro, microrregiao = partes[0].strip(), partes[1].strip()
@@ -71,18 +133,21 @@ class Graph:
         except Exception as e:
             print(f"ERRO ao ler arquivo de nós: {e}")
             return
+
         # === Normalização e mapeamento canônico de nomes ===
         import unicodedata, re
 
         def _normalize_key(name: str) -> str:
             name = (name or "").strip()
             name = re.sub(r"\s+", " ", name)
-            name = ''.join(c for c in unicodedata.normalize('NFD', name)
-                           if unicodedata.category(c) != 'Mn')
+            name = ''.join(
+                c for c in unicodedata.normalize('NFD', name)
+                if unicodedata.category(c) != 'Mn'
+            )
             return name.lower()
 
         # Cria um dicionário que mapeia a forma normalizada para o nome original já carregado
-        canon_map = { _normalize_key(n): n for n in self.nodes_data.keys() }
+        canon_map = {_normalize_key(n): n for n in self.nodes_data.keys()}
 
         def _canon_name(raw: str) -> str:
             """Tenta encontrar o nome canônico já existente; se não achar, devolve formatado."""
@@ -98,7 +163,10 @@ class Graph:
                     try:
                         weight_float = float(row['peso'])
                     except ValueError:
-                        print(f"Aviso: Peso inválido '{row['peso']}' para {row['bairro_origem']}-{row['bairro_destino']}. Usando 1.0.")
+                        print(
+                            f"Aviso: Peso inválido '{row['peso']}' "
+                            f"para {row['bairro_origem']}-{row['bairro_destino']}. Usando 1.0."
+                        )
                         weight_float = 1.0
 
                     # Normaliza e busca forma canônica
@@ -134,13 +202,11 @@ class Graph:
 
     def get_ordem(self) -> int:
         """Retorna a Ordem |V| (número de nós) do grafo."""
-        return len(self.nodes_data)
+        return self.num_vertices  # usa a propriedade genérica
 
     def get_tamanho(self) -> int:
         """Retorna o Tamanho |E| (número de arestas) do grafo."""
-        # Em um grafo não-direcionado, |E| = (soma de todos os graus) / 2
-        total_grau = sum(len(vizinhos) for vizinhos in self.adj.values())
-        return total_grau // 2 # Divisão inteira
+        return self.num_edges  # usa a propriedade genérica
 
     def get_grau(self, node_name: str) -> int:
         """Retorna o grau de um nó específico."""
@@ -153,8 +219,9 @@ class Graph:
         if node_name in self.nodes_data:
             return self.nodes_data[node_name].get('microrregiao')
         return None
-     
-    # === Funções do item 2 ===
+
+    # === Funções do item 2 (microrregiões) ===
+
     @staticmethod
     def _densidade(n: int, e: int) -> float:
         if n < 2:
@@ -203,6 +270,7 @@ class Graph:
         print(f"Métricas por microrregião salvas em: {saida}")
 
     # === Funções para calcular o ego-rede de um bairro (item 3) ===
+
     def _vizinhos(self, u: str) -> set[str]:
         """Retorna o conjunto de vizinhos imediatos de u."""
         return {info["node"] for info in self.adj.get(u, [])}
