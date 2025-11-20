@@ -1,8 +1,6 @@
 {
     "origem_solicitada": "Nova Descoberta",
-    "destino_solicitado": "Setúbal",
-    "origem_mapeada": "Nova Descoberta",
-    "destino_mapeado": "Boa Viagem",
+    "destino_solicitada": "Setúbal",
     "custo": 11.600000000000001,
     "percurso": [
         "Nova Descoberta",

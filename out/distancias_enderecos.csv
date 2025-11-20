@@ -1,6 +1,6 @@
 X,Y,bairro X,bairro Y,custo,caminho
-Boa Viagem,Imbiribeira,Boa Viagem,Imbiribeira,2.2,Boa Viagem -> Imbiribeira
-Imbiribeira,Ipsep,Imbiribeira,Ipsep,1.0,Imbiribeira -> Ipsep
-Aflitos,Arruda,Aflitos,Arruda,3.0,Aflitos -> Encruzilhada -> Campo Grande -> Arruda
-Nova Descoberta,Boa Viagem,Nova Descoberta,Boa Viagem,11.600000000000001,Nova Descoberta -> Casa Amarela -> Tamarineira -> Graças -> Derby -> Ilha do Retiro -> Afogados -> Imbiribeira -> Boa Viagem
-Recife,Caxangá,Recife,Caxangá,11.0,Recife -> Santo Amaro -> Espinheiro -> Graças -> Torre -> Cordeiro -> Iputinga -> Caxangá
+,Imbiribeira ,Boa Viagem,Imbiribeira,2.2,Boa Viagem -> Imbiribeira
+,Ipsep,Imbiribeira,Ipsep,1.0,Imbiribeira -> Ipsep
+,Arruda ,Aflitos,Arruda,3.0,Aflitos -> Encruzilhada -> Campo Grande -> Arruda
+,Boa viagem,Nova Descoberta,Boa Viagem,11.600000000000001,Nova Descoberta -> Casa Amarela -> Tamarineira -> Graças -> Derby -> Ilha do Retiro -> Afogados -> Imbiribeira -> Boa Viagem
+,Caxanga,Recife,Caxangá,11.0,Recife -> Santo Amaro -> Espinheiro -> Graças -> Torre -> Cordeiro -> Iputinga -> Caxangá
