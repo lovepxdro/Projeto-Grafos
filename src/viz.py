@@ -1,4 +1,5 @@
 import json
+import math  # Necessário para o layout circular
 from pathlib import Path
 import typing
 
@@ -24,7 +25,7 @@ OUT_DIR = REPO_ROOT / "out"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # ==============================================================================
-#  TASK 9 + BÔNUS: GERAÇÃO DO HTML INTERATIVO (Code Injection Manual)
+#  TASK 9 + BÔNUS: GERAÇÃO DO HTML INTERATIVO
 # ==============================================================================
 
 def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
@@ -41,7 +42,6 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
     
     path_nodes = list(resultado_percurso.get("percurso", [])) if resultado_percurso else []
     
-    # Cálculos para tamanho visual
     graus = [g.get_grau(n) for n in g.nodes_data.keys()]
     max_grau = max(graus) if graus else 1
 
@@ -80,12 +80,11 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
             })
             added_edges.add((u, v))
 
-    # Serializa para JSON
     json_nodes = json.dumps(vis_nodes, ensure_ascii=False)
     json_edges = json.dumps(vis_edges, ensure_ascii=False)
     json_path = json.dumps(path_nodes, ensure_ascii=False)
 
-    # 2. Template HTML (Isolamento Visual Estrito)
+    # 2. Template HTML
     html_content = f"""
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -210,9 +209,9 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
 
 def gerar_visualizacoes_analiticas(g: Graph):
     """
-    Gera gráficos estáticos (.png) exigidos na Task 8.
+    Gera gráficos estáticos (.png).
     1. Histograma de Distribuição de Graus.
-    2. Top 10 Bairros com Maior Grau.
+    2. Subgrafo Top 10 (Layout Circular Manual).
     3. Densidade Média de Ego-Rede por Microrregião.
     """
     if plt is None:
@@ -220,20 +219,21 @@ def gerar_visualizacoes_analiticas(g: Graph):
 
     print("  [viz.py] Gerando visualizações analíticas (Task 8)...")
     
-    # Dados básicos
-    graus = [g.get_grau(n) for n in g.nodes_data.keys()]
+    # Estilo básico
+    try:
+        plt.style.use('ggplot')
+    except: pass
+
     bairros = list(g.nodes_data.keys())
-    
-    # Configuração de estilo básico
-    plt.style.use('ggplot')
+    graus = [g.get_grau(n) for n in bairros]
 
     # --- GRÁFICO 1: Histograma de Graus ---
     try:
         plt.figure(figsize=(8, 5))
         plt.hist(graus, bins=range(min(graus), max(graus) + 2), color='skyblue', edgecolor='black', align='left')
-        plt.title('Distribuição de Graus dos Bairros')
-        plt.xlabel('Grau (Número de Conexões)')
-        plt.ylabel('Frequência (Quantidade de Bairros)')
+        plt.title('Distribuição de Graus')
+        plt.xlabel('Grau')
+        plt.ylabel('Frequência')
         plt.grid(axis='y', alpha=0.75)
         plt.tight_layout()
         plt.savefig(OUT_DIR / "analise_1_histograma_graus.png")
@@ -242,55 +242,88 @@ def gerar_visualizacoes_analiticas(g: Graph):
     except Exception as e:
         print(f"  [ERRO] Gráfico 1: {e}")
 
-    # --- GRÁFICO 2: Top 10 Bairros por Grau ---
+    # --- GRÁFICO 2: Subgrafo Top 10 (Layout Circular) ---
     try:
-        # Cria lista de tuplas (bairro, grau) e ordena
-        ranking = sorted(zip(bairros, graus), key=lambda x: x[1], reverse=True)[:10]
-        top_bairros = [x[0] for x in ranking]
-        top_graus = [x[1] for x in ranking]
+        # Identificar Top 10 bairros
+        ranking = sorted([(n, g.get_grau(n)) for n in g.nodes_data], key=lambda x: x[1], reverse=True)[:10]
+        top_nodes = [r[0] for r in ranking]
         
-        plt.figure(figsize=(10, 6))
-        # Barh inverte a ordem visualmente, então invertemos os dados para o maior ficar em cima
-        plt.barh(top_bairros[::-1], top_graus[::-1], color='coral')
-        plt.title('Top 10 Bairros Mais Conectados (Maior Grau)')
-        plt.xlabel('Grau')
+        plt.figure(figsize=(8, 8))
+        
+        # Layout Circular Manual (sem networkx)
+        pos = {}
+        n_top = len(top_nodes)
+        radius = 1.0
+        
+        for i, node in enumerate(top_nodes):
+            angle = 2 * math.pi * i / n_top
+            # Gira 90 graus para o primeiro ficar no topo
+            angle += math.pi / 2 
+            pos[node] = (radius * math.cos(angle), radius * math.sin(angle))
+            
+        # Desenhar Arestas (apenas entre os Top 10)
+        for i, u in enumerate(top_nodes):
+            for j, v in enumerate(top_nodes):
+                if i >= j: continue 
+                
+                # Verifica adjacência no grafo 'g'
+                conectados = False
+                for info in g.adj.get(u, []):
+                    if info["node"] == v:
+                        conectados = True
+                        break
+                
+                if conectados:
+                    x_vals = [pos[u][0], pos[v][0]]
+                    y_vals = [pos[u][1], pos[v][1]]
+                    plt.plot(x_vals, y_vals, color='gray', alpha=0.5, linewidth=1.5, zorder=1)
+
+        # Desenhar Nós
+        x_nodes = [pos[n][0] for n in top_nodes]
+        y_nodes = [pos[n][1] for n in top_nodes]
+        sizes = [g.get_grau(n) * 50 for n in top_nodes] # Escala o tamanho pelo grau
+        
+        plt.scatter(x_nodes, y_nodes, s=sizes, c='dodgerblue', edgecolors='white', linewidths=1.5, zorder=2)
+        
+        # Rótulos
+        for node, (x, y) in pos.items():
+            # Afasta o texto do centro
+            dist = 1.15
+            plt.text(x * dist, y * dist, node, fontsize=10, ha='center', va='center', fontweight='bold', color='#333')
+
+        plt.title(f'Subgrafo dos {n_top} Bairros Mais Conectados')
+        plt.axis('off') 
+        plt.xlim(-1.5, 1.5)
+        plt.ylim(-1.5, 1.5)
+        
         plt.tight_layout()
-        plt.savefig(OUT_DIR / "analise_2_top10_graus.png")
+        plt.savefig(OUT_DIR / "analise_2_subgrafo_top10.png")
         plt.close()
-        print(f"  -> {OUT_DIR / 'analise_2_top10_graus.png'}")
+        print(f"  -> {OUT_DIR / 'analise_2_subgrafo_top10.png'}")
     except Exception as e:
         print(f"  [ERRO] Gráfico 2: {e}")
 
     # --- GRÁFICO 3: Densidade Média por Microrregião ---
     try:
-        # Agrupa densidades ego por microrregião
         micro_densidades = {}
         for node in bairros:
             micro = g.get_microrregiao(node) or "Outros"
-            # Calcula ego density se não tiver cacheado, ou pega do método
             try:
                 ego = g.ego_metrics_for(node)
                 dens = ego.get("densidade_ego", 0)
-            except:
-                dens = 0
-            
+            except: dens = 0
             micro_densidades.setdefault(micro, []).append(dens)
         
-        # Calcula médias
-        micros = []
+        micros_sorted = sorted(micro_densidades.keys())
         medias = []
-        for m, valores in micro_densidades.items():
-            micros.append(m)
-            medias.append(sum(valores) / len(valores))
-        
-        # Ordena para gráfico bonito
-        combined = sorted(zip(micros, medias), key=lambda x: x[1], reverse=True)
-        micros_ord = [x[0] for x in combined]
-        medias_ord = [x[1] for x in combined]
+        for m in micros_sorted:
+            vals = micro_densidades[m]
+            medias.append(sum(vals)/len(vals) if vals else 0)
 
         plt.figure(figsize=(10, 6))
-        plt.bar(micros_ord, medias_ord, color='mediumseagreen')
+        plt.bar(micros_sorted, medias, color='mediumseagreen', edgecolor='darkgreen')
         plt.title('Densidade Média das Ego-Redes por Microrregião')
+        plt.xlabel('Microrregião')
         plt.ylabel('Densidade Média')
         plt.xticks(rotation=45, ha='right')
         plt.tight_layout()
