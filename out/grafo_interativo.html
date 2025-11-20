@@ -47,7 +47,7 @@
         <b>Modo de Seleção:</b><br>
         • Clique em um bairro para destacá-lo.<br>
         • O restante ficará cinza.<br>
-        • Use Ctrl+Clique (ou clique sequencial) para selecionar múltiplos.
+        • Use Ctrl+Clique para selecionar múltiplos.
     </p>
 
     <button id="btn-rota" onclick="showRoute()">🚀 Rota: N. Descoberta ➔ Setúbal</button>
@@ -111,7 +111,6 @@
     });
 
     // --- ESTADO DA SELEÇÃO ---
-    // Usamos um Set para rastrear o que deve estar colorido
     let activeNodes = new Set();
 
     // --- EVENTOS ---
@@ -138,20 +137,15 @@
     // 2. Seleção pelo Dropdown
     function selectFromDropdown(nodeId) {
         if (!nodeId) return;
-        activeNodes.add(nodeId); // Adiciona o buscado à seleção
+        activeNodes.add(nodeId);
         updateVisuals();
-        
-        // Foca a câmera
         network.fit({ nodes: [nodeId], animation: true });
-        
-        // Reseta o select para permitir buscar o mesmo novamente se quiser
         document.getElementById('searchNode').value = "";
     }
 
     // 3. Botão Rota Especial
     function showRoute() {
         if (routeNodes.length === 0) return alert("Rota não disponível.");
-        
         activeNodes.clear();
         routeNodes.forEach(id => activeNodes.add(id));
         updateVisuals();
@@ -165,12 +159,10 @@
         network.fit({ animation: true });
     }
 
-    // --- LÓGICA DE ATUALIZAÇÃO VISUAL (O CÉREBRO) ---
+    // --- LÓGICA DE ATUALIZAÇÃO VISUAL ---
     function updateVisuals() {
         const allN = nodes.get();
         const allE = edges.get();
-
-        // Arrays para atualização em lote (performance)
         const updatesN = [];
         const updatesE = [];
 
@@ -179,7 +171,7 @@
             allN.forEach(n => {
                 updatesN.push({ 
                     id: n.id, 
-                    color: null,  // null volta para a cor definida no grupo (microrregião)
+                    color: null, 
                     opacity: 1.0,
                     font: { color: '#343434' } 
                 });
@@ -196,7 +188,7 @@
         else {
             allN.forEach(n => {
                 if (activeNodes.has(n.id)) {
-                    // NÓ ATIVO: Cor original, opacidade total
+                    // NÓ ATIVO
                     updatesN.push({ 
                         id: n.id, 
                         color: null, 
@@ -204,18 +196,17 @@
                         font: { color: '#000000', background: 'rgba(255,255,255,0.7)' }
                     });
                 } else {
-                    // NÓ INATIVO: Cinza, transparente
+                    // NÓ INATIVO
                     updatesN.push({ 
                         id: n.id, 
                         color: 'rgba(200, 200, 200, 0.2)', 
                         opacity: 0.2,
-                        font: { color: 'rgba(0,0,0,0)' } // Esconde texto
+                        font: { color: 'rgba(0,0,0,0)' } 
                     });
                 }
             });
 
             allE.forEach(e => {
-                // Aresta só aparece colorida se AMBOS os lados estiverem ativos
                 if (activeNodes.has(e.from) && activeNodes.has(e.to)) {
                     updatesE.push({ 
                         id: e.id, 
@@ -223,7 +214,6 @@
                         width: 4 
                     });
                 } else {
-                    // Aresta inativa: quase invisível
                     updatesE.push({ 
                         id: e.id, 
                         color: 'rgba(200, 200, 200, 0.05)', 
@@ -236,7 +226,6 @@
         nodes.update(updatesN);
         edges.update(updatesE);
     }
-
 </script>
 </body>
 </html>
