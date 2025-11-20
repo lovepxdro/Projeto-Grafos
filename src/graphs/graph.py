@@ -198,6 +198,58 @@ class Graph:
         except Exception as e:
             print(f"ERRO ao ler arquivo de arestas: {e}")
 
+    # === Carregamento adicional de rotas (ex.: routes.csv / aeroportos) ===
+    def load_routes_csv(self, routes_file: Path, source_col: str = "source airport", dest_col: str = "destination apirport"):
+        """Carrega arestas adicionais a partir de um CSV de rotas (ex. dataset de voos).
+
+        O arquivo esperado deve ter colunas como:
+          airline, airline ID, source airport, source airport id, destination apirport, destination airport id, codeshare, stops, equipment
+
+        Apenas as colunas de origem e destino são usadas para criar arestas. Dados extras
+        (ex.: airline, stops, equipment) são armazenados em "data" da aresta para possível uso futuro.
+
+        Parâmetros:
+          routes_file: Path para o CSV.
+          source_col: nome da coluna de origem (default: 'source airport').
+          dest_col: nome da coluna de destino (default: 'destination apirport').
+        """
+        if not routes_file.exists():
+            print(f"[rotas] Arquivo não encontrado: {routes_file}")
+            return
+        print(f"Carregando rotas adicionais de: {routes_file}")
+        try:
+            with open(routes_file, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                count = 0
+                for raw_row in reader:
+                    # normaliza chaves removendo espaços laterais
+                    row = {k.strip(): (v.strip() if isinstance(v, str) else v) for k, v in raw_row.items()}
+                    u = row.get(source_col, "").strip()
+                    v = row.get(dest_col, "").strip()
+                    if not u or not v:
+                        continue
+                    # Cria nós se não existirem (microrregião desconhecida para este dataset)
+                    if u not in self.nodes_data:
+                        self.add_node(u, microrregiao="DESCONHECIDA")
+                    if v not in self.nodes_data:
+                        self.add_node(v, microrregiao="DESCONHECIDA")
+                    # Peso: se o grafo não for ponderado, será forçado a 1.0 em add_edge.
+                    # Caso queira algum peso, poderia-se derivar de 'stops' (ex.: int(stops)+1). Mantemos 1.0 por simplicidade.
+                    self.add_edge(
+                        u=u,
+                        v=v,
+                        weight=1.0,
+                        airline=row.get('airline'),
+                        stops=row.get('stops'),
+                        equipment=row.get('equipment')
+                    )
+                    count += 1
+            print(f"Rotas adicionadas: {count} (Total de conexões inseridas: {count * (1 if self.directed else 2)})")
+        except KeyError as e:
+            print(f"[rotas] Coluna ausente no CSV: {e}. Verifique o cabeçalho.")
+        except Exception as e:
+            print(f"[rotas] Erro ao ler rotas: {e}")
+
     # --- Métodos de Acesso (Úteis para as próximas etapas) ---
 
     def get_ordem(self) -> int:
