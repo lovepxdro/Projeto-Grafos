@@ -282,8 +282,8 @@ function highlightFilter(filter) {
                   
 
                   // parsing and collecting nodes and edges from the python
-                  nodes = new vis.DataSet([{"color": "#FF5733", "id": "Nova Descoberta", "label": "Nova Descoberta", "shape": "dot"}, {"color": "#FF5733", "id": "Casa Amarela", "label": "Casa Amarela", "shape": "dot"}, {"color": "#FF5733", "id": "Tamarineira", "label": "Tamarineira", "shape": "dot"}, {"color": "#FF5733", "id": "Gra\u00e7as", "label": "Gra\u00e7as", "shape": "dot"}, {"color": "#FF5733", "id": "Derby", "label": "Derby", "shape": "dot"}, {"color": "#FF5733", "id": "Ilha do Retiro", "label": "Ilha do Retiro", "shape": "dot"}, {"color": "#FF5733", "id": "Afogados", "label": "Afogados", "shape": "dot"}, {"color": "#FF5733", "id": "Imbiribeira", "label": "Imbiribeira", "shape": "dot"}, {"color": "#FF5733", "id": "Boa Viagem", "label": "Boa Viagem", "shape": "dot"}]);
-                  edges = new vis.DataSet([{"arrows": "to", "color": "#FF5733", "from": "Nova Descoberta", "to": "Casa Amarela", "width": 4}, {"arrows": "to", "color": "#FF5733", "from": "Casa Amarela", "to": "Tamarineira", "width": 4}, {"arrows": "to", "color": "#FF5733", "from": "Tamarineira", "to": "Gra\u00e7as", "width": 4}, {"arrows": "to", "color": "#FF5733", "from": "Gra\u00e7as", "to": "Derby", "width": 4}, {"arrows": "to", "color": "#FF5733", "from": "Derby", "to": "Ilha do Retiro", "width": 4}, {"arrows": "to", "color": "#FF5733", "from": "Ilha do Retiro", "to": "Afogados", "width": 4}, {"arrows": "to", "color": "#FF5733", "from": "Afogados", "to": "Imbiribeira", "width": 4}, {"arrows": "to", "color": "#FF5733", "from": "Imbiribeira", "to": "Boa Viagem", "width": 4}]);
+                  nodes = new vis.DataSet([{"color": "#00CC66", "font": {"face": "arial", "size": 16, "strokeColor": "#ffffff", "strokeWidth": 2}, "id": "Nova Descoberta", "label": "1. Nova Descoberta\n(Origem)", "shape": "dot", "size": 30, "title": "\u003cb\u003eNova Descoberta\u003c/b\u003e\u003cbr\u003eMicrorregi\u00e3o: 3.3\u003cbr\u003ePasso: 1/9"}, {"color": "#97C2FC", "font": {"face": "arial", "size": 16, "strokeColor": "#ffffff", "strokeWidth": 2}, "id": "Casa Amarela", "label": "2. Casa Amarela", "shape": "dot", "size": 20, "title": "\u003cb\u003eCasa Amarela\u003c/b\u003e\u003cbr\u003eMicrorregi\u00e3o: 3.1\u003cbr\u003ePasso: 2/9"}, {"color": "#97C2FC", "font": {"face": "arial", "size": 16, "strokeColor": "#ffffff", "strokeWidth": 2}, "id": "Tamarineira", "label": "3. Tamarineira", "shape": "dot", "size": 20, "title": "\u003cb\u003eTamarineira\u003c/b\u003e\u003cbr\u003eMicrorregi\u00e3o: 3.1\u003cbr\u003ePasso: 3/9"}, {"color": "#97C2FC", "font": {"face": "arial", "size": 16, "strokeColor": "#ffffff", "strokeWidth": 2}, "id": "Gra\u00e7as", "label": "4. Gra\u00e7as", "shape": "dot", "size": 20, "title": "\u003cb\u003eGra\u00e7as\u003c/b\u003e\u003cbr\u003eMicrorregi\u00e3o: 3.1\u003cbr\u003ePasso: 4/9"}, {"color": "#97C2FC", "font": {"face": "arial", "size": 16, "strokeColor": "#ffffff", "strokeWidth": 2}, "id": "Derby", "label": "5. Derby", "shape": "dot", "size": 20, "title": "\u003cb\u003eDerby\u003c/b\u003e\u003cbr\u003eMicrorregi\u00e3o: 3.1\u003cbr\u003ePasso: 5/9"}, {"color": "#97C2FC", "font": {"face": "arial", "size": 16, "strokeColor": "#ffffff", "strokeWidth": 2}, "id": "Ilha do Retiro", "label": "6. Ilha do Retiro", "shape": "dot", "size": 20, "title": "\u003cb\u003eIlha do Retiro\u003c/b\u003e\u003cbr\u003eMicrorregi\u00e3o: 4.1\u003cbr\u003ePasso: 6/9"}, {"color": "#97C2FC", "font": {"face": "arial", "size": 16, "strokeColor": "#ffffff", "strokeWidth": 2}, "id": "Afogados", "label": "7. Afogados", "shape": "dot", "size": 20, "title": "\u003cb\u003eAfogados\u003c/b\u003e\u003cbr\u003eMicrorregi\u00e3o: 5.1\u003cbr\u003ePasso: 7/9"}, {"color": "#97C2FC", "font": {"face": "arial", "size": 16, "strokeColor": "#ffffff", "strokeWidth": 2}, "id": "Imbiribeira", "label": "8. Imbiribeira", "shape": "dot", "size": 20, "title": "\u003cb\u003eImbiribeira\u003c/b\u003e\u003cbr\u003eMicrorregi\u00e3o: 6.1\u003cbr\u003ePasso: 8/9"}, {"color": "#FF5733", "font": {"face": "arial", "size": 16, "strokeColor": "#ffffff", "strokeWidth": 2}, "id": "Boa Viagem", "label": "9. Boa Viagem\n(Destino)", "shape": "dot", "size": 30, "title": "\u003cb\u003eBoa Viagem\u003c/b\u003e\u003cbr\u003eMicrorregi\u00e3o: 6.1\u003cbr\u003ePasso: 9/9"}]);
+                  edges = new vis.DataSet([{"arrowStrikethrough": false, "arrows": "to", "color": "#555555", "from": "Nova Descoberta", "label": "r. paraisopolis", "title": "Via: r. paraisopolis\u003cbr\u003eCusto: 1.0", "to": "Casa Amarela", "width": 3}, {"arrowStrikethrough": false, "arrows": "to", "color": "#555555", "from": "Casa Amarela", "label": "e. do arraial", "title": "Via: e. do arraial\u003cbr\u003eCusto: 2.0", "to": "Tamarineira", "width": 3}, {"arrowStrikethrough": false, "arrows": "to", "color": "#555555", "from": "Tamarineira", "label": "r. coronel uriel sergio cardim", "title": "Via: r. coronel uriel sergio cardim\u003cbr\u003eCusto: 1.2", "to": "Gra\u00e7as", "width": 3}, {"arrowStrikethrough": false, "arrows": "to", "color": "#555555", "from": "Gra\u00e7as", "label": "r. joaquim nabuco", "title": "Via: r. joaquim nabuco\u003cbr\u003eCusto: 1.0", "to": "Derby", "width": 3}, {"arrowStrikethrough": false, "arrows": "to", "color": "#555555", "from": "Derby", "label": "p. prefeito lima e castro", "title": "Via: p. prefeito lima e castro\u003cbr\u003eCusto: 2.0", "to": "Ilha do Retiro", "width": 3}, {"arrowStrikethrough": false, "arrows": "to", "color": "#555555", "from": "Ilha do Retiro", "label": "r. teofilo tworz", "title": "Via: r. teofilo tworz\u003cbr\u003eCusto: 1.2", "to": "Afogados", "width": 3}, {"arrowStrikethrough": false, "arrows": "to", "color": "#555555", "from": "Afogados", "label": "r. arquiteto luiz nunes", "title": "Via: r. arquiteto luiz nunes\u003cbr\u003eCusto: 1.0", "to": "Imbiribeira", "width": 3}, {"arrowStrikethrough": false, "arrows": "to", "color": "#555555", "from": "Imbiribeira", "label": "av. dom joao vi", "title": "Via: av. dom joao vi\u003cbr\u003eCusto: 2.2", "to": "Boa Viagem", "width": 3}]);
 
                   nodeColors = {};
                   allNodes = nodes.get({ returnType: "Object" });
@@ -294,35 +294,7 @@ function highlightFilter(filter) {
                   // adding nodes and edges to the graph
                   data = {nodes: nodes, edges: edges};
 
-                  var options = {
-    "configure": {
-        "enabled": false
-    },
-    "edges": {
-        "color": {
-            "inherit": true
-        },
-        "smooth": {
-            "enabled": true,
-            "type": "dynamic"
-        }
-    },
-    "interaction": {
-        "dragNodes": true,
-        "hideEdgesOnDrag": false,
-        "hideNodesOnDrag": false
-    },
-    "physics": {
-        "enabled": true,
-        "stabilization": {
-            "enabled": true,
-            "fit": true,
-            "iterations": 1000,
-            "onlyDynamicEdges": false,
-            "updateInterval": 50
-        }
-    }
-};
+                  var options = {"layout": {"hierarchical": {"enabled": true, "direction": "UD", "sortMethod": "directed", "nodeSpacing": 150, "levelSeparation": 150}}, "physics": {"hierarchicalRepulsion": {"centralGravity": 0, "springLength": 200, "nodeDistance": 150}, "minVelocity": 0.75, "solver": "hierarchicalRepulsion"}, "edges": {"smooth": {"type": "cubicBezier", "forceDirection": "vertical", "roundness": 0.4}}};
 
                   
 
