@@ -1,1 +1,4 @@
-#bla
+# demais tecnologias são padrão do python
+matplotlib
+pyvis
+pytest
