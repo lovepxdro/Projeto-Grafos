@@ -374,26 +374,64 @@ def gerar_visualizacoes_analiticas(g: Graph):
 
     # 2. Top 10 Circular
     try:
+        # Identificar Top 10 bairros
         ranking = sorted([(n, g.get_grau(n)) for n in g.nodes_data], key=lambda x: x[1], reverse=True)[:10]
         top_nodes = [r[0] for r in ranking]
-        plt.figure(figsize=(9, 9))
-        pos = {}
-        for i, node in enumerate(top_nodes):
-            angle = 2 * math.pi * i / len(top_nodes) + (math.pi / 2)
-            pos[node] = (3.0 * math.cos(angle), 3.0 * math.sin(angle))
         
+        plt.figure(figsize=(8, 8))
+        
+        # Layout Circular Manual (sem networkx)
+        pos = {}
+        n_top = len(top_nodes)
+        radius = 1.0
+        
+        for i, node in enumerate(top_nodes):
+            angle = 2 * math.pi * i / n_top
+            # Gira 90 graus para o primeiro ficar no topo
+            angle += math.pi / 2 
+            pos[node] = (radius * math.cos(angle), radius * math.sin(angle))
+            
+        # Desenhar Arestas (apenas entre os Top 10)
         for i, u in enumerate(top_nodes):
             for j, v in enumerate(top_nodes):
-                if i >= j: continue
-                conn = any(info["node"] == v for info in g.adj.get(u, []))
-                if conn: plt.plot([pos[u][0], pos[v][0]], [pos[u][1], pos[v][1]], color='#555', alpha=0.6, linewidth=2, zorder=1)
+                if i >= j: continue 
+                
+                # Verifica adjacência no grafo 'g'
+                conectados = False
+                for info in g.adj.get(u, []):
+                    if info["node"] == v:
+                        conectados = True
+                        break
+                
+                if conectados:
+                    x_vals = [pos[u][0], pos[v][0]]
+                    y_vals = [pos[u][1], pos[v][1]]
+                    plt.plot(x_vals, y_vals, color='gray', alpha=0.5, linewidth=1.5, zorder=1)
+
+        # Desenhar Nós
+        x_nodes = [pos[n][0] for n in top_nodes]
+        y_nodes = [pos[n][1] for n in top_nodes]
+        sizes = [g.get_grau(n) * 50 for n in top_nodes] # Escala o tamanho pelo grau
         
-        X = [pos[n][0] for n in top_nodes]; Y = [pos[n][1] for n in top_nodes]
-        plt.scatter(X, Y, s=800, c='#FF6B6B', edgecolors='#333', linewidths=2, zorder=2)
-        for n, (x,y) in pos.items(): plt.text(x, y, n, fontsize=9, ha='center', va='center', fontweight='bold', color='white')
-        plt.title(f'Interconectividade Top {len(top_nodes)} Hubs'); plt.axis('off'); plt.tight_layout()
-        plt.savefig(OUT_DIR / "analise_2_subgrafo_top10.png"); plt.close()
-    except Exception as e: print(f"  [ERRO] G2: {e}")
+        plt.scatter(x_nodes, y_nodes, s=sizes, c='dodgerblue', edgecolors='white', linewidths=1.5, zorder=2)
+        
+        # Rótulos
+        for node, (x, y) in pos.items():
+            # Afasta o texto do centro
+            dist = 1.15
+            plt.text(x * dist, y * dist, node, fontsize=10, ha='center', va='center', fontweight='bold', color='#333')
+
+        plt.title(f'Subgrafo dos {n_top} Bairros Mais Conectados')
+        plt.axis('off') 
+        plt.xlim(-1.5, 1.5)
+        plt.ylim(-1.5, 1.5)
+        
+        plt.tight_layout()
+        plt.savefig(OUT_DIR / "analise_2_subgrafo_top10.png")
+        plt.close()
+        print(f"  -> {OUT_DIR / 'analise_2_subgrafo_top10.png'}")
+    except Exception as e:
+        print(f"  [ERRO] Gráfico 2: {e}")
 
     # 3. Densidade Micro
     try:
