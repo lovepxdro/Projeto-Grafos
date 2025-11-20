@@ -8,16 +8,16 @@ import re
 try:
     from graphs.graph import Graph
     from graphs.algorithms import dijkstra 
-    # Importa a função de visualização do módulo vizinho
-    from viz import gerar_html_customizado 
+    # Importa as funções de visualização do novo módulo
+    from viz import gerar_html_customizado, gerar_visualizacoes_analiticas
 except ImportError:
     # Fallback para execução direta
     try:
         from src.graphs.graph import Graph
         from src.graphs.algorithms import dijkstra
-        from src.viz import gerar_html_customizado
+        from src.viz import gerar_html_customizado, gerar_visualizacoes_analiticas
     except ImportError:
-        print("Erro: Dependências não encontradas. Verifique se 'graphs' e 'viz' estão no path.")
+        print("Erro: Dependências não encontradas. Verifique o PYTHONPATH.")
         exit(1)
 
 # Caminhos
@@ -91,7 +91,6 @@ def executar_task_6_percurso_especial(g: Graph) -> dict | None:
     except: return None
 
 def executar_task_7_arvore_percurso(g: Graph, resultado_percurso: dict | None):
-    # Task simples: árvore estática. Se tiver pyvis, gera.
     try:
         from pyvis.network import Network
     except ImportError:
@@ -115,19 +114,19 @@ def executar_task_7_arvore_percurso(g: Graph, resultado_percurso: dict | None):
 # --- Main ---
 
 def main():
-    print("Iniciando tasks...")
+    print("Iniciando tasks (Parte 1)...")
     nodes_path = DATA_DIR / "bairros_unique.csv"
     edges_path = DATA_DIR / "adjacencias_bairros.csv" 
 
     if not nodes_path.exists() or not edges_path.exists():
-        print("ERRO FATAL: Arquivos CSV não encontrados.")
+        print("ERRO FATAL: Arquivos CSV não encontrados em data/.")
         return
 
     g = Graph()
     g.load_from_csvs(nodes_file=nodes_path, edges_file=edges_path)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Tasks de Métricas
+    # Métricas Globais e JSONs
     try:
         metricas = {"ordem": g.get_ordem(), "tamanho": g.get_tamanho()}
         with open(OUT_DIR / "recife_global.json", 'w', encoding='utf-8') as f:
@@ -137,14 +136,24 @@ def main():
         g.export_graus_csv()
     except: pass
 
+    # Cálculos de Rota
     executar_task_6_distancias(g)
     res_esp = executar_task_6_percurso_especial(g)
     executar_task_7_arvore_percurso(g, res_esp)
     
-    # Chama a função que agora vive no viz.py
+    # ---------------------------------------------
+    # VISUALIZAÇÃO (Task 8, Task 9 e Bônus)
+    # ---------------------------------------------
+    print("-" * 30)
+    
+    # Task 9 e Bônus: HTML Interativo (viz.py)
     gerar_html_customizado(g, res_esp)
     
-    print("Concluído.")
+    # Task 8: Gráficos Estáticos para o PDF (viz.py)
+    gerar_visualizacoes_analiticas(g)
+    
+    print("-" * 30)
+    print("Concluído. Verifique a pasta 'out/'.")
 
 if __name__ == "__main__":
     main()
