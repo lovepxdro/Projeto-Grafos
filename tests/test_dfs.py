@@ -118,3 +118,74 @@ def test_dfs_invalid_start():
 
     with pytest.raises(ValueError, match="Nó de origem não encontrado"):
         dfs(g, "X")
+
+def test_dfs_fully_disconnected_graph():
+    """
+    DFS em grafo totalmente desconectado:
+    Apenas o nó inicial deve aparecer na ordem de visita.
+    """
+    g = Graph()
+    for node in ["A", "B", "C", "D"]:
+        g.add_node(node)
+
+    result = dfs(g, "A")
+    order = result["order"]
+
+    assert order == ["A"]              # só o start é visitado
+    assert set(order) == {"A"}         # nenhum outro aparece
+
+def test_dfs_linear_chain():
+    """
+    Grafo em linha:
+        A - B - C - D
+
+    DFS deve visitar A, depois B, depois C, depois D (dependendo da ordem da adjacência).
+    """
+    g = Graph()
+    for node in ["A", "B", "C", "D"]:
+        g.add_node(node)
+
+    g.add_edge("A", "B", 1.0)
+    g.add_edge("B", "C", 1.0)
+    g.add_edge("C", "D", 1.0)
+
+    result = dfs(g, "A")
+    order = result["order"]
+
+    assert order[0] == "A"
+    # Cada nó deve aparecer exatamente uma vez
+    assert set(order) == {"A", "B", "C", "D"}
+    # DFS deve descer a cadeia
+    assert order.index("B") > order.index("A")
+    assert order.index("C") > order.index("B")
+    assert order.index("D") > order.index("C")
+
+def test_dfs_branching_order():
+    """
+    Grafo em que a ordem da adjacência importa:
+
+        A
+       /|\
+      B C D
+
+    DFS usa a pilha e empilha os vizinhos em ordem reversa.
+    Logo, espera-se explorar D primeiro, depois C, depois B.
+    """
+    g = Graph()
+    for node in ["A", "B", "C", "D"]:
+        g.add_node(node)
+
+    g.add_edge("A", "B", 1.0)
+    g.add_edge("A", "C", 1.0)
+    g.add_edge("A", "D", 1.0)
+
+    # ordem da adjacência fica: B, C, D
+    # reversed -> D, C, B (ordem de empilhamento)
+    # DFS deve visitar: A, D, C, B
+    result = dfs(g, "A")
+    order = result["order"]
+
+    assert order[0] == "A"
+    assert order[1] == "D"
+    assert order[2] == "C"
+    assert order[3] == "B"

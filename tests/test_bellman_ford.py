@@ -88,3 +88,61 @@ def test_bellman_ford_invalid_start():
 
     with pytest.raises(ValueError, match="Nó de origem não encontrado"):
         bellman_ford(g, "X")
+
+def test_bellman_ford_negative_cycle_unreachable_from_start():
+    """
+    Ciclo negativo existe, mas não é alcançável a partir de 'A'.
+    Bellman–Ford NÃO deve marcar has_negative_cycle=True.
+    """
+    g = Graph(directed=True, weighted=True)
+
+    for node in ["A", "B", "C", "D"]:
+        g.add_node(node)
+
+    # Componente acessível
+    g.add_edge("A", "B", 1.0)
+
+    # Componente separado com ciclo negativo
+    g.add_edge("C", "D", -1.0)
+    g.add_edge("D", "C", -1.0)
+
+    result = bellman_ford(g, "A")
+
+    assert result["distance"]["A"] == 0.0
+    assert result["distance"]["B"] == 1.0
+    assert result["distance"]["C"] == float("inf")
+    assert result["distance"]["D"] == float("inf")
+
+    # O ciclo negativo existe, mas não afeta caminhos partindo de A
+    assert result["has_negative_cycle"] is False
+
+def test_bellman_ford_positive_weights_parents_and_distances():
+    """
+    Checa distâncias e predecessores em um grafo 100% positivo.
+        A → B (2)
+        A → C (5)
+        B → C (1)
+    Melhor caminho A→C é A-B-C (custo 3).
+    """
+    g = Graph(directed=True, weighted=True)
+
+    for node in ["A", "B", "C"]:
+        g.add_node(node)
+
+    g.add_edge("A", "B", 2.0)
+    g.add_edge("A", "C", 5.0)
+    g.add_edge("B", "C", 1.0)
+
+    result = bellman_ford(g, "A")
+
+    dist = result["distance"]
+    parent = result["parent"]
+
+    # Distâncias esperadas
+    assert dist["A"] == 0.0
+    assert dist["B"] == 2.0
+    assert dist["C"] == 3.0
+
+    # Pais esperados
+    assert parent["B"] == "A"
+    assert parent["C"] == "B"

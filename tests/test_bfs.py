@@ -97,3 +97,45 @@ def test_bfs_invalid_start():
 
     with pytest.raises(ValueError, match="Nó de origem não encontrado"):
         bfs(g, "X")
+
+def test_bfs_fully_disconnected_graph():
+    """
+    Grafo totalmente desconectado.
+    Apenas o nó inicial deve ter distância 0; os demais permanecem -1.
+    """
+    g = Graph()
+
+    for node in ["A", "B", "C", "D"]:
+        g.add_node(node)
+
+    result = bfs(g, "A")
+    dist = result["distance"]
+
+    assert dist["A"] == 0
+    assert dist["B"] == -1
+    assert dist["C"] == -1
+    assert dist["D"] == -1
+
+def test_bfs_linear_chain():
+    """
+    Grafo em linha simples:
+        A - B - C - D
+
+    As distâncias devem ser 0, 1, 2, 3 respectivamente.
+    """
+    g = Graph()
+
+    for node in ["A", "B", "C", "D"]:
+        g.add_node(node)
+
+    g.add_edge("A", "B", 1.0)
+    g.add_edge("B", "C", 1.0)
+    g.add_edge("C", "D", 1.0)
+
+    result = bfs(g, "A")
+    dist = result["distance"]
+
+    assert dist["A"] == 0
+    assert dist["B"] == 1
+    assert dist["C"] == 2
+    assert dist["D"] == 3
