@@ -186,7 +186,7 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
         vis_nodes.append({
             "id": node,
             "label": node,
-            "title": f"<div style='font-family:sans-serif;'><b>{node}</b><br>📍 {micro}<br>🔗 Grau: {grau}</div>",
+            "title": f"Bairro: {node}\nMicrorregião: {micro}\nGrau: {grau}",
             "group": micro,
             "value": size,
             "microrregiao": micro,
@@ -202,7 +202,7 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
             log = info.get("data", {}).get("logradouro", "")
             vis_edges.append({
                 "from": u, "to": v,
-                "title": f"🛣️ {log}<br>⚖️ {w}",
+                "title": f"Logradouro: {log}\nPeso: {w}",
                 "color": {"color": "#848484", "opacity": 0.4}
             })
             added_edges.add((u, v))
@@ -281,7 +281,16 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
     const options = {{
         nodes: {{ shape: 'dot', borderWidth: 2, shadow: true }},
         edges: {{ width: 2, smooth: {{ type: 'continuous' }}, color: {{ inherit: 'from' }} }},
-        physics: {{ forceAtlas2Based: {{ gravitationalConstant: -80, springLength: 120 }}, stabilization: {{ iterations: 700 }} }},
+        physics: {{
+            forceAtlas2Based: {{
+                gravitationalConstant: -150,  // Aumentado de -60 para -150 (mais força de repulsão)
+                springLength: 250,            // Aumentado de 120 para 250 (mais espaço entre nós)
+                springConstant: 0.05,
+                avoidOverlap: 1               // Força os nós a não ficarem um em cima do outro
+            }},
+            solver: 'forceAtlas2Based',
+            stabilization: {{ enabled: true, iterations: 1000 }}
+        }},
         interaction: {{ hover: true, multiselect: true, selectConnectedEdges: false }}
     }};
     const network = new vis.Network(container, data, options);
