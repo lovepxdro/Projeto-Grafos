@@ -1,0 +1,9 @@
+source,destination
+MEX,LAX
+MEX,JFK
+MEX,ORD
+MEX,DFW
+DFW,LAX
+DFW,JFK
+ORD,LAX
+ATL,JFK

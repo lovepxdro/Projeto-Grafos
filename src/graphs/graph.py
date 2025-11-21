@@ -199,19 +199,25 @@ class Graph:
             print(f"ERRO ao ler arquivo de arestas: {e}")
 
     # === Carregamento adicional de rotas (ex.: routes.csv / aeroportos) ===
-    def load_routes_csv(self, routes_file: Path, source_col: str = "source airport", dest_col: str = "destination apirport"):
+    def load_routes_csv(self, routes_file: Path, source_col: str = "source airport", dest_col: str = "destination apirport", weight_col: str = "weight"):
         """Carrega arestas adicionais a partir de um CSV de rotas (ex. dataset de voos).
 
-        O arquivo esperado deve ter colunas como:
-          airline, airline ID, source airport, source airport id, destination apirport, destination airport id, codeshare, stops, equipment
+        Colunas típicas dos datasets originais:
+          airline, airline ID, source airport, source airport id, destination apirport (typo comum), destination airport id,
+          codeshare, stops, equipment
 
-        Apenas as colunas de origem e destino são usadas para criar arestas. Dados extras
-        (ex.: airline, stops, equipment) são armazenados em "data" da aresta para possível uso futuro.
+        Extensões suportadas:
+          - Coluna opcional de peso ("weight"), permitindo pesos negativos para demonstrar Bellman-Ford.
+          - Aceita tanto "destination apirport" (typo presente no dataset) quanto "destination airport" se existir.
+
+        Uso básico: se a coluna "weight" não existir ou estiver vazia, cada aresta recebe peso 1.0.
+        Se o grafo tiver weighted=False, o peso será forçado a 1.0 em add_edge.
 
         Parâmetros:
-          routes_file: Path para o CSV.
-          source_col: nome da coluna de origem (default: 'source airport').
-          dest_col: nome da coluna de destino (default: 'destination apirport').
+          routes_file: CSV de rotas.
+          source_col: coluna de origem (default: 'source airport').
+          dest_col: coluna de destino (default: 'destination apirport' para compatibilidade).
+          weight_col: coluna opcional de peso (default: 'weight').
         """
         if not routes_file.exists():
             print(f"[rotas] Arquivo não encontrado: {routes_file}")
@@ -225,7 +231,11 @@ class Graph:
                     # normaliza chaves removendo espaços laterais
                     row = {k.strip(): (v.strip() if isinstance(v, str) else v) for k, v in raw_row.items()}
                     u = row.get(source_col, "").strip()
-                    v = row.get(dest_col, "").strip()
+                    # tenta usar 'dest_col'; se vazio tenta a variante correta 'destination airport'
+                    v_raw = row.get(dest_col, "").strip()
+                    if not v_raw:
+                        v_raw = row.get("destination airport", "").strip()
+                    v = v_raw
                     if not u or not v:
                         continue
                     # Cria nós se não existirem (microrregião desconhecida para este dataset)
@@ -233,12 +243,20 @@ class Graph:
                         self.add_node(u, microrregiao="DESCONHECIDA")
                     if v not in self.nodes_data:
                         self.add_node(v, microrregiao="DESCONHECIDA")
+                    # Peso opcional (permite negativos para experimentos com Bellman-Ford)
+                    w_val = 1.0
+                    w_raw = row.get(weight_col)
+                    if w_raw is not None and str(w_raw).strip() != "":
+                        try:
+                            w_val = float(str(w_raw).strip())
+                        except ValueError:
+                            w_val = 1.0
                     # Peso: se o grafo não for ponderado, será forçado a 1.0 em add_edge.
                     # Caso queira algum peso, poderia-se derivar de 'stops' (ex.: int(stops)+1). Mantemos 1.0 por simplicidade.
                     self.add_edge(
                         u=u,
                         v=v,
-                        weight=1.0,
+                        weight=w_val,
                         airline=row.get('airline'),
                         stops=row.get('stops'),
                         equipment=row.get('equipment')
