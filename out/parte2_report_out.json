@@ -1,0 +1,51 @@
+{
+  "report": "performance",
+  "timestamp": "2025-11-21T20:44:28Z",
+  "graph": {
+    "domain": "routes",
+    "directed": false,
+    "nodes": 3425,
+    "edges": 135326
+  },
+  "runs": [
+    {
+      "algorithm": "dijkstra",
+      "from": "MEX",
+      "to": "LAX",
+      "cost": 1.0,
+      "path_length": 2,
+      "elapsed_ms": 2.71
+    },
+    {
+      "algorithm": "dijkstra",
+      "from": "MEX",
+      "to": "JFK",
+      "cost": 1.0,
+      "path_length": 2,
+      "elapsed_ms": 1.808
+    },
+    {
+      "algorithm": "bfs",
+      "from": "MEX",
+      "visited": 3397,
+      "elapsed_ms": 15.188
+    },
+    {
+      "algorithm": "dfs",
+      "from": "MEX",
+      "visited": 3397,
+      "elapsed_ms": 25.372
+    },
+    {
+      "algorithm": "bellman-ford",
+      "from": "MEX",
+      "distance_count": 3425,
+      "has_negative_cycle": false,
+      "elapsed_ms": 124.586
+    }
+  ],
+  "summary": {
+    "total_runs": 5,
+    "avg_elapsed_ms": 33.933
+  }
+}
