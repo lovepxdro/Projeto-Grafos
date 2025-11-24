@@ -1,6 +1,6 @@
 # Projeto Final - Teoria dos Grafos 📊
 
-Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, cujo objetivo é trabalhar conceitos de grafos aplicados ao **mapa de bairros do Recife** e posteriormente realizar a **comparação de algoritmos clássicos de grafos** em datasets maiores.
+Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, cujo objetivo é trabalhar conceitos de grafos aplicados ao **mapa de bairros do Recife** e posteriormente realizar a **comparação de algoritmos clássicos de grafos** em dataset maior sobre a malha aérea global.
 
 ---
 
@@ -15,8 +15,8 @@ Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, 
      - Bellman-Ford
    - Geração de visualizações analíticas e grafo interativo.
 
-2. **Parte 2 - Dataset Maior**
-   - Escolha e construção de um grafo com até ~200k arestas.
+2. **Parte 2 - Dataset Malha Aérea**
+   - Escolhemos um grafo com ~59k arestas sobre o fluxo de viagens aéreas pelo mundo.
    - Comparação entre BFS, DFS, Dijkstra e Bellman-Ford em termos de corretude e desempenho.
    - Discussão crítica sobre resultados e limitações.
   
