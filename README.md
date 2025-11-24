@@ -19,6 +19,32 @@ Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, 
    - Escolha e construção de um grafo com até ~200k arestas.
    - Comparação entre BFS, DFS, Dijkstra e Bellman-Ford em termos de corretude e desempenho.
    - Discussão crítica sobre resultados e limitações.
+  
+   ## 🗂️ Estrutura do Repositório
+
+```text
+.
+├── data/                # Arquivos de entrada (CSV)
+│   ├── adjacencias_bairros.csv
+│   ├── bairros_recife.csv
+│   ├── bairros_unique.csv
+│   ├── enderecos.csv
+│   ├── routes.csv
+│   └── routes_dijkstra_pairs.csv
+│
+├── out/                 # Resultados gerados pelo código
+│   ├── *.png            # Figuras de análise (histograma, subgrafo, etc.)
+│   ├── *.html           # Visualizações interativas (grafo, árvore de percurso)
+│   ├── recife_global.json
+│   ├── microrregioes.json
+│   ├── graus.csv
+│   ├── ego_bairro.csv
+│   └── parte2_report_out.json   # Relatório consolidado da Parte 2
+│
+├── src/                 # Código-fonte principal
+│   ├── algorithms.py    # BFS, DFS, Dijkstra, Bellman-Ford
+│   ├── graph.py         # Estrutura de grafo e operações básicas
+│   ├── io.py            # Leitura/escrita de dados (CSV
 
 ---
 
