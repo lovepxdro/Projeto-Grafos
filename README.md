@@ -22,7 +22,7 @@ Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, 
   
    ## 🗂️ Estrutura do Repositório
 
-```text
+```
 .
 ├── data/                # Arquivos de entrada (CSV)
 │   ├── adjacencias_bairros.csv
@@ -47,6 +47,7 @@ Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, 
 │   ├── io.py            # Leitura/escrita de dados (CSV
 
 ---
+```
 
 ## 🛠️ Tecnologias 
 - **Linguagem**: Python 3.11+
