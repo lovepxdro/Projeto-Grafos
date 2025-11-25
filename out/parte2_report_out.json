@@ -1,51 +1,96 @@
 {
-  "report": "performance",
-  "timestamp": "2025-11-21T20:44:28Z",
-  "graph": {
-    "domain": "routes",
-    "directed": false,
-    "nodes": 3425,
-    "edges": 135326
-  },
-  "runs": [
-    {
-      "algorithm": "dijkstra",
-      "from": "MEX",
-      "to": "LAX",
-      "cost": 1.0,
-      "path_length": 2,
-      "elapsed_ms": 2.71
-    },
-    {
-      "algorithm": "dijkstra",
-      "from": "MEX",
-      "to": "JFK",
-      "cost": 1.0,
-      "path_length": 2,
-      "elapsed_ms": 1.808
-    },
+  "algorithm": "report",
+  "graph_kind": "routes",
+  "directed": false,
+  "node_items": [
+    "MEX",
+    "LAX",
+    "JFK"
+  ],
+  "metrics": [
     {
       "algorithm": "bfs",
+      "duration_ms": 16.634,
+      "ok": true,
       "from": "MEX",
-      "visited": 3397,
-      "elapsed_ms": 15.188
+      "visited_count": 3397
     },
     {
       "algorithm": "dfs",
+      "duration_ms": 23.904,
+      "ok": true,
       "from": "MEX",
-      "visited": 3397,
-      "elapsed_ms": 25.372
+      "visited_count": 3397
     },
     {
       "algorithm": "bellman-ford",
+      "duration_ms": 118.676,
+      "ok": true,
       "from": "MEX",
-      "distance_count": 3425,
-      "has_negative_cycle": false,
-      "elapsed_ms": 124.586
+      "has_negative_cycle": false
+    },
+    {
+      "algorithm": "bfs",
+      "duration_ms": 14.286,
+      "ok": true,
+      "from": "LAX",
+      "visited_count": 3397
+    },
+    {
+      "algorithm": "dfs",
+      "duration_ms": 22.314,
+      "ok": true,
+      "from": "LAX",
+      "visited_count": 3397
+    },
+    {
+      "algorithm": "bellman-ford",
+      "duration_ms": 118.41,
+      "ok": true,
+      "from": "LAX",
+      "has_negative_cycle": false
+    },
+    {
+      "algorithm": "bfs",
+      "duration_ms": 14.481,
+      "ok": true,
+      "from": "JFK",
+      "visited_count": 3397
+    },
+    {
+      "algorithm": "dfs",
+      "duration_ms": 22.389,
+      "ok": true,
+      "from": "JFK",
+      "visited_count": 3397
+    },
+    {
+      "algorithm": "bellman-ford",
+      "duration_ms": 117.76,
+      "ok": true,
+      "from": "JFK",
+      "has_negative_cycle": false
+    },
+    {
+      "algorithm": "dijkstra",
+      "duration_ms": 2.219,
+      "ok": true,
+      "from": "MEX",
+      "to": "LAX",
+      "path_len": 2,
+      "cost": 1.0
+    },
+    {
+      "algorithm": "dijkstra",
+      "duration_ms": 2.695,
+      "ok": true,
+      "from": "LAX",
+      "to": "JFK",
+      "path_len": 2,
+      "cost": 1.0
     }
   ],
   "summary": {
-    "total_runs": 5,
-    "avg_elapsed_ms": 33.933
+    "total_tasks": 11
   }
 }

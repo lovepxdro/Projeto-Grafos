@@ -37,6 +37,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+import time
 import re
 import unicodedata
 from typing import Any, Dict
@@ -385,6 +386,103 @@ def cmd_dijkstra_pairs(args: argparse.Namespace) -> int:
 	return 0
 
 
+def cmd_report(args: argparse.Namespace) -> int:
+	"""Mede tempo por algoritmo/tarefa e salva em JSON agregado.
+
+	Regras:
+	- Os itens posicionais (items) são tratados como nós de interesse.
+	  * Para BFS/DFS/Bellman-Ford: cada item é usado como origem.
+	  * Para Dijkstra: pares consecutivos (item[i] -> item[i+1]).
+	- Em modo bairros, os nomes são normalizados para o canônico.
+	- Saída padrão: out/parte2_report.json (ou caminho via --json).
+	"""
+	g, is_routes = _build_graph(args, weighted=True, directed=getattr(args, "directed", False))
+	items_raw: list[str] = getattr(args, "items", []) or []
+	items: list[str] = [_resolve_nome(x, g, is_routes) for x in items_raw]
+
+	report: Dict[str, Any] = {
+		"algorithm": "report",
+		"graph_kind": "routes" if is_routes else "bairros",
+		"directed": bool(getattr(args, "directed", False)),
+		"node_items": items_raw,
+		"metrics": []
+	}
+
+	def _time_task(name: str, fn, *fargs):
+		start = time.perf_counter()
+		ok = True
+		out: Dict[str, Any] | None = None
+		err: str | None = None
+		try:
+			out = fn(g, *fargs)
+		except Exception as e:
+			ok = False
+			err = str(e)
+		elapsed_ms = (time.perf_counter() - start) * 1000.0
+		entry: Dict[str, Any] = {
+			"algorithm": name,
+			"duration_ms": round(elapsed_ms, 3),
+			"ok": ok,
+		}
+		if name in ("bfs", "dfs"):
+			entry["from"] = fargs[0] if fargs else None
+			if ok and out is not None:
+				order = out.get("order", [])
+				entry["visited_count"] = len(order)
+		elif name == "bellman-ford":
+			entry["from"] = fargs[0] if fargs else None
+			if ok and out is not None:
+				entry["has_negative_cycle"] = out.get("has_negative_cycle", False)
+		elif name == "dijkstra":
+			if len(fargs) >= 2:
+				entry["from"], entry["to"] = fargs[0], fargs[1]
+			if ok and out is not None:
+				entry["path_len"] = len(out.get("path", []))
+				entry["cost"] = out.get("cost")
+		if not ok and err is not None:
+			entry["error"] = err
+		report["metrics"].append(entry)
+
+	# Execução das tarefas
+	starts = items or []
+	if not starts:
+		# Fallback: tenta usar um nó qualquer do grafo como origem
+		try:
+			any_node = next(iter(g.nodes_data.keys()))
+		except Exception:
+			any_node = None
+		if any_node:
+			starts = [any_node]
+
+	for s in starts:
+		_time_task("bfs", bfs, s)
+		_time_task("dfs", dfs, s)
+		_time_task("bellman-ford", bellman_ford, s)
+
+	if len(starts) >= 2:
+		for i in range(len(starts) - 1):
+			origem, destino = starts[i], starts[i + 1]
+			_time_task("dijkstra", dijkstra, origem, destino)
+
+	# Resumo simples
+	report["summary"] = {"total_tasks": len(report["metrics"]) }
+
+	# Salva
+	out_path = Path(args.json) if args.json else (OUT_DIR / "parte2_report.json")
+	out_path.parent.mkdir(parents=True, exist_ok=True)
+	with open(out_path, "w", encoding="utf-8") as f:
+		json.dump(report, f, ensure_ascii=False, indent=2)
+	print(f"[report] Métricas salvas em: {out_path}")
+	# Preview enxuto
+	for m in report["metrics"][:5]:
+		al = m.get("algorithm")
+		frm = m.get("from")
+		to = m.get("to")
+		dt = m.get("duration_ms")
+		print(f"  - {al} {frm or ''}{(' -> ' + to) if to else ''}: {dt} ms")
+	return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
 	parser = argparse.ArgumentParser(
 		prog="recife-graph",
@@ -421,6 +519,10 @@ def build_parser() -> argparse.ArgumentParser:
 	p_bf = sub.add_parser("bellman-ford", help="Distâncias + ciclo negativo")
 	p_bf.add_argument("start", type=str, help="Nó de origem")
 	p_bf.set_defaults(func=cmd_bellman_ford)
+	# report
+	p_rep = sub.add_parser("report", help="Mede tempo por algoritmo/tarefa e salva JSON agregado")
+	p_rep.add_argument("items", nargs="*", help="Nós de interesse: usados como origem (BFS/DFS/BF) e em pares consecutivos (Dijkstra)")
+	p_rep.set_defaults(func=cmd_report)
 	return parser
 
 
