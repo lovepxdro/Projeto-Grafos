@@ -19,7 +19,8 @@ Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, 
    - Escolhemos um grafo com ~59k arestas sobre o fluxo de viagens aéreas pelo mundo.
    - Comparação entre BFS, DFS, Dijkstra e Bellman-Ford em termos de corretude e desempenho.
    - Discussão crítica sobre resultados e limitações.
-  
+
+
    ## 🗂️ Estrutura do Repositório
 
 ```
@@ -48,6 +49,32 @@ Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, 
 
 ---
 ```
+
+## ▶️ Como executar o projeto
+
+Os dois cenários abordados no projeto compartilham os mesmos métodos de execução, centralizados em dois scripts principais:
+
+- **`python src/solve.py`**  
+  Este script atua como o **orquestrador principal** do projeto.  
+  Ele é responsável por:
+  - carregar os dados a partir da pasta `data/`;
+  - construir as instâncias dos grafos (bairros do Recife e grafo da Parte 2);
+  - calcular todas as métricas necessárias;
+  - executar os algoritmos de caminhos mínimos;
+  - gerar os artefatos e saídas obrigatórias na pasta `out/`.
+
+  Ao ser executado, o script produz arquivos como:
+  - métricas globais e por microrregião do grafo de Recife;
+  - ego-networks;
+  - figuras de análise (PNG);
+  - visualizações interativas em HTML;
+  - relatório consolidado da Parte 2 (`parte2_report_out.json`).
+
+  Execução:
+
+  ```bash
+  python src/solve.py
+
 
 ## 🛠️ Tecnologias 
 - **Linguagem**: Python 3.11+
