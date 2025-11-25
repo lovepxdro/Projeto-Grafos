@@ -39,8 +39,6 @@ OUT_DIR.mkdir(parents=True, exist_ok=True)
 def gerar_arvore_percurso(g: Graph, resultado_percurso: dict | None):
     """
     Gera 'out/arvore_percurso.html' usando PyVis com Layout Hierárquico.
-    Atende ao requisito: "Transforme o percurso em árvore... destacar caminho".
-    Visual: Origem (Verde) -> Destino (Vermelho) em layout Top-Down.
     """
     if Network is None:
         print("  [viz.py] PyVis não instalado. Pulando Task 7.")
@@ -65,8 +63,7 @@ def gerar_arvore_percurso(g: Graph, resultado_percurso: dict | None):
     for i, node in enumerate(path_nodes):
         micro = g.get_microrregiao(node) or "N/A"
         
-        # Definição de Cores e Formas
-        color = "#97C2FC" # Azul padrão (Intermediário)
+        color = "#97C2FC" # Azul padrão
         shape = "dot"
         size = 20
         label_extra = ""
@@ -92,16 +89,14 @@ def gerar_arvore_percurso(g: Graph, resultado_percurso: dict | None):
             font={"size": 16, "face": "arial", "strokeWidth": 2, "strokeColor": "#ffffff"}
         )
 
-    # Adiciona Arestas com nomes de ruas
+    # Adiciona Arestas
     for i in range(len(path_nodes) - 1):
         u = path_nodes[i]
         v = path_nodes[i+1]
         
-        # Recupera dados da aresta (peso e logradouro)
         edge_weight = 1.0
         logradouro = "?"
         
-        # Busca na lista de adjacência
         found = False
         for info in g.adj.get(u, []):
             if info["node"] == v:
@@ -114,14 +109,13 @@ def gerar_arvore_percurso(g: Graph, resultado_percurso: dict | None):
         
         net.add_edge(
             u, v, 
-            label=label_edge, # Mostra nome da rua na aresta
+            label=label_edge, 
             title=f"Via: {logradouro}<br>Custo: {edge_weight}",
             color="#555555",
             width=3,
             arrowStrikethrough=False
         )
 
-    # Opções para forçar Layout de Árvore (Hierarchical)
     net.set_options("""
     var options = {
         "layout": {
@@ -166,7 +160,6 @@ def gerar_arvore_percurso(g: Graph, resultado_percurso: dict | None):
 def _carregar_dados_routes(limit: int = 1000) -> tuple[list, list]:
     """
     Lê o CSV de rotas e retorna nós e arestas formatados para o Vis.js.
-    Limita a quantidade de arestas para não travar o navegador.
     """
     vis_nodes = {}
     vis_edges = []
@@ -185,25 +178,22 @@ def _carregar_dados_routes(limit: int = 1000) -> tuple[list, list]:
             for row in reader:
                 if count >= limit: break
                 
-                # Ajuste de chaves conforme seu dataset
                 u = (row.get('source airport') or "").strip()
                 v = (row.get('destination apirport') or row.get('destination airport') or "").strip()
                 
                 if not u or not v: continue
 
-                # Adiciona nós se não existirem
                 if u not in vis_nodes:
                     vis_nodes[u] = {"id": u, "label": u, "group": "Aeroporto", "value": 10, "title": f"Aeroporto: {u}"}
                 if v not in vis_nodes:
                     vis_nodes[v] = {"id": v, "label": v, "group": "Aeroporto", "value": 10, "title": f"Aeroporto: {v}"}
 
-                # Adiciona aresta
                 airline = row.get('airline', '?')
-                weight = row.get('weight', '?')  # Captura o peso
+                weight = row.get('weight', '?')
                 
                 vis_edges.append({
                     "from": u, "to": v,
-                    "title": f"Airline: {airline}\nPeso: {weight}", # Exibe o peso no tooltip
+                    "title": f"Airline: {airline}\nPeso: {weight}",
                     "color": {"color": "#848484", "opacity": 0.3},
                     "arrows": "to"
                 })
@@ -217,8 +207,7 @@ def _carregar_dados_routes(limit: int = 1000) -> tuple[list, list]:
 
 def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
     """
-    Gera 'out/grafo_interativo.html' manual.
-    Inclui Bônus de UX: Troca de Dataset (Recife <-> Rotas), Filtros, Stats e Botão de Física.
+    Gera 'out/grafo_interativo.html' manual com features avançadas de UX.
     """
     print("  [viz.py] Gerando HTML Interativo Customizado (Task 9)...")
     arquivo_saida = OUT_DIR / "grafo_interativo.html"
@@ -262,7 +251,7 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
             })
             added_edges.add((u, v))
 
-    # --- 2. Preparar Dados Rotas (Parte 2) ---
+    # --- 2. Preparar Dados Rotas ---
     routes_nodes, routes_edges = _carregar_dados_routes(limit=1000)
 
     # --- 3. Serializar para JS ---
@@ -272,7 +261,8 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
     json_path = json.dumps(path_nodes, ensure_ascii=False)
     json_micros = json.dumps(sorted(list(microrregioes)), ensure_ascii=False)
 
-    # --- 4. Gerar HTML (Atenção: Chaves de JS/CSS duplicadas {{ }} para escapar a f-string) ---
+    # --- 4. Gerar HTML ---
+    # Atenção: f-strings do Python exigem que chaves literais do CSS/JS sejam duplicadas {{ }}
     html_content = f"""
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -299,6 +289,7 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
         button {{ flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s; }}
         #btn-rota {{ background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); color: white; }}
         #btn-physics {{ background: #e2e8f0; color: #1e293b; border: 1px solid #cbd5e1; }}
+        #btn-neighbors {{ background: white; color: #1e293b; border: 1px solid #cbd5e1; }}
         #btn-reset {{ background: white; color: var(--text); border: 1px solid #cbd5e1; }}
         #btn-rota:disabled {{ opacity: 0.5; cursor: not-allowed; }}
         #stats {{ margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; font-size: 12px; color: #64748b; }}
@@ -327,20 +318,21 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
         <button id="btn-rota" onclick="showRoute()">Rota Task 6</button>
         <button id="btn-physics" onclick="togglePhysics()">⏸ Pausar</button>
     </div>
+    
     <div class="btn-row" style="margin-top:10px;">
+        <button id="btn-neighbors" onclick="toggleNeighbors()">🕸 Vizinhança: OFF</button>
         <button id="btn-reset" onclick="resetAll()">Resetar Visual</button>
     </div>
 
     <div id="stats">
-        <div class="stat-item"><b><span id="countNodes">0</span></b>Nós</div>
-        <div class="stat-item"><b><span id="countEdges">0</span></b>Arestas</div>
+        <div class="stat-item"><b><span id="countNodes">0</span></b>Nós Visíveis</div>
+        <div class="stat-item"><b><span id="countEdges">0</span></b>Arestas Visíveis</div>
     </div>
 </div>
 
 <div id="mynetwork"></div>
 
 <script type="text/javascript">
-    // --- Dados Injetados pelo Python ---
     const DB = {{
         recife: {data_recife},
         routes: {data_routes}
@@ -348,14 +340,15 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
     const routeNodesRecife = {json_path}; 
     const microListRecife = {json_micros};
 
-    // --- Estado Global ---
+    // Estados
     let currentKey = 'recife';
     let network = null;
     let nodesDataSet = new vis.DataSet([]);
     let edgesDataSet = new vis.DataSet([]);
     let activeNodes = new Set();
+    let showNeighbors = false; // Novo estado para controlar vizinhança
 
-    // --- Inicialização ---
+    // Init
     const container = document.getElementById('mynetwork');
     const searchSelect = document.getElementById('searchNode');
     const filterSelect = document.getElementById('filterMicro');
@@ -395,11 +388,11 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
         }});
     }}
     
-    // --- Lógica de Física ---
+    // --- Lógica: Botões ---
+
     function togglePhysics() {{
         const btn = document.getElementById('btn-physics');
         const isEnabled = network.physics.physicsEnabled;
-        
         if (isEnabled) {{
             network.setOptions({{ physics: {{ enabled: false }} }});
             btn.innerText = "▶ Ativar";
@@ -411,6 +404,21 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
         }}
     }}
 
+    function toggleNeighbors() {{
+        const btn = document.getElementById('btn-neighbors');
+        showNeighbors = !showNeighbors;
+        if (showNeighbors) {{
+            btn.innerText = "🕸 Vizinhança: ON";
+            btn.style.backgroundColor = "#e2e8f0"; // Estilo 'Ativo'
+        }} else {{
+            btn.innerText = "🕸 Vizinhança: OFF";
+            btn.style.backgroundColor = "white";
+        }}
+        updateVisuals(); // Recalcula visualização com a nova regra
+    }}
+
+    // --- Lógica: Dados ---
+
     function loadDataset(key) {{
         currentKey = key;
         activeNodes.clear();
@@ -421,16 +429,12 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
         nodesDataSet.add(data.nodes);
         edgesDataSet.add(data.edges);
 
-        // Atualizar Search Dropdown
         searchSelect.innerHTML = '<option value="">Selecione...</option>';
         [...data.nodes].sort((a, b) => a.label.localeCompare(b.label)).forEach(n => {{
             const opt = document.createElement('option');
-            opt.value = n.id; 
-            opt.innerText = n.label;
-            searchSelect.appendChild(opt);
+            opt.value = n.id; opt.innerText = n.label; searchSelect.appendChild(opt);
         }});
 
-        // Configurações Específicas por Dataset
         if (key === 'recife') {{
             microFilterDiv.style.display = 'block';
             filterSelect.innerHTML = '<option value="">Todas</option>';
@@ -440,34 +444,33 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
             btnRota.disabled = false;
             btnRota.innerText = "Rota Task 6";
         }} else {{
-            // Modo Rotas
             microFilterDiv.style.display = 'none';
             btnRota.disabled = true; 
             btnRota.innerText = "N/A (Só Recife)";
         }}
         
-        // Resetar física ao trocar dataset
+        // Resetar configurações ao trocar dataset
         network.setOptions({{ physics: {{ enabled: true }} }});
         const btnPhys = document.getElementById('btn-physics');
-        if(btnPhys) {{
-             btnPhys.innerText = "⏸ Pausar";
-             btnPhys.style.backgroundColor = "#e2e8f0";
-        }}
+        if(btnPhys) {{ btnPhys.innerText = "⏸ Pausar"; btnPhys.style.backgroundColor = "#e2e8f0"; }}
+        
+        // Reset vizinhança
+        showNeighbors = false;
+        const btnNeigh = document.getElementById('btn-neighbors');
+        if(btnNeigh) {{ btnNeigh.innerText = "Vizinhança: OFF"; btnNeigh.style.backgroundColor = "white"; }}
 
         updateStats(data.nodes.length, data.edges.length);
         network.fit();
     }}
 
-    function switchDataset(key) {{
-        loadDataset(key);
-    }}
-
+    function switchDataset(key) {{ loadDataset(key); }}
+    
     function updateStats(n, e) {{ 
         document.getElementById('countNodes').innerText = n; 
         document.getElementById('countEdges').innerText = e; 
     }}
 
-    // --- Ações ---
+    // --- Lógica: Visual e Filtros ---
 
     function selectNode(id) {{
         if(!id) return;
@@ -481,9 +484,7 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
         if (currentKey !== 'recife') return;
         if (!micro) return resetAll();
         activeNodes.clear();
-        nodesDataSet.forEach(n => {{
-            if(n.microrregiao === micro) activeNodes.add(n.id);
-        }});
+        nodesDataSet.forEach(n => {{ if(n.microrregiao === micro) activeNodes.add(n.id); }});
         updateVisuals();
         const arr = Array.from(activeNodes);
         if(arr.length) network.fit({{ nodes: arr, animation: true }});
@@ -491,7 +492,7 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
 
     function showRoute() {{
         if (currentKey !== 'recife') return;
-        if (!routeNodesRecife.length) return alert("Rota vazia ou não calculada");
+        if (!routeNodesRecife.length) return alert("Rota vazia");
         activeNodes.clear();
         routeNodesRecife.forEach(id => activeNodes.add(id));
         updateVisuals();
@@ -512,42 +513,62 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
         const updatesE = [];
         const isActive = activeNodes.size > 0;
         
-        let vn = 0, ve = 0;
+        // Sets para determinar o que fica "Brilhante" (highlighted)
+        let highlightedNodes = new Set();
+        let highlightedEdges = new Set();
 
         if (!isActive) {{
-            // Estado padrão
-            allN.forEach(n => updatesN.push({{ id: n.id, color: null, opacity: 1, font: {{ color: '#343434' }} }}));
-            allE.forEach(e => updatesE.push({{ id: e.id, color: null, width: 2, opacity: 0.6 }}));
-            vn = allN.length; ve = allE.length;
+            // Se nada selecionado, tudo brilha
+            allN.forEach(n => highlightedNodes.add(n.id));
+            allE.forEach(e => highlightedEdges.add(e.id));
         }} else {{
-            // Estado filtrado/destacado
-            allN.forEach(n => {{
-                if (activeNodes.has(n.id)) {{
-                    updatesN.push({{ id: n.id, color: null, opacity: 1, font: {{ color: '#000', background: 'rgba(255,255,255,0.8)' }} }});
-                    vn++;
-                }} else {{
-                    updatesN.push({{ id: n.id, color: 'rgba(200,200,200,0.2)', opacity: 0.2, font: {{ color: 'rgba(0,0,0,0)' }} }});
-                }}
-            }});
-            
-            allE.forEach(e => {{
-                if (activeNodes.has(e.from) && activeNodes.has(e.to)) {{
-                    updatesE.push({{ id: e.id, color: {{ color: '#f97316', opacity: 1 }}, width: 4 }});
-                    ve++;
-                }} else {{
-                    updatesE.push({{ id: e.id, color: 'rgba(200,200,200,0.05)', width: 1 }});
-                }}
-            }});
+            // Lógica principal de Vizinhança
+            if (!showNeighbors) {{
+                // MODO CLÁSSICO: Apenas nós selecionados + arestas entre eles
+                activeNodes.forEach(id => highlightedNodes.add(id));
+                allE.forEach(e => {{
+                    if (activeNodes.has(e.from) && activeNodes.has(e.to)) highlightedEdges.add(e.id);
+                }});
+            }} else {{
+                // MODO VIZINHANÇA: Nós selecionados + Arestas conectadas + Vizinhos
+                activeNodes.forEach(id => highlightedNodes.add(id));
+                allE.forEach(e => {{
+                    // Se a aresta toca em um nó ativo (entrada ou saída)
+                    if (activeNodes.has(e.from) || activeNodes.has(e.to)) {{
+                        highlightedEdges.add(e.id);
+                        highlightedNodes.add(e.from); // Ilumina origem
+                        highlightedNodes.add(e.to);   // Ilumina destino
+                    }}
+                }});
+            }}
         }}
+
+        // Aplica estilos baseados nos Sets calculados acima
+        allN.forEach(n => {{
+            if (highlightedNodes.has(n.id)) {{
+                updatesN.push({{ id: n.id, color: null, opacity: 1, font: {{ color: '#000', background: 'rgba(255,255,255,0.8)' }} }});
+            }} else {{
+                updatesN.push({{ id: n.id, color: 'rgba(200,200,200,0.2)', opacity: 0.2, font: {{ color: 'rgba(0,0,0,0)' }} }});
+            }}
+        }});
+        
+        allE.forEach(e => {{
+            if (highlightedEdges.has(e.id)) {{
+                updatesE.push({{ id: e.id, color: {{ color: '#f97316', opacity: 1 }}, width: 4 }});
+            }} else {{
+                updatesE.push({{ id: e.id, color: 'rgba(200,200,200,0.05)', width: 1 }});
+            }}
+        }});
         
         nodesDataSet.update(updatesN);
         edgesDataSet.update(updatesE);
-        updateStats(vn, ve);
+        
+        // Atualiza Stats com o que está REALMENTE visível (highlighted)
+        updateStats(highlightedNodes.size, highlightedEdges.size);
     }}
 
-    // Boot
     initNetwork();
-    loadDataset('recife'); // Carrega recife por padrão
+    loadDataset('recife');
 
 </script>
 </body>
@@ -573,7 +594,6 @@ def gerar_visualizacoes_analiticas(g: Graph):
     bairros = list(g.nodes_data.keys())
     graus = [g.get_grau(n) for n in bairros]
 
-    # 1. Histograma
     try:
         plt.figure(figsize=(8, 5))
         plt.hist(graus, bins=range(min(graus), max(graus) + 2), color='#4A90E2', edgecolor='black', alpha=0.8, align='left')
@@ -581,68 +601,34 @@ def gerar_visualizacoes_analiticas(g: Graph):
         plt.tight_layout(); plt.savefig(OUT_DIR / "analise_1_histograma_graus.png"); plt.close()
     except Exception as e: print(f"  [ERRO] G1: {e}")
 
-    # 2. Top 10 Circular
     try:
-        # Identificar Top 10 bairros
         ranking = sorted([(n, g.get_grau(n)) for n in g.nodes_data], key=lambda x: x[1], reverse=True)[:10]
         top_nodes = [r[0] for r in ranking]
-        
         plt.figure(figsize=(8, 8))
-        
-        # Layout Circular Manual (sem networkx)
         pos = {}
         n_top = len(top_nodes)
         radius = 1.0
-        
         for i, node in enumerate(top_nodes):
-            angle = 2 * math.pi * i / n_top
-            # Gira 90 graus para o primeiro ficar no topo
-            angle += math.pi / 2 
+            angle = 2 * math.pi * i / n_top + math.pi / 2 
             pos[node] = (radius * math.cos(angle), radius * math.sin(angle))
-            
-        # Desenhar Arestas (apenas entre os Top 10)
         for i, u in enumerate(top_nodes):
             for j, v in enumerate(top_nodes):
                 if i >= j: continue 
-                
-                # Verifica adjacência no grafo 'g'
                 conectados = False
                 for info in g.adj.get(u, []):
-                    if info["node"] == v:
-                        conectados = True
-                        break
-                
+                    if info["node"] == v: conectados = True; break
                 if conectados:
-                    x_vals = [pos[u][0], pos[v][0]]
-                    y_vals = [pos[u][1], pos[v][1]]
-                    plt.plot(x_vals, y_vals, color='gray', alpha=0.5, linewidth=1.5, zorder=1)
-
-        # Desenhar Nós
+                    plt.plot([pos[u][0], pos[v][0]], [pos[u][1], pos[v][1]], color='gray', alpha=0.5, linewidth=1.5, zorder=1)
         x_nodes = [pos[n][0] for n in top_nodes]
         y_nodes = [pos[n][1] for n in top_nodes]
-        sizes = [g.get_grau(n) * 50 for n in top_nodes] # Escala o tamanho pelo grau
-        
+        sizes = [g.get_grau(n) * 50 for n in top_nodes]
         plt.scatter(x_nodes, y_nodes, s=sizes, c='dodgerblue', edgecolors='white', linewidths=1.5, zorder=2)
-        
-        # Rótulos
         for node, (x, y) in pos.items():
-            # Afasta o texto do centro
-            dist = 1.15
-            plt.text(x * dist, y * dist, node, fontsize=10, ha='center', va='center', fontweight='bold', color='#333')
+            plt.text(x * 1.15, y * 1.15, node, fontsize=10, ha='center', va='center', fontweight='bold', color='#333')
+        plt.title(f'Subgrafo dos {n_top} Bairros Mais Conectados'); plt.axis('off'); plt.xlim(-1.5, 1.5); plt.ylim(-1.5, 1.5)
+        plt.tight_layout(); plt.savefig(OUT_DIR / "analise_2_subgrafo_top10.png"); plt.close()
+    except Exception as e: print(f"  [ERRO] Gráfico 2: {e}")
 
-        plt.title(f'Subgrafo dos {n_top} Bairros Mais Conectados')
-        plt.axis('off') 
-        plt.xlim(-1.5, 1.5)
-        plt.ylim(-1.5, 1.5)
-        
-        plt.tight_layout()
-        plt.savefig(OUT_DIR / "analise_2_subgrafo_top10.png")
-        plt.close()
-        print(f"  -> {OUT_DIR / 'analise_2_subgrafo_top10.png'}")
-    except Exception as e:
-        print(f"  [ERRO] Gráfico 2: {e}")
-
-    # 3. Densidade Micro
     try:
         micro_dens = {}
         for n in bairros:
