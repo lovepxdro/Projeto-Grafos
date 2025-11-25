@@ -8,29 +8,16 @@ OUT_DIR = REPO_ROOT / "out"
 
 
 class Graph:
-    """
-    Representa o grafo usando uma lista de adjacência.
 
-    Atributos:
-        nodes_data (dict): Armazena dados dos nós (ex: microrregião).
-                           Formato: { "nome_bairro": {"microrregiao": "X.Y"} }
-        adj (dict): A lista de adjacência do grafo.
-                    Formato: {
-                        "bairro_A": [
-                            {"node": "bairro_B", "weight": 1.0, "data": {...}},
-                            ...
-                        ],
-                        ...
-                    }
-    """
+    # Representa o grafo usando uma lista de adjacência.
 
     def __init__(self, directed: bool = False, weighted: bool = True):
-        """
-        directed: True  -> grafo dirigido
-                  False -> não dirigido (padrão, caso dos bairros)
-        weighted: True  -> usa pesos das arestas (padrão)
-                  False -> grafo não ponderado (peso tratado como 1.0)
-        """
+       
+        # directed: True  -> grafo dirigido
+        #           False -> não dirigido (padrão, caso dos bairros)
+        # weighted: True  -> usa pesos das arestas (padrão)
+        #           False -> grafo não ponderado (peso tratado como 1.0)
+        
         self.directed = directed
         self.weighted = weighted
 
@@ -39,33 +26,25 @@ class Graph:
 
         print("Instância do Grafo criada.")
 
-    # === Métricas genéricas (úteis para a Parte 2) ===
+    # === Métricas genéricas (para a Parte 2) ===
 
     @property
     def num_vertices(self) -> int:
-        """Número de vértices |V|."""
-        # usa a adjacência, que sempre existe
         return len(self.adj)
 
     @property
     def num_edges(self) -> int:
-        """
-        Número de arestas |E|.
-        - Se o grafo é dirigido, conta todas as entradas da lista de adjacência.
-        - Se não é dirigido, divide por 2 (pois cada aresta aparece duas vezes).
-        """
+
+        # - Se o grafo é dirigido, conta todas as entradas da lista de adjacência.
+        # - Se não é dirigido, divide por 2 (basicamentecada aresta aparece duas vezes).
+
         total = sum(len(vizinhos) for vizinhos in self.adj.values())
         return total if self.directed else total // 2
 
     def degrees(self) -> Dict[str, int]:
-        """Retorna um dicionário {nó: grau(nó)}."""
         return {v: len(vizinhos) for v, vizinhos in self.adj.items()}
 
     def degree_distribution(self) -> Dict[int, int]:
-        """
-        Distribuição de graus: {grau k: quantidade de vértices com esse grau}.
-        Serve direto para montar o item 'distribuição de graus' da Parte 2.
-        """
         dist: Dict[int, int] = {}
         for d in self.degrees().values():
             dist[d] = dist.get(d, 0) + 1
@@ -74,21 +53,13 @@ class Graph:
     # === Operações básicas de construção ===
 
     def add_node(self, node_name: str, **kwargs):
-        """
-        Adiciona um nó ao grafo.
-        'kwargs' pode conter dados como 'microrregiao'.
-        """
+
         if node_name not in self.nodes_data:
             self.nodes_data[node_name] = kwargs
             self.adj[node_name] = []
 
     def add_edge(self, u: str, v: str, weight: float = 1.0, **kwargs):
-        """
-        Adiciona uma aresta entre 'u' e 'v'.
-        - Se self.directed == False, adiciona nos dois sentidos (u->v e v->u).
-        - Se self.weighted == False, o peso é tratado como 1.0.
-        'kwargs' pode conter dados da aresta (logradouro, observacao, etc.).
-        """
+
         if u not in self.adj:
             self.add_node(u, microrregiao="DESCONHECIDA")
         if v not in self.adj:
@@ -96,24 +67,22 @@ class Graph:
 
         edge_data = kwargs
 
-        # Se o grafo não for ponderado, ignoramos o peso passado e usamos 1.0
+        # Se o grafo não for ponderado, ignora o peso passado e passamos a usamar 1.0
         if not self.weighted:
             weight = 1.0
 
-        # Aresta u -> v
         self.adj[u].append({"node": v, "weight": weight, "data": edge_data})
 
-        # Se não for dirigido, duplicamos a aresta no sentido contrário
+        # Se não for dirigido, duplica a aresta no sentido contrário
         if not self.directed:
             self.adj[v].append({"node": u, "weight": weight, "data": edge_data})
 
     # === Carregamento específico dos bairros do Recife (Parte 1) ===
 
     def load_from_csvs(self, nodes_file: Path, edges_file: Path):
-        """
-        Carrega os nós e as arestas a partir dos arquivos CSV especificados
-        (formato da Parte 1: bairros + adjacencias_bairros.csv).
-        """
+
+        # Carrega os nós e as arestas a partir dos arquivos CSV (formato da parte 1)
+
         print(f"Carregando nós de: {nodes_file}")
         try:
             with open(nodes_file, 'r', encoding='utf-8') as f:
@@ -150,7 +119,6 @@ class Graph:
         canon_map = {_normalize_key(n): n for n in self.nodes_data.keys()}
 
         def _canon_name(raw: str) -> str:
-            """Tenta encontrar o nome canônico já existente; se não achar, devolve formatado."""
             key = _normalize_key(raw)
             return canon_map.get(key, raw.strip().title())
 
@@ -169,11 +137,9 @@ class Graph:
                         )
                         weight_float = 1.0
 
-                    # Normaliza e busca forma canônica
                     u = _canon_name(row['bairro_origem'])
                     v = _canon_name(row['bairro_destino'])
 
-                    # Se ainda não existir, cria (com aviso)
                     if u not in self.nodes_data:
                         print(f"[AVISO] '{u}' não encontrado. Criando nó DESCONHECIDA.")
                         self.add_node(u, microrregiao="DESCONHECIDA")
@@ -181,7 +147,6 @@ class Graph:
                         print(f"[AVISO] '{v}' não encontrado. Criando nó DESCONHECIDA.")
                         self.add_node(v, microrregiao="DESCONHECIDA")
 
-                    # Adiciona a aresta
                     self.add_edge(
                         u=u,
                         v=v,

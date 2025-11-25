@@ -2,11 +2,9 @@ import pytest
 import sys
 from pathlib import Path
 
-# --- Configuração de Path ---
 SRC_DIR = Path(__file__).resolve().parents[1] / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
-# ---------------------------
 
 from graphs.graph import Graph
 from graphs.algorithms import dfs
@@ -14,15 +12,9 @@ from graphs.algorithms import dfs
 
 @pytest.fixture
 def grafo_dfs_arvore():
-    """
-    Grafo em forma de árvore (sem ciclo).
 
-        A
-       / \
-      B   C
-         /
-        D
-    """
+    # Grafo em forma de árvore (sem ciclo).
+
     g = Graph()
     for node in ["A", "B", "C", "D"]:
         g.add_node(node)
@@ -36,15 +28,9 @@ def grafo_dfs_arvore():
 
 @pytest.fixture
 def grafo_dfs_ciclico():
-    """
-    Grafo com ciclo simples.
 
-        A
-       / \
-      B---C
+    # Grafo com ciclo simples.
 
-    Arestas não direcionadas: A-B, B-C, C-A
-    """
     g = Graph()
     for node in ["A", "B", "C"]:
         g.add_node(node)
@@ -57,26 +43,21 @@ def grafo_dfs_ciclico():
 
 
 def test_dfs_order_tree(grafo_dfs_arvore):
-    """DFS: verifica se visita todos os nós partindo da raiz."""
+
+    # teste verifica se o dfs visita todos os nós partindo da raiz.
+
     result = dfs(grafo_dfs_arvore, "A")
     order = result["order"]
 
-    # Deve visitar exatamente esses nós
     assert set(order) == {"A", "B", "C", "D"}
-    # A precisa ser o primeiro
     assert order[0] == "A"
 
 
 def _has_cycle_undirected(graph: Graph, parent: dict[str, str | None]) -> bool:
-    """
-    Detecta ciclo em grafo não-direcionado usando a árvore de DFS (parent)
-    e a lista de adjacência.
 
-    Ideia:
-      - Em uma árvore, o número de arestas únicas = número de nós - 1.
-      - Se existir alguma aresta {u, v} que não seja aresta de árvore (parent),
-        temos um ciclo.
-    """
+    # Detecta ciclo em grafo não-direcionado usando a árvore de DFS (parent)
+    # e a lista de adjacência.
+
     # Conjunto de arestas de árvore (u, v) como pares ordenados canônicos
     tree_edges = set()
     for v, p in parent.items():
@@ -98,13 +79,9 @@ def _has_cycle_undirected(graph: Graph, parent: dict[str, str | None]) -> bool:
 
 
 def test_dfs_detects_cycle(grafo_dfs_ciclico):
-    """
-    DFS: detecção de ciclo em grafo pequeno.
 
-    O algoritmo dfs em si não retorna 'has_cycle',
-    mas usando a árvore (parent) conseguimos identificar
-    se existem arestas extras que formam ciclo.
-    """
+    # teste de detecção de ciclo em grafo pequeno, utilizando a função acima
+
     result = dfs(grafo_dfs_ciclico, "A")
     parent = result["parent"]
 
@@ -112,7 +89,7 @@ def test_dfs_detects_cycle(grafo_dfs_ciclico):
 
 
 def test_dfs_invalid_start():
-    """Deve falhar com ValueError se o nó de origem não existir."""
+    # Deve falhar com ValueError se o nó de origem não existir.
     g = Graph()
     g.add_node("A")
 
@@ -120,10 +97,9 @@ def test_dfs_invalid_start():
         dfs(g, "X")
 
 def test_dfs_fully_disconnected_graph():
-    """
-    DFS em grafo totalmente desconectado:
-    Apenas o nó inicial deve aparecer na ordem de visita.
-    """
+
+    # grafo totalmente desconectado:
+
     g = Graph()
     for node in ["A", "B", "C", "D"]:
         g.add_node(node)
@@ -135,12 +111,9 @@ def test_dfs_fully_disconnected_graph():
     assert set(order) == {"A"}         # nenhum outro aparece
 
 def test_dfs_linear_chain():
-    """
-    Grafo em linha:
-        A - B - C - D
 
-    DFS deve visitar A, depois B, depois C, depois D (dependendo da ordem da adjacência).
-    """
+    # Grafo em linha, que nem no bfs
+
     g = Graph()
     for node in ["A", "B", "C", "D"]:
         g.add_node(node)
@@ -160,32 +133,21 @@ def test_dfs_linear_chain():
     assert order.index("C") > order.index("B")
     assert order.index("D") > order.index("C")
 
+
 def test_dfs_branching_order():
-    """
-    Grafo em que a ordem da adjacência importa:
 
-        A
-       /|\
-      B C D
+    # Verifica se o DFS iterativo usa reversed(vizinhos) de forma a simular
+    # a ordem da DFS recursiva, visitando os vizinhos na ordem B, C, D.
 
-    DFS usa a pilha e empilha os vizinhos em ordem reversa.
-    Logo, espera-se explorar D primeiro, depois C, depois B.
-    """
     g = Graph()
+
     for node in ["A", "B", "C", "D"]:
         g.add_node(node)
 
-    g.add_edge("A", "B", 1.0)
-    g.add_edge("A", "C", 1.0)
-    g.add_edge("A", "D", 1.0)
+    for v in ["B", "C", "D"]:
+        g.add_edge("A", v, 1.0)
 
-    # ordem da adjacência fica: B, C, D
-    # reversed -> D, C, B (ordem de empilhamento)
-    # DFS deve visitar: A, D, C, B
     result = dfs(g, "A")
     order = result["order"]
 
-    assert order[0] == "A"
-    assert order[1] == "D"
-    assert order[2] == "C"
-    assert order[3] == "B"
+    assert order == ["A", "B", "C", "D"]

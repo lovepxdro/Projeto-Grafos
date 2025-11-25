@@ -10,27 +10,6 @@ except ImportError:
 
 def dijkstra(graph: Graph, start_node: str, end_node: str) -> Dict[str, Any]:
 
-    """
-    Calcula o caminho mais curto entre dois nós usando o algoritmo de Dijkstra.
-
-    Esta é uma implementação própria, usando 'heapq' como fila de prioridade,
-    conforme permitido pelos requisitos do projeto.
-
-    Argumentos:
-        graph (Graph): A instância do grafo (da classe 'graph.py').
-        start_node (str): O nome do bairro de origem.
-        end_node (str): O nome do bairro de destino.
-
-    Levanta:
-        ValueError: Se um peso de aresta negativo for encontrado.
-        ValueError: Se o nó de origem ou destino não existir no grafo.
-
-    Retorna:
-        Dict[str, Any]: Um dicionário contendo:
-            - "cost" (float): O custo total do caminho (inf se não houver caminho).
-            - "path" (List[str]): A lista de nós (bairros) no caminho.
-    """
-    
     if start_node not in graph.nodes_data:
         raise ValueError(f"Nó de origem não encontrado no grafo: '{start_node}'")
     if end_node not in graph.nodes_data:
@@ -48,11 +27,9 @@ def dijkstra(graph: Graph, start_node: str, end_node: str) -> Dict[str, Any]:
     while priority_queue:
         current_distance, current_node = heapq.heappop(priority_queue)
 
-        # Otimização: Se já processamos um caminho mais curto para este nó, ignore
         if current_distance > distances[current_node]:
             continue
-            
-        # Otimização: Se chegamos ao destino, podemos parar
+
         if current_node == end_node:
             print("Destino encontrado.")
             break
@@ -89,25 +66,18 @@ def dijkstra(graph: Graph, start_node: str, end_node: str) -> Dict[str, Any]:
         path.append(current)
         current = previous_nodes[current]
     
-    path.reverse() # Inverte para ficar da origem -> destino
+    path.reverse() # Inverter para ficar da origem -> destino
 
-    # Verificação final
     if path[0] == start_node:
         return {"cost": final_cost, "path": path}
     else:
-        # Isso não deve acontecer se a lógica estiver correta e end_node foi alcançado
         print(f"Erro na reconstrução do caminho para '{end_node}'.")
         return {"cost": float('inf'), "path": []}
     
 def bfs(graph: Graph, start_node: str) -> Dict[str, Any]:
-    """
-    Busca em Largura (BFS) a partir de 'start_node'.
 
-    Retorna um dicionário com:
-        - "order": lista de nós na ordem em que foram visitados
-        - "distance": dict nó -> distância em número de arestas
-        - "parent": dict nó -> predecessor na árvore de BFS
-    """
+    # busca em largura
+
     if start_node not in graph.nodes_data:
         raise ValueError(f"Nó de origem não encontrado no grafo: '{start_node}'")
 
@@ -141,13 +111,9 @@ def bfs(graph: Graph, start_node: str) -> Dict[str, Any]:
     }
 
 def dfs(graph: Graph, start_node: str) -> Dict[str, Any]:
-    """
-    Busca em Profundidade (DFS) iterativa a partir de 'start_node'.
+    
+    # busca em profundidade
 
-    Retorna:
-        - "order": lista de nós na ordem em que foram visitados
-        - "parent": dict nó -> predecessor na árvore de DFS
-    """
     if start_node not in graph.nodes_data:
         raise ValueError(f"Nó de origem não encontrado no grafo: '{start_node}'")
 
@@ -166,9 +132,6 @@ def dfs(graph: Graph, start_node: str) -> Dict[str, Any]:
         visited[u] = True
         order.append(u)
 
-        # percorre vizinhos na ordem em que estão na adjacência
-        # usamos reversed para que o primeiro vizinho da lista
-        # seja explorado primeiro (simulando recursão)
         vizinhos = graph.adj.get(u, [])
         for info in reversed(vizinhos):
             v = info["node"]
@@ -183,24 +146,14 @@ def dfs(graph: Graph, start_node: str) -> Dict[str, Any]:
     }
 
 def bellman_ford(graph: Graph, start_node: str) -> Dict[str, Any]:
-    """
-    Algoritmo de Bellman-Ford.
-
-    Aceita pesos negativos e detecta ciclos negativos.
-    Retorna:
-        - "distance": dict nó -> custo mínimo a partir de start_node
-        - "parent": dict nó -> predecessor no caminho mínimo
-        - "has_negative_cycle": bool indicando se há ciclo negativo
-    """
+    
     if start_node not in graph.nodes_data:
         raise ValueError(f"Nó de origem não encontrado no grafo: '{start_node}'")
 
-    # inicializa distâncias
     dist: Dict[str, float] = {node: float("inf") for node in graph.nodes_data}
     parent: Dict[str, str | None] = {node: None for node in graph.nodes_data}
     dist[start_node] = 0.0
 
-    # monta lista de arestas (u, v, w)
     edges: List[Tuple[str, str, float]] = []
     for u, vizinhos in graph.adj.items():
         for info in vizinhos:
@@ -210,7 +163,6 @@ def bellman_ford(graph: Graph, start_node: str) -> Dict[str, Any]:
 
     n = len(graph.nodes_data)
 
-    # relaxa todas as arestas n-1 vezes
     for _ in range(n - 1):
         trocou = False
         for u, v, w in edges:

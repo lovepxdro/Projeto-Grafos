@@ -2,11 +2,9 @@ import pytest
 import sys
 from pathlib import Path
 
-# --- Configuração de Path ---
 SRC_DIR = Path(__file__).resolve().parents[1] / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
-# ---------------------------
 
 from graphs.graph import Graph
 from graphs.algorithms import bfs
@@ -14,21 +12,9 @@ from graphs.algorithms import bfs
 
 @pytest.fixture
 def grafo_bfs():
-    """
-    Grafo pequeno para testar níveis de BFS.
 
-        A
-       / \
-      B   C
-     /
-    D
+    # Grafo pequeno para testar níveis de BFS.
 
-    Níveis a partir de A:
-    - A: 0
-    - B: 1
-    - C: 1
-    - D: 2
-    """
     g = Graph()
     for node in ["A", "B", "C", "D"]:
         g.add_node(node)
@@ -41,7 +27,7 @@ def grafo_bfs():
 
 
 def test_bfs_levels(grafo_bfs):
-    """BFS: verifica se os níveis (distâncias) estão corretos em um grafo pequeno."""
+    #BFS: verifica se os níveis (distâncias) estão corretos em um grafo pequeno.
     result = bfs(grafo_bfs, "A")
 
     dist = result["distance"]
@@ -53,10 +39,7 @@ def test_bfs_levels(grafo_bfs):
 
 
 def test_bfs_order(grafo_bfs):
-    """
-    Garante que a ordem de visita respeita as camadas:
-    primeiro A, depois B/C (em alguma ordem), depois D.
-    """
+    # Garante que a ordem de visita respeita as camadas:
     result = bfs(grafo_bfs, "A")
     order = result["order"]
 
@@ -68,13 +51,10 @@ def test_bfs_order(grafo_bfs):
 
 
 def test_bfs_unreachable():
-    """
-    Testa nós inalcançáveis: distâncias devem permanecer -1.
-    Grafo:
-        A -- B
 
-        C isolado
-    """
+    # Testa nós inalcançáveis: distâncias devem permanecer -1.
+    # exemplo: A - B e C isolado
+
     g = Graph()
     for node in ["A", "B", "C"]:
         g.add_node(node)
@@ -91,7 +71,7 @@ def test_bfs_unreachable():
 
 
 def test_bfs_invalid_start():
-    """Deve falhar com ValueError se o nó de origem não existir."""
+    # Deve falhar com ValueError se o nó de origem não existir.
     g = Graph()
     g.add_node("A")
 
@@ -99,10 +79,9 @@ def test_bfs_invalid_start():
         bfs(g, "X")
 
 def test_bfs_fully_disconnected_graph():
-    """
-    Grafo totalmente desconectado.
-    Apenas o nó inicial deve ter distância 0; os demais permanecem -1.
-    """
+
+    # Grafo totalmente desconexo.
+
     g = Graph()
 
     for node in ["A", "B", "C", "D"]:
@@ -117,12 +96,9 @@ def test_bfs_fully_disconnected_graph():
     assert dist["D"] == -1
 
 def test_bfs_linear_chain():
-    """
-    Grafo em linha simples:
-        A - B - C - D
 
-    As distâncias devem ser 0, 1, 2, 3 respectivamente.
-    """
+    # Grafo em linha simples: A - B - C - D
+        
     g = Graph()
 
     for node in ["A", "B", "C", "D"]:
