@@ -52,28 +52,21 @@ Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, 
 
 ## ▶️ Como executar o projeto
 
-Os dois cenários abordados no projeto compartilham os mesmos métodos de execução, centralizados em dois scripts principais:
+Os dois cenários do projeto (bairros do Recife e rotas aéreas da Parte 2) são executados a partir de dois pontos principais:
 
-- **`python src/solve.py`**  
-  Este script atua como o **orquestrador principal** do projeto.  
-  Ele é responsável por:
-  - carregar os dados a partir da pasta `data/`;
-  - construir as instâncias dos grafos (bairros do Recife e grafo da Parte 2);
-  - calcular todas as métricas necessárias;
-  - executar os algoritmos de caminhos mínimos;
-  - gerar os artefatos e saídas obrigatórias na pasta `out/`.
+- um **script orquestrador** (`solve.py`), que roda todo o pipeline de uma vez;
+- uma **ferramenta de linha de comando (CLI)** (`src.cli`), para testar algoritmos e cenários específicos.
 
-  Ao ser executado, o script produz arquivos como:
-  - métricas globais e por microrregião do grafo de Recife;
-  - ego-networks;
-  - figuras de análise (PNG);
-  - visualizações interativas em HTML;
-  - relatório consolidado da Parte 2 (`parte2_report_out.json`).
+Use `python` para Windows ou `python3` para Linux/MacOs.
 
-  Execução:
+---
 
-  ```bash
-  python src/solve.py
+### 1) Execução completa – `solve.py`
+
+`solve.py` funciona como o **orquestrador** do projeto: ele carrega os dados da pasta `data/`, constrói os grafos, calcula as métricas e gera todos os arquivos de saída na pasta `out/` (JSON, CSV, figuras e HTML).
+
+```bash
+python3 src/solve.py
 
 
 ## 🛠️ Tecnologias 
