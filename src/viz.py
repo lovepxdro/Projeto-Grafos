@@ -1,5 +1,6 @@
 import json
 import math
+import csv
 from pathlib import Path
 import typing
 
@@ -27,6 +28,7 @@ except ImportError:
 
 # Caminhos
 REPO_ROOT = Path(__file__).resolve().parents[1]
+DATA_DIR = REPO_ROOT / "data"
 OUT_DIR = REPO_ROOT / "out"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -158,20 +160,72 @@ def gerar_arvore_percurso(g: Graph, resultado_percurso: dict | None):
 
 
 # ==============================================================================
-#  TASK 9 + BÔNUS: GERAÇÃO DO HTML INTERATIVO
+#  TASK 9 + BÔNUS: GERAÇÃO DO HTML INTERATIVO (MULTI-DATASET)
 # ==============================================================================
+
+def _carregar_dados_routes(limit: int = 1000) -> tuple[list, list]:
+    """
+    Lê o CSV de rotas e retorna nós e arestas formatados para o Vis.js.
+    Limita a quantidade de arestas para não travar o navegador.
+    """
+    vis_nodes = {}
+    vis_edges = []
+    routes_file = DATA_DIR / "routes.csv"
+
+    if not routes_file.exists():
+        print(f"  [viz.py] Aviso: {routes_file} não encontrado. Modo Rotas ficará vazio.")
+        return [], []
+
+    print(f"  [viz.py] Carregando dataset de rotas (limite: {limit} arestas)...")
+    
+    try:
+        with open(routes_file, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            count = 0
+            for row in reader:
+                if count >= limit: break
+                
+                # Ajuste de chaves conforme seu dataset
+                u = (row.get('source airport') or "").strip()
+                v = (row.get('destination apirport') or row.get('destination airport') or "").strip()
+                
+                if not u or not v: continue
+
+                # Adiciona nós se não existirem
+                if u not in vis_nodes:
+                    vis_nodes[u] = {"id": u, "label": u, "group": "Aeroporto", "value": 10, "title": f"Aeroporto: {u}"}
+                if v not in vis_nodes:
+                    vis_nodes[v] = {"id": v, "label": v, "group": "Aeroporto", "value": 10, "title": f"Aeroporto: {v}"}
+
+                # Adiciona aresta
+                airline = row.get('airline', '?')
+                weight = row.get('weight', '?')  # Captura o peso
+                
+                vis_edges.append({
+                    "from": u, "to": v,
+                    "title": f"Airline: {airline}\nPeso: {weight}", # Exibe o peso no tooltip
+                    "color": {"color": "#848484", "opacity": 0.3},
+                    "arrows": "to"
+                })
+                count += 1
+                
+        return list(vis_nodes.values()), vis_edges
+    except Exception as e:
+        print(f"  [viz.py] Erro ao ler rotas: {e}")
+        return [], []
+
 
 def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
     """
     Gera 'out/grafo_interativo.html' manual.
-    Inclui Bônus de UX: Filtro por Microrregião, Isolamento visual, Stats.
+    Inclui Bônus de UX: Troca de Dataset (Recife <-> Rotas), Filtros, Stats e Botão de Física.
     """
     print("  [viz.py] Gerando HTML Interativo Customizado (Task 9)...")
     arquivo_saida = OUT_DIR / "grafo_interativo.html"
 
-    vis_nodes = []
-    vis_edges = []
-    
+    # --- 1. Preparar Dados Recife ---
+    recife_nodes = []
+    recife_edges = []
     path_nodes = list(resultado_percurso.get("percurso", [])) if resultado_percurso else []
     graus = [g.get_grau(n) for n in g.nodes_data.keys()]
     max_grau = max(graus) if graus else 1
@@ -183,7 +237,7 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
         microrregioes.add(micro)
         size = 15 + (grau / max_grau) * 30
         
-        vis_nodes.append({
+        recife_nodes.append({
             "id": node,
             "label": node,
             "title": f"Bairro: {node}\nMicrorregião: {micro}\nGrau: {grau}",
@@ -198,26 +252,33 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
         for info in neighbors:
             v = info["node"]
             if (u, v) in added_edges or (v, u) in added_edges: continue
+            
             w = info.get("weight", 1.0)
             log = info.get("data", {}).get("logradouro", "")
-            vis_edges.append({
+            recife_edges.append({
                 "from": u, "to": v,
                 "title": f"Logradouro: {log}\nPeso: {w}",
                 "color": {"color": "#848484", "opacity": 0.4}
             })
             added_edges.add((u, v))
 
-    json_nodes = json.dumps(vis_nodes, ensure_ascii=False)
-    json_edges = json.dumps(vis_edges, ensure_ascii=False)
+    # --- 2. Preparar Dados Rotas (Parte 2) ---
+    routes_nodes, routes_edges = _carregar_dados_routes(limit=1000)
+
+    # --- 3. Serializar para JS ---
+    data_recife = json.dumps({"nodes": recife_nodes, "edges": recife_edges}, ensure_ascii=False)
+    data_routes = json.dumps({"nodes": routes_nodes, "edges": routes_edges}, ensure_ascii=False)
+    
     json_path = json.dumps(path_nodes, ensure_ascii=False)
     json_micros = json.dumps(sorted(list(microrregioes)), ensure_ascii=False)
 
+    # --- 4. Gerar HTML (Atenção: Chaves de JS/CSS duplicadas {{ }} para escapar a f-string) ---
     html_content = f"""
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Grafo Interativo do Recife</title>
+    <title>Grafo Interativo - Projeto Grafos</title>
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -229,106 +290,237 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
             background: var(--panel-bg); padding: 20px; border-radius: 16px;
             box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); width: 300px;
             border: 1px solid rgba(255,255,255,0.5);
+            max-height: 90vh; overflow-y: auto;
         }}
-        h3 {{ margin-top: 0; color: var(--text); font-size: 18px; font-weight: 800; margin-bottom: 15px; }}
-        label {{ display: block; font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 5px; text-transform: uppercase; }}
-        select {{ width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 15px; }}
-        .btn-row {{ display: flex; gap: 10px; }}
+        h3 {{ margin-top: 0; color: var(--text); font-size: 18px; font-weight: 800; margin-bottom: 15px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }}
+        label {{ display: block; font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 5px; text-transform: uppercase; margin-top: 10px; }}
+        select {{ width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 10px; background: white; }}
+        .btn-row {{ display: flex; gap: 10px; margin-top: 15px; }}
         button {{ flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s; }}
         #btn-rota {{ background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); color: white; }}
+        #btn-physics {{ background: #e2e8f0; color: #1e293b; border: 1px solid #cbd5e1; }}
         #btn-reset {{ background: white; color: var(--text); border: 1px solid #cbd5e1; }}
+        #btn-rota:disabled {{ opacity: 0.5; cursor: not-allowed; }}
         #stats {{ margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; font-size: 12px; color: #64748b; }}
         .stat-item b {{ display: block; font-size: 16px; color: var(--text); }}
     </style>
 </head>
 <body>
 <div id="panel">
-    <h3>Grafo Recife</h3>
-    <label>Buscar Bairro</label>
+    <h3>Painel de Controle</h3>
+    
+    <label>Escolher Dataset</label>
+    <select id="datasetSelect" onchange="switchDataset(this.value)">
+        <option value="recife">Bairros do Recife (Parte 1)</option>
+        <option value="routes">Malha Aérea (Parte 2)</option>
+    </select>
+
+    <label>Buscar Nó</label>
     <select id="searchNode" onchange="selectNode(this.value)"><option value="">Selecione...</option></select>
-    <label>Filtrar Microrregião</label>
-    <select id="filterMicro" onchange="filterByMicro(this.value)"><option value="">Todas</option></select>
+    
+    <div id="microFilterDiv">
+        <label>Filtrar Microrregião</label>
+        <select id="filterMicro" onchange="filterByMicro(this.value)"><option value="">Todas</option></select>
+    </div>
+
     <div class="btn-row">
         <button id="btn-rota" onclick="showRoute()">Rota Task 6</button>
-        <button id="btn-reset" onclick="resetAll()">Resetar</button>
+        <button id="btn-physics" onclick="togglePhysics()">⏸ Pausar</button>
     </div>
+    <div class="btn-row" style="margin-top:10px;">
+        <button id="btn-reset" onclick="resetAll()">Resetar Visual</button>
+    </div>
+
     <div id="stats">
-        <div class="stat-item"><b><span id="countNodes">0</span></b>Bairros</div>
-        <div class="stat-item"><b><span id="countEdges">0</span></b>Conexões</div>
+        <div class="stat-item"><b><span id="countNodes">0</span></b>Nós</div>
+        <div class="stat-item"><b><span id="countEdges">0</span></b>Arestas</div>
     </div>
 </div>
-<div id="mynetwork"></div>
-<script type="text/javascript">
-    const nodesData = {json_nodes}; const edgesData = {json_edges};
-    const routeNodes = {json_path}; const microList = {json_micros};
-    const nodes = new vis.DataSet(nodesData); const edges = new vis.DataSet(edgesData);
-    
-    // UI Init
-    const searchSelect = document.getElementById('searchNode');
-    [...nodesData].sort((a, b) => a.label.localeCompare(b.label)).forEach(n => {{
-        const opt = document.createElement('option'); opt.value = n.id; opt.innerText = n.label; searchSelect.appendChild(opt);
-    }});
-    const filterSelect = document.getElementById('filterMicro');
-    microList.forEach(m => {{
-        const opt = document.createElement('option'); opt.value = m; opt.innerText = m; filterSelect.appendChild(opt);
-    }});
-    function updateStats(n, e) {{ document.getElementById('countNodes').innerText = n; document.getElementById('countEdges').innerText = e; }}
-    updateStats(nodes.length, edges.length);
 
-    // Grafo
+<div id="mynetwork"></div>
+
+<script type="text/javascript">
+    // --- Dados Injetados pelo Python ---
+    const DB = {{
+        recife: {data_recife},
+        routes: {data_routes}
+    }};
+    const routeNodesRecife = {json_path}; 
+    const microListRecife = {json_micros};
+
+    // --- Estado Global ---
+    let currentKey = 'recife';
+    let network = null;
+    let nodesDataSet = new vis.DataSet([]);
+    let edgesDataSet = new vis.DataSet([]);
+    let activeNodes = new Set();
+
+    // --- Inicialização ---
     const container = document.getElementById('mynetwork');
-    const data = {{ nodes: nodes, edges: edges }};
+    const searchSelect = document.getElementById('searchNode');
+    const filterSelect = document.getElementById('filterMicro');
+    const microFilterDiv = document.getElementById('microFilterDiv');
+    const btnRota = document.getElementById('btn-rota');
+
     const options = {{
         nodes: {{ shape: 'dot', borderWidth: 2, shadow: true }},
         edges: {{ width: 2, smooth: {{ type: 'continuous' }}, color: {{ inherit: 'from' }} }},
         physics: {{
             forceAtlas2Based: {{
-                gravitationalConstant: -150,  // Aumentado de -60 para -150 (mais força de repulsão)
-                springLength: 250,            // Aumentado de 120 para 250 (mais espaço entre nós)
-                springConstant: 0.05,
-                avoidOverlap: 1               // Força os nós a não ficarem um em cima do outro
+                gravitationalConstant: -100,
+                springLength: 150,
+                springConstant: 0.08,
+                damping: 0.8,
+                avoidOverlap: 1
             }},
             solver: 'forceAtlas2Based',
             stabilization: {{ enabled: true, iterations: 1000 }}
         }},
         interaction: {{ hover: true, multiselect: true, selectConnectedEdges: false }}
     }};
-    const network = new vis.Network(container, data, options);
 
-    let activeNodes = new Set();
+    function initNetwork() {{
+        const data = {{ nodes: nodesDataSet, edges: edgesDataSet }};
+        network = new vis.Network(container, data, options);
 
-    network.on("click", function (params) {{
-        const clicked = params.nodes[0];
-        if (clicked) {{ if (activeNodes.has(clicked)) activeNodes.delete(clicked); else activeNodes.add(clicked); }}
-        else {{ activeNodes.clear(); }}
+        network.on("click", function (params) {{
+            const clicked = params.nodes[0];
+            if (clicked) {{
+                if (activeNodes.has(clicked)) activeNodes.delete(clicked);
+                else activeNodes.add(clicked);
+            }} else {{
+                activeNodes.clear();
+            }}
+            updateVisuals();
+        }});
+    }}
+    
+    // --- Lógica de Física ---
+    function togglePhysics() {{
+        const btn = document.getElementById('btn-physics');
+        const isEnabled = network.physics.physicsEnabled;
+        
+        if (isEnabled) {{
+            network.setOptions({{ physics: {{ enabled: false }} }});
+            btn.innerText = "▶ Ativar";
+            btn.style.backgroundColor = "#94a3b8"; 
+        }} else {{
+            network.setOptions({{ physics: {{ enabled: true }} }});
+            btn.innerText = "⏸ Pausar";
+            btn.style.backgroundColor = "#e2e8f0";
+        }}
+    }}
+
+    function loadDataset(key) {{
+        currentKey = key;
+        activeNodes.clear();
+        
+        const data = DB[key];
+        nodesDataSet.clear();
+        edgesDataSet.clear();
+        nodesDataSet.add(data.nodes);
+        edgesDataSet.add(data.edges);
+
+        // Atualizar Search Dropdown
+        searchSelect.innerHTML = '<option value="">Selecione...</option>';
+        [...data.nodes].sort((a, b) => a.label.localeCompare(b.label)).forEach(n => {{
+            const opt = document.createElement('option');
+            opt.value = n.id; 
+            opt.innerText = n.label;
+            searchSelect.appendChild(opt);
+        }});
+
+        // Configurações Específicas por Dataset
+        if (key === 'recife') {{
+            microFilterDiv.style.display = 'block';
+            filterSelect.innerHTML = '<option value="">Todas</option>';
+            microListRecife.forEach(m => {{
+                const opt = document.createElement('option'); opt.value = m; opt.innerText = m; filterSelect.appendChild(opt);
+            }});
+            btnRota.disabled = false;
+            btnRota.innerText = "Rota Task 6";
+        }} else {{
+            // Modo Rotas
+            microFilterDiv.style.display = 'none';
+            btnRota.disabled = true; 
+            btnRota.innerText = "N/A (Só Recife)";
+        }}
+        
+        // Resetar física ao trocar dataset
+        network.setOptions({{ physics: {{ enabled: true }} }});
+        const btnPhys = document.getElementById('btn-physics');
+        if(btnPhys) {{
+             btnPhys.innerText = "⏸ Pausar";
+             btnPhys.style.backgroundColor = "#e2e8f0";
+        }}
+
+        updateStats(data.nodes.length, data.edges.length);
+        network.fit();
+    }}
+
+    function switchDataset(key) {{
+        loadDataset(key);
+    }}
+
+    function updateStats(n, e) {{ 
+        document.getElementById('countNodes').innerText = n; 
+        document.getElementById('countEdges').innerText = e; 
+    }}
+
+    // --- Ações ---
+
+    function selectNode(id) {{
+        if(!id) return;
+        activeNodes.add(id);
         updateVisuals();
-    }});
+        network.fit({{ nodes: [id], animation: true }});
+        searchSelect.value = "";
+    }}
 
-    function selectNode(id) {{ if(!id) return; activeNodes.add(id); updateVisuals(); network.fit({{ nodes: [id], animation: true }}); searchSelect.value = ""; }}
     function filterByMicro(micro) {{
+        if (currentKey !== 'recife') return;
         if (!micro) return resetAll();
-        activeNodes.clear(); nodesData.forEach(n => {{ if(n.microrregiao === micro) activeNodes.add(n.id); }});
+        activeNodes.clear();
+        nodesDataSet.forEach(n => {{
+            if(n.microrregiao === micro) activeNodes.add(n.id);
+        }});
         updateVisuals();
-        const arr = Array.from(activeNodes); if(arr.length) network.fit({{ nodes: arr, animation: true }});
+        const arr = Array.from(activeNodes);
+        if(arr.length) network.fit({{ nodes: arr, animation: true }});
     }}
+
     function showRoute() {{
-        if (!routeNodes.length) return alert("Rota vazia");
-        activeNodes.clear(); routeNodes.forEach(id => activeNodes.add(id));
-        updateVisuals(); network.fit({{ nodes: routeNodes, animation: true }});
+        if (currentKey !== 'recife') return;
+        if (!routeNodesRecife.length) return alert("Rota vazia ou não calculada");
+        activeNodes.clear();
+        routeNodesRecife.forEach(id => activeNodes.add(id));
+        updateVisuals();
+        network.fit({{ nodes: routeNodesRecife, animation: true }});
     }}
-    function resetAll() {{ activeNodes.clear(); filterSelect.value = ""; updateVisuals(); network.fit({{ animation: true }}); }}
+
+    function resetAll() {{
+        activeNodes.clear();
+        if(currentKey === 'recife') filterSelect.value = "";
+        updateVisuals();
+        network.fit({{ animation: true }});
+    }}
 
     function updateVisuals() {{
-        const allN = nodes.get(); const allE = edges.get();
-        const updatesN = []; const updatesE = [];
+        const allN = nodesDataSet.get();
+        const allE = edgesDataSet.get();
+        const updatesN = [];
+        const updatesE = [];
         const isActive = activeNodes.size > 0;
+        
         let vn = 0, ve = 0;
 
         if (!isActive) {{
+            // Estado padrão
             allN.forEach(n => updatesN.push({{ id: n.id, color: null, opacity: 1, font: {{ color: '#343434' }} }}));
             allE.forEach(e => updatesE.push({{ id: e.id, color: null, width: 2, opacity: 0.6 }}));
             vn = allN.length; ve = allE.length;
         }} else {{
+            // Estado filtrado/destacado
             allN.forEach(n => {{
                 if (activeNodes.has(n.id)) {{
                     updatesN.push({{ id: n.id, color: null, opacity: 1, font: {{ color: '#000', background: 'rgba(255,255,255,0.8)' }} }});
@@ -337,6 +529,7 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
                     updatesN.push({{ id: n.id, color: 'rgba(200,200,200,0.2)', opacity: 0.2, font: {{ color: 'rgba(0,0,0,0)' }} }});
                 }}
             }});
+            
             allE.forEach(e => {{
                 if (activeNodes.has(e.from) && activeNodes.has(e.to)) {{
                     updatesE.push({{ id: e.id, color: {{ color: '#f97316', opacity: 1 }}, width: 4 }});
@@ -346,9 +539,16 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
                 }}
             }});
         }}
-        nodes.update(updatesN); edges.update(updatesE);
+        
+        nodesDataSet.update(updatesN);
+        edgesDataSet.update(updatesE);
         updateStats(vn, ve);
     }}
+
+    // Boot
+    initNetwork();
+    loadDataset('recife'); // Carrega recife por padrão
+
 </script>
 </body>
 </html>

@@ -109,22 +109,22 @@ def main():
 
         # === IMPRESSÃO DOS RANKINGS NO TERMINAL (RESTAURADO) ===
         print("\n" + "="*40)
-        print("  🏆 DESTAQUES DO GRAFO")
-        print("="*40)
+        print("  DESTAQUES DO GRAFO")
+        print("-"*40)
         
         # 1. Maior Grau
         bairro_max, grau_max = g.get_bairro_maior_grau()
         print(f"  [Bairro com Maior Grau]")
-        print(f"  📍 Nome: {bairro_max}")
-        print(f"  🔗 Conexões: {grau_max}")
-        print("-" * 30)
+        print(f"  Nome: {bairro_max}")
+        print(f"  Conexões: {grau_max}")
+        print("-" * 40)
 
         # 2. Maior Densidade Ego
         ego_max = g.get_bairro_mais_denso_ego()
         if ego_max:
             print(f"  [Bairro com Maior Densidade Local]")
-            print(f"  📍 Nome: {ego_max['bairro']}")
-            print(f"  🕸️  Densidade: {ego_max['densidade_ego']:.4f}")
+            print(f"  Nome: {ego_max['bairro']}")
+            print(f"  Densidade: {ego_max['densidade_ego']:.4f}")
         print("="*40 + "\n")
         
     except Exception as e:
