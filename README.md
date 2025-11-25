@@ -67,7 +67,7 @@ Use `python` para Windows ou `python3` para Linux/MacOs.
 
 ```bash
 python3 src/solve.py
-
+```
 
 ## 🛠️ Tecnologias 
 - **Linguagem**: Python 3.11+
