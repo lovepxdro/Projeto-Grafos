@@ -243,14 +243,14 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
 </head>
 <body>
 <div id="panel">
-    <h3>🗺️ Grafo Recife</h3>
-    <label>🔍 Buscar Bairro</label>
+    <h3>Grafo Recife</h3>
+    <label>Buscar Bairro</label>
     <select id="searchNode" onchange="selectNode(this.value)"><option value="">Selecione...</option></select>
-    <label>🏙️ Filtrar Microrregião</label>
+    <label>Filtrar Microrregião</label>
     <select id="filterMicro" onchange="filterByMicro(this.value)"><option value="">Todas</option></select>
     <div class="btn-row">
-        <button id="btn-rota" onclick="showRoute()">🚀 Rota Task 6</button>
-        <button id="btn-reset" onclick="resetAll()">👁️ Resetar</button>
+        <button id="btn-rota" onclick="showRoute()">Rota Task 6</button>
+        <button id="btn-reset" onclick="resetAll()">Resetar</button>
     </div>
     <div id="stats">
         <div class="stat-item"><b><span id="countNodes">0</span></b>Bairros</div>
