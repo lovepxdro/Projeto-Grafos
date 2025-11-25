@@ -1,6 +1,6 @@
 # Projeto Final - Teoria dos Grafos 📊
 
-Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, cujo objetivo é trabalhar conceitos de grafos aplicados ao **mapa de bairros do Recife** e posteriormente realizar a **comparação de algoritmos clássicos de grafos** em datasets maiores.
+Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, cujo objetivo é trabalhar conceitos de grafos aplicados ao **mapa de bairros do Recife** e posteriormente realizar a **comparação de algoritmos clássicos de grafos** em dataset maior sobre a malha aérea global.
 
 ---
 
@@ -15,12 +15,39 @@ Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, 
      - Bellman-Ford
    - Geração de visualizações analíticas e grafo interativo.
 
-2. **Parte 2 - Dataset Maior**
-   - Escolha e construção de um grafo com até ~200k arestas.
+2. **Parte 2 - Dataset Malha Aérea**
+   - Escolhemos um grafo com ~59k arestas sobre o fluxo de viagens aéreas pelo mundo.
    - Comparação entre BFS, DFS, Dijkstra e Bellman-Ford em termos de corretude e desempenho.
    - Discussão crítica sobre resultados e limitações.
+  
+   ## 🗂️ Estrutura do Repositório
+
+```
+.
+├── data/                # Arquivos de entrada (CSV)
+│   ├── adjacencias_bairros.csv
+│   ├── bairros_recife.csv
+│   ├── bairros_unique.csv
+│   ├── enderecos.csv
+│   ├── routes.csv
+│   └── routes_dijkstra_pairs.csv
+│
+├── out/                 # Resultados gerados pelo código
+│   ├── *.png            # Figuras de análise (histograma, subgrafo, etc.)
+│   ├── *.html           # Visualizações interativas (grafo, árvore de percurso)
+│   ├── recife_global.json
+│   ├── microrregioes.json
+│   ├── graus.csv
+│   ├── ego_bairro.csv
+│   └── parte2_report_out.json   # Relatório consolidado da Parte 2
+│
+├── src/                 # Código-fonte principal
+│   ├── algorithms.py    # BFS, DFS, Dijkstra, Bellman-Ford
+│   ├── graph.py         # Estrutura de grafo e operações básicas
+│   ├── io.py            # Leitura/escrita de dados (CSV
 
 ---
+```
 
 ## 🛠️ Tecnologias 
 - **Linguagem**: Python 3.11+
