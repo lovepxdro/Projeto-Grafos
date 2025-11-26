@@ -8,7 +8,6 @@ import re
 try:
     from graphs.graph import Graph
     from graphs.algorithms import dijkstra 
-    # Importa TODAS as funções de visualização do novo módulo viz.py
     from viz import gerar_html_customizado, gerar_visualizacoes_analiticas, gerar_arvore_percurso
 except ImportError:
     try:
@@ -86,70 +85,85 @@ def executar_task_6_percurso_especial(g: Graph) -> dict | None:
 # --- Main ---
 
 def main():
-    print("Iniciando tasks (Parte 1)...")
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    
+    # =========================================================================
+    # PARTE 1: RECIFE
+    # =========================================================================
+    print("\n" + "#"*50)
+    print(" >>> INICIANDO PARTE 1: GRAFOS DO RECIFE")
+    print("#"*50)
+    
     nodes_path = DATA_DIR / "bairros_unique.csv"
     edges_path = DATA_DIR / "adjacencias_bairros.csv" 
 
     if not nodes_path.exists() or not edges_path.exists():
-        print("ERRO FATAL: Arquivos CSV não encontrados em data/.")
-        return
+        print("ERRO FATAL: Arquivos CSV de Recife não encontrados em data/.")
+    else:
+        g = Graph(directed=False, weighted=True)
+        g.load_from_csvs(nodes_file=nodes_path, edges_file=edges_path)
 
-    g = Graph()
-    g.load_from_csvs(nodes_file=nodes_path, edges_file=edges_path)
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
+        # Tasks de Dados/Métricas e Rankings
+        try:
+            # Exportação de arquivos
+            metricas = {"ordem": g.get_ordem(), "tamanho": g.get_tamanho()}
+            with open(OUT_DIR / "recife_global.json", 'w', encoding='utf-8') as f: json.dump(metricas, f, indent=4)
+            g.export_microrregioes_json()
+            g.export_ego_csv()
+            g.export_graus_csv()
 
-    # Tasks de Dados/Métricas e Rankings
-    try:
-        # Exportação de arquivos
-        metricas = {"ordem": g.get_ordem(), "tamanho": g.get_tamanho()}
-        with open(OUT_DIR / "recife_global.json", 'w', encoding='utf-8') as f: json.dump(metricas, f, indent=4)
-        g.export_microrregioes_json()
-        g.export_ego_csv()
-        g.export_graus_csv()
+            # === IMPRESSÃO DOS RANKINGS ===
+            print("\n  🏆 DESTAQUES (RECIFE)")
+            bairro_max, grau_max = g.get_bairro_maior_grau()
+            print(f"  [Maior Grau] {bairro_max} ({grau_max} conexões)")
+            ego_max = g.get_bairro_mais_denso_ego()
+            if ego_max:
+                print(f"  [Maior Densidade] {ego_max['bairro']} ({ego_max['densidade_ego']:.4f})")
+            print("")
+            
+        except Exception as e:
+            print(f"[ERRO nos Rankings] {e}")
 
-        # === IMPRESSÃO DOS RANKINGS NO TERMINAL (RESTAURADO) ===
-        print("\n" + "="*40)
-        print("  DESTAQUES DO GRAFO")
-        print("-"*40)
+        # Tasks Algorítmicas
+        executar_task_6_distancias(g)
+        res_esp = executar_task_6_percurso_especial(g)
         
-        # 1. Maior Grau
-        bairro_max, grau_max = g.get_bairro_maior_grau()
-        print(f"  [Bairro com Maior Grau]")
-        print(f"  Nome: {bairro_max}")
-        print(f"  Conexões: {grau_max}")
-        print("-" * 40)
-
-        # 2. Maior Densidade Ego
-        ego_max = g.get_bairro_mais_denso_ego()
-        if ego_max:
-            print(f"  [Bairro com Maior Densidade Local]")
-            print(f"  Nome: {ego_max['bairro']}")
-            print(f"  Densidade: {ego_max['densidade_ego']:.4f}")
-        print("="*40 + "\n")
+        # VISUALIZAÇÃO PARTE 1
+        print("Gerando visualizações (Recife)...")
+        gerar_arvore_percurso(g, res_esp)
+        # O HTML interativo agora é gerado unificando os dados, então chamamos no final?
+        # A função gerar_html_customizado do viz.py lê os CSVs de rotas automaticamente.
+        # Então podemos chamar aqui, passando o grafo do Recife para compor a parte 1.
+        gerar_html_customizado(g, res_esp)
         
-    except Exception as e:
-        print(f"[ERRO nos Rankings] {e}")
+        # Gráficos Estáticos (Recife)
+        gerar_visualizacoes_analiticas(g, file_prefix="recife_")
 
-    # Tasks Algorítmicas
-    executar_task_6_distancias(g)
-    res_esp = executar_task_6_percurso_especial(g)
-    
-    # ---------------------------------------------
-    # VISUALIZAÇÃO (Tudo via viz.py)
-    # ---------------------------------------------
-    print("-" * 30)
-    
-    # Task 7: Árvore Hierárquica
-    gerar_arvore_percurso(g, res_esp)
-    
-    # Task 9 + Bônus: Grafo Interativo
-    gerar_html_customizado(g, res_esp)
-    
-    # Task 8: Gráficos Estáticos
-    gerar_visualizacoes_analiticas(g)
-    
-    print("-" * 30)
-    print("Concluído. Verifique a pasta 'out/'.")
+
+    # =========================================================================
+    # PARTE 2: DATASET MAIOR (ROTAS)
+    # =========================================================================
+    print("\n" + "#"*50)
+    print(" >>> INICIANDO PARTE 2: MALHA AÉREA (ROTAS)")
+    print("#"*50)
+
+    routes_path = DATA_DIR / "routes.csv"
+    if not routes_path.exists():
+        print(f"Aviso: {routes_path} não encontrado. Pulando Parte 2.")
+    else:
+        # Grafo Dirigido e Ponderado
+        g_routes = Graph(directed=True, weighted=True)
+        g_routes.load_routes_csv(routes_path)
+        
+        print(f"Grafo de Rotas carregado: {g_routes.get_ordem()} nós, {g_routes.get_tamanho()} arestas.")
+        
+        # Visualizações Estáticas (Rotas)
+        # Isso gera os histogramas e Top 10 para a Parte 2
+        gerar_visualizacoes_analiticas(g_routes, file_prefix="rota_")
+
+    print("\n" + "="*50)
+    print(" CONCLUÍDO. Verifique a pasta 'out/'.")
+    print("="*50)
 
 if __name__ == "__main__":
     main()

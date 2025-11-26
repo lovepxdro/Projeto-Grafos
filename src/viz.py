@@ -45,7 +45,7 @@ def gerar_arvore_percurso(g: Graph, resultado_percurso: dict | None):
         return
 
     if not resultado_percurso or not resultado_percurso.get("percurso"):
-        print("  [viz.py] Sem percurso para gerar árvore.")
+        # print("  [viz.py] Sem percurso para gerar árvore.") # Silenciado para não poluir Parte 2
         return
 
     print("  [viz.py] Gerando Árvore de Percurso (Hierárquica)...")
@@ -166,10 +166,10 @@ def _carregar_dados_routes(limit: int = 1000) -> tuple[list, list]:
     routes_file = DATA_DIR / "routes.csv"
 
     if not routes_file.exists():
-        print(f"  [viz.py] Aviso: {routes_file} não encontrado. Modo Rotas ficará vazio.")
+        # print(f"  [viz.py] Aviso: {routes_file} não encontrado. Modo Rotas ficará vazio.")
         return [], []
 
-    print(f"  [viz.py] Carregando dataset de rotas (limite: {limit} arestas)...")
+    print(f"  [viz.py] Carregando dataset de rotas para HTML (limite: {limit} arestas)...")
     
     try:
         with open(routes_file, 'r', encoding='utf-8') as f:
@@ -262,7 +262,6 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
     json_micros = json.dumps(sorted(list(microrregioes)), ensure_ascii=False)
 
     # --- 4. Gerar HTML ---
-    # Atenção: f-strings do Python exigem que chaves literais do CSS/JS sejam duplicadas {{ }}
     html_content = f"""
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -457,7 +456,7 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
         // Reset vizinhança
         showNeighbors = false;
         const btnNeigh = document.getElementById('btn-neighbors');
-        if(btnNeigh) {{ btnNeigh.innerText = "Vizinhança: OFF"; btnNeigh.style.backgroundColor = "white"; }}
+        if(btnNeigh) {{ btnNeigh.innerText = "🕸 Vizinhança: OFF"; btnNeigh.style.backgroundColor = "white"; }}
 
         updateStats(data.nodes.length, data.edges.length);
         network.fit();
@@ -583,64 +582,133 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
 #  TASK 8: VISUALIZAÇÕES ANALÍTICAS (Matplotlib)
 # ==============================================================================
 
-def gerar_visualizacoes_analiticas(g: Graph):
+def gerar_visualizacoes_analiticas(g: Graph, file_prefix: str = ""):
     """
-    Gera gráficos estáticos (.png).
+    Gera gráficos estáticos (.png) adaptáveis (Recife ou Rotas).
+    - file_prefix: prefixo para o arquivo (ex: 'rota_') para não sobrescrever.
     """
     if plt is None: return
-    print("  [viz.py] Gerando visualizações analíticas (Task 8)...")
+    print(f"  [viz.py] Gerando visualizações analíticas (prefixo='{file_prefix}')...")
     try: plt.style.use('ggplot')
     except: pass
     bairros = list(g.nodes_data.keys())
     graus = [g.get_grau(n) for n in bairros]
+    if not graus:
+        print("  [viz.py] Grafo vazio, pulando gráficos.")
+        return
 
+    # 1. Histograma
     try:
         plt.figure(figsize=(8, 5))
         plt.hist(graus, bins=range(min(graus), max(graus) + 2), color='#4A90E2', edgecolor='black', alpha=0.8, align='left')
-        plt.title('Distribuição de Graus'); plt.ylabel('Qtd. Bairros')
-        plt.tight_layout(); plt.savefig(OUT_DIR / "analise_1_histograma_graus.png"); plt.close()
+        plt.title('Distribuição de Graus')
+        plt.ylabel('Qtd. Nós')
+        plt.xlabel('Grau')
+        plt.tight_layout()
+        nome_arq = OUT_DIR / f"{file_prefix}analise_1_histograma_graus.png"
+        plt.savefig(nome_arq)
+        plt.close()
+        print(f"  -> {nome_arq}")
     except Exception as e: print(f"  [ERRO] G1: {e}")
 
+    # 2. Top 10 Circular
     try:
+        # Identificar Top 10 bairros
         ranking = sorted([(n, g.get_grau(n)) for n in g.nodes_data], key=lambda x: x[1], reverse=True)[:10]
         top_nodes = [r[0] for r in ranking]
-        plt.figure(figsize=(8, 8))
-        pos = {}
-        n_top = len(top_nodes)
-        radius = 1.0
-        for i, node in enumerate(top_nodes):
-            angle = 2 * math.pi * i / n_top + math.pi / 2 
-            pos[node] = (radius * math.cos(angle), radius * math.sin(angle))
-        for i, u in enumerate(top_nodes):
-            for j, v in enumerate(top_nodes):
-                if i >= j: continue 
-                conectados = False
-                for info in g.adj.get(u, []):
-                    if info["node"] == v: conectados = True; break
-                if conectados:
-                    plt.plot([pos[u][0], pos[v][0]], [pos[u][1], pos[v][1]], color='gray', alpha=0.5, linewidth=1.5, zorder=1)
-        x_nodes = [pos[n][0] for n in top_nodes]
-        y_nodes = [pos[n][1] for n in top_nodes]
-        sizes = [g.get_grau(n) * 50 for n in top_nodes]
-        plt.scatter(x_nodes, y_nodes, s=sizes, c='dodgerblue', edgecolors='white', linewidths=1.5, zorder=2)
-        for node, (x, y) in pos.items():
-            plt.text(x * 1.15, y * 1.15, node, fontsize=10, ha='center', va='center', fontweight='bold', color='#333')
-        plt.title(f'Subgrafo dos {n_top} Bairros Mais Conectados'); plt.axis('off'); plt.xlim(-1.5, 1.5); plt.ylim(-1.5, 1.5)
-        plt.tight_layout(); plt.savefig(OUT_DIR / "analise_2_subgrafo_top10.png"); plt.close()
-    except Exception as e: print(f"  [ERRO] Gráfico 2: {e}")
+        
+        if top_nodes:
+            plt.figure(figsize=(8, 8))
+            
+            # Layout Circular Manual (sem networkx)
+            pos = {}
+            n_top = len(top_nodes)
+            radius = 1.0
+            
+            for i, node in enumerate(top_nodes):
+                angle = 2 * math.pi * i / n_top
+                angle += math.pi / 2 
+                pos[node] = (radius * math.cos(angle), radius * math.sin(angle))
+                
+            # Desenhar Arestas (apenas entre os Top 10)
+            
+            # CORREÇÃO ROBUSTA: Usa getattr para evitar AttributeError se 'directed' falhar
+            is_directed = getattr(g, "directed", False)
+            
+            for i, u in enumerate(top_nodes):
+                for j, v in enumerate(top_nodes):
+                    if i >= j: continue 
+                    
+                    # Verifica adjacência no grafo 'g'
+                    conectados = False
+                    # Checa u->v
+                    for info in g.adj.get(u, []):
+                        if info["node"] == v:
+                            conectados = True; break
+                    
+                    # Se não achou e for dirigido, checa v->u? 
+                    # Se for dirigido (Rotas), queremos ver conexão em qualquer sentido para o desenho estático
+                    if not conectados and is_directed:
+                         for info in g.adj.get(v, []):
+                            if info["node"] == u:
+                                conectados = True; break
 
+                    if conectados:
+                        x_vals = [pos[u][0], pos[v][0]]
+                        y_vals = [pos[u][1], pos[v][1]]
+                        plt.plot(x_vals, y_vals, color='gray', alpha=0.5, linewidth=1.5, zorder=1)
+
+            # Desenhar Nós
+            x_nodes = [pos[n][0] for n in top_nodes]
+            y_nodes = [pos[n][1] for n in top_nodes]
+            sizes = [g.get_grau(n) * 50 for n in top_nodes] # Escala o tamanho pelo grau
+            
+            plt.scatter(x_nodes, y_nodes, s=sizes, c='dodgerblue', edgecolors='white', linewidths=1.5, zorder=2)
+            
+            # Rótulos
+            for node, (x, y) in pos.items():
+                # Afasta o texto do centro
+                dist = 1.15
+                plt.text(x * dist, y * dist, node, fontsize=10, ha='center', va='center', fontweight='bold', color='#333')
+
+            plt.title(f'Top {n_top} Nós Mais Conectados')
+            plt.axis('off') 
+            plt.xlim(-1.5, 1.5)
+            plt.ylim(-1.5, 1.5)
+            
+            nome_arq = OUT_DIR / f"{file_prefix}analise_2_subgrafo_top10.png"
+            plt.tight_layout()
+            plt.savefig(nome_arq)
+            plt.close()
+            print(f"  -> {nome_arq}")
+    except Exception as e:
+        print(f"  [ERRO] Gráfico 2: {e}")
+
+    # 3. Densidade Micro (Só gera se houver microrregiões reais)
     try:
         micro_dens = {}
+        # Verifica se há dados válidos de microrregião
+        valid_micros = set()
+        
         for n in bairros:
-            m = g.get_microrregiao(n) or "N/A"
-            try: d = g.ego_metrics_for(n).get("densidade_ego", 0)
-            except: d = 0
-            micro_dens.setdefault(m, []).append(d)
-        if "N/A" in micro_dens: del micro_dens["N/A"]
-        ms = sorted(micro_dens.keys())
-        avgs = [sum(micro_dens[m])/len(micro_dens[m]) for m in ms]
-        plt.figure(figsize=(10, 6))
-        plt.bar(ms, avgs, color='#48C9B0', edgecolor='#145A32')
-        plt.title('Densidade Média por Microrregião'); plt.xticks(rotation=45, ha='right')
-        plt.tight_layout(); plt.savefig(OUT_DIR / "analise_3_densidade_micro.png"); plt.close()
+            m = g.get_microrregiao(n)
+            if m and m not in ["DESCONHECIDA", "N/A", None]:
+                valid_micros.add(m)
+                try: d = g.ego_metrics_for(n).get("densidade_ego", 0)
+                except: d = 0
+                micro_dens.setdefault(m, []).append(d)
+        
+        # Só plota se tiver pelo menos 2 grupos para comparar
+        if len(valid_micros) < 2:
+            pass # Silenciosamente pula para rotas
+        else:
+            ms = sorted(micro_dens.keys())
+            avgs = [sum(micro_dens[m])/len(micro_dens[m]) for m in ms]
+            plt.figure(figsize=(10, 6))
+            plt.bar(ms, avgs, color='#48C9B0', edgecolor='#145A32')
+            plt.title('Densidade Média por Microrregião'); plt.xticks(rotation=45, ha='right')
+            nome_arq = OUT_DIR / f"{file_prefix}analise_3_densidade_micro.png"
+            plt.tight_layout(); plt.savefig(nome_arq); plt.close()
+            print(f"  -> {nome_arq}")
+            
     except Exception as e: print(f"  [ERRO] G3: {e}")
