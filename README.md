@@ -25,8 +25,7 @@ Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, 
 
 ```
 ## 🗂️ Estrutura do Repositório
-```text
-.
+
 ├── data/                      # Arquivos de entrada (CSV)
 ├── out/                       # Resultados gerados pelo código
 ├── src/                       # Código-fonte principal
