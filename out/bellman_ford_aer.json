@@ -1,0 +1,33 @@
+{
+  "algorithm": "bellman-ford",
+  "from": "AER",
+  "distance": {
+    "AER": -16.5,
+    "KZN": -14.0,
+    "LED": -13.0,
+    "SVX": Infinity,
+    "NJC": Infinity,
+    "NUX": Infinity,
+    "DME": Infinity,
+    "UUA": Infinity,
+    "KGD": Infinity,
+    "EGO": Infinity,
+    "ASF": Infinity,
+    "MRV": Infinity
+  },
+  "parent": {
+    "AER": "LED",
+    "KZN": "AER",
+    "LED": "KZN",
+    "SVX": null,
+    "NJC": null,
+    "NUX": null,
+    "DME": null,
+    "UUA": null,
+    "KGD": null,
+    "EGO": null,
+    "ASF": null,
+    "MRV": null
+  },
+  "has_negative_cycle": true
+}

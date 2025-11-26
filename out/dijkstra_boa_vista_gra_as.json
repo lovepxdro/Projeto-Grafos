@@ -1,0 +1,10 @@
+{
+  "algorithm": "dijkstra",
+  "from": "Boa Vista",
+  "to": "Graças",
+  "cost": 2.0,
+  "path": [
+    "Boa Vista",
+    "Graças"
+  ]
+}

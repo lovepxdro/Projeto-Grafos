@@ -1,0 +1,79 @@
+{
+  "algorithm": "dijkstra-pairs",
+  "pairs_file": "data\\routes_dijkstra_pairs.csv",
+  "count": 8,
+  "results": [
+    {
+      "from": "MEX",
+      "to": "LAX",
+      "cost": 1.0,
+      "path": [
+        "MEX",
+        "LAX"
+      ]
+    },
+    {
+      "from": "MEX",
+      "to": "JFK",
+      "cost": 1.0,
+      "path": [
+        "MEX",
+        "JFK"
+      ]
+    },
+    {
+      "from": "MEX",
+      "to": "ORD",
+      "cost": 1.0,
+      "path": [
+        "MEX",
+        "ORD"
+      ]
+    },
+    {
+      "from": "MEX",
+      "to": "DFW",
+      "cost": 1.0,
+      "path": [
+        "MEX",
+        "DFW"
+      ]
+    },
+    {
+      "from": "DFW",
+      "to": "LAX",
+      "cost": 1.0,
+      "path": [
+        "DFW",
+        "LAX"
+      ]
+    },
+    {
+      "from": "DFW",
+      "to": "JFK",
+      "cost": 1.0,
+      "path": [
+        "DFW",
+        "JFK"
+      ]
+    },
+    {
+      "from": "ORD",
+      "to": "LAX",
+      "cost": 1.0,
+      "path": [
+        "ORD",
+        "LAX"
+      ]
+    },
+    {
+      "from": "ATL",
+      "to": "JFK",
+      "cost": 1.0,
+      "path": [
+        "ATL",
+        "JFK"
+      ]
+    }
+  ]
+}
