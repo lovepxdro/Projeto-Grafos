@@ -407,10 +407,10 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
         const btn = document.getElementById('btn-neighbors');
         showNeighbors = !showNeighbors;
         if (showNeighbors) {{
-            btn.innerText = "🕸 Vizinhança: ON";
+            btn.innerText = "Vizinhança: ON";
             btn.style.backgroundColor = "#e2e8f0"; // Estilo 'Ativo'
         }} else {{
-            btn.innerText = "🕸 Vizinhança: OFF";
+            btn.innerText = "Vizinhança: OFF";
             btn.style.backgroundColor = "white";
         }}
         updateVisuals(); // Recalcula visualização com a nova regra
@@ -456,7 +456,7 @@ def gerar_html_customizado(g: Graph, resultado_percurso: dict | None):
         // Reset vizinhança
         showNeighbors = false;
         const btnNeigh = document.getElementById('btn-neighbors');
-        if(btnNeigh) {{ btnNeigh.innerText = "🕸 Vizinhança: OFF"; btnNeigh.style.backgroundColor = "white"; }}
+        if(btnNeigh) {{ btnNeigh.innerText = "Vizinhança: OFF"; btnNeigh.style.backgroundColor = "white"; }}
 
         updateStats(data.nodes.length, data.edges.length);
         network.fit();
