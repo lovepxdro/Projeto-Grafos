@@ -24,28 +24,20 @@ Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, 
    ## 🗂️ Estrutura do Repositório
 
 ```
+## 🗂️ Estrutura do Repositório
+```text
 .
-├── data/                # Arquivos de entrada (CSV)
-│   ├── adjacencias_bairros.csv
-│   ├── bairros_recife.csv
-│   ├── bairros_unique.csv
-│   ├── enderecos.csv
-│   ├── routes.csv
-│   └── routes_dijkstra_pairs.csv
-│
-├── out/                 # Resultados gerados pelo código
-│   ├── *.png            # Figuras de análise (histograma, subgrafo, etc.)
-│   ├── *.html           # Visualizações interativas (grafo, árvore de percurso)
-│   ├── recife_global.json
-│   ├── microrregioes.json
-│   ├── graus.csv
-│   ├── ego_bairro.csv
-│   └── parte2_report_out.json   # Relatório consolidado da Parte 2
-│
-├── src/                 # Código-fonte principal
-│   ├── algorithms.py    # BFS, DFS, Dijkstra, Bellman-Ford
-│   ├── graph.py         # Estrutura de grafo e operações básicas
-│   ├── io.py            # Leitura/escrita de dados (CSV
+├── data/                      # Arquivos de entrada (CSV)
+├── out/                       # Resultados gerados pelo código
+├── src/                       # Código-fonte principal
+│   └── graphs/                # Implementação dos algoritmos de grafos
+│       ├── algorithms.py      # BFS, DFS, Dijkstra, Bellman-Ford
+│       ├── graph.py           # Estrutura de grafo e operações básicas
+│       ├── io.py              # Leitura/escrita de dados (CSV)
+│       ├── cli.py             # Interface de linha de comando (CLI)
+│       ├── solve.py           # Rotinas auxiliares de resolução
+│       └── viz.py             # Visualização de grafos
+├── tests/                     # Testes automatizados
 
 ---
 ```
