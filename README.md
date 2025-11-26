@@ -33,12 +33,11 @@ Este repositório contém o desenvolvimento do **Grafo dos bairros de Recife**, 
 │       ├── algorithms.py      # BFS, DFS, Dijkstra, Bellman-Ford
 │       ├── graph.py           # Estrutura de grafo e operações básicas
 │       ├── io.py              # Leitura/escrita de dados (CSV)
-│       ├── cli.py             # Interface de linha de comando (CLI)
-│       ├── solve.py           # Rotinas auxiliares de resolução
-│       └── viz.py             # Visualização de grafos
+│     ├── cli.py             # Interface de linha de comando (CLI)
+│     ├── solve.py           # Rotinas auxiliares de resolução
+│     └── viz.py             # Visualização de grafos
 ├── tests/                     # Testes automatizados
 
----
 ```
 
 ## ▶️ Como executar o projeto
