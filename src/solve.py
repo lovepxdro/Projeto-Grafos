@@ -113,7 +113,7 @@ def main():
             g.export_graus_csv()
 
             # === IMPRESSÃO DOS RANKINGS ===
-            print("\n  🏆 DESTAQUES (RECIFE)")
+            print("\n  DESTAQUES (RECIFE)")
             bairro_max, grau_max = g.get_bairro_maior_grau()
             print(f"  [Maior Grau] {bairro_max} ({grau_max} conexões)")
             ego_max = g.get_bairro_mais_denso_ego()
