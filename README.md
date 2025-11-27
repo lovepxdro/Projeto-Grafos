@@ -80,7 +80,7 @@ python src/solve.py
 
 > **Nota:** Nos exemplos abaixo, utilizamos o bairro **'Boa Vista'** e o aeroporto **'MEX'**, mas eles podem ser trocados por qualquer nó existente nos arquivos CSV.
 
-#### 🔍 BFS (Busca em Largura)
+#### BFS (Busca em Largura)
 * **Parte 1 (Recife):**
     ```bash
     python -m src.cli --adjacencias_bairros data/adjacencias_bairros.csv bfs "Boa Vista"
@@ -90,7 +90,7 @@ python src/solve.py
     python -m src.cli --routes data/routes.csv bfs MEX
     ```
 
-#### 🌲 DFS (Busca em Profundidade)
+#### DFS (Busca em Profundidade)
 * **Parte 1 (Recife):**
     ```bash
     python -m src.cli --adjacencias_bairros data/adjacencias_bairros.csv dfs "Boa Vista"
@@ -100,7 +100,7 @@ python src/solve.py
     python -m src.cli --routes data/routes.csv dfs MEX
     ```
 
-#### 🛤️ Dijkstra (Caminho Mínimo)
+#### Dijkstra (Caminho Mínimo)
 * **Parte 1 (Recife) - Boa Vista → Graças:**
     ```bash
     python -m src.cli --adjacencias_bairros data/adjacencias_bairros.csv dijkstra "Boa Vista" "Graças"
@@ -115,7 +115,7 @@ python src/solve.py
     python -m src.cli --routes data/routes.csv dijkstra-pairs data/routes_dijkstra_pairs.csv
     ```
 
-#### 🔄 Bellman-Ford (Ciclos Negativos - Parte 2)
+#### Bellman-Ford (Ciclos Negativos - Parte 2)
 Para validação deste algoritmo, criamos micro-datasets específicos para teste de controle:
 * **Sem ciclo negativo** (Esperado: `has_negative_cycle = false`):
     ```bash
@@ -126,7 +126,7 @@ Para validação deste algoritmo, criamos micro-datasets específicos para teste
     python -m src.cli --routes data/routes_negative_cycle.csv --directed bellman-ford AER
     ```
 
-#### 📊 Relatórios e Visualização (Parte 2)
+#### Relatórios e Visualização (Parte 2)
 * **Relatório de Performance:**
     Gera estatísticas de tempo de execução para nós específicos (ex: MEX, LAX, JFK) salvando em JSON customizado:
     ```bash
